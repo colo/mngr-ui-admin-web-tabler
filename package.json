@@ -24,6 +24,11 @@
     "debug": "^4.2.0",
     "jquery": "^3.5.1",
     "jqvmap": "^1.5.1",
+    "js-pipeline": "git+https://github.com/colo/js-pipeline.git",
+    "mngr-ui-admin-charts": "git+https://github.com/colo/mngr-ui-admin-charts.git",
+    "mootools": "^1.5.2",
+    "node-app-socket.io-client": "git+https://github.com/colo/node-app-socket.io-client.git",
+    "node-tabular-data": "git+https://github.com/colo/node-tabular-data.git",
     "quasar": "^1.0.0",
     "vue-apexcharts": "^1.6.0",
     "vue-i18n": "^8.0.0",
@@ -39,7 +44,8 @@
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
-    "eslint-plugin-vue": "^6.1.2"
+    "eslint-plugin-vue": "^6.1.2",
+    "worker-loader": "^3.0.3"
   },
   "browserslist": [
     "last 10 Chrome versions",
