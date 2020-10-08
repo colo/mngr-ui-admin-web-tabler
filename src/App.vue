@@ -54,11 +54,11 @@ export default {
   },
   created: function () {
     // console.log('created', this.mode, this.$route)
-    if (this.mode === false) { this.mode = 'VerticalLayout' }
+    if (this.mode === false) { this.mode = 'HorizontalLayout' }
   },
   mounted: function () {
     // console.log('mounted', this.mode, this.$route)
-    if (this.mode === false) { this.mode = 'VerticalLayout' }
+    if (this.mode === false) { this.mode = 'HorizontalLayout' }
   },
   methods: {
     ...mapActions({
