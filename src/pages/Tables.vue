@@ -241,8 +241,11 @@
 </template>
 
 <script>
+import { BTable, BButton, BDropdown, BDropdownItem, BInputGroup, BFormInput, BTr, BTh, BPagination } from 'bootstrap-vue'
+
 export default {
   name: 'PageEmpty',
+  components: { BTable, BButton, BDropdown, BDropdownItem, BInputGroup, BFormInput, BTr, BTh, BPagination },
 
   data () {
     return {

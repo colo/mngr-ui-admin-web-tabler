@@ -3,7 +3,7 @@ import Vue from 'vue'
 
 import { mapActions, mapState } from 'vuex'
 
-import TopBar from 'components/TopBar'
+import TopBar from 'components/layout/TopBar'
 
 export default Vue.extend({
   name: 'MainLayout',

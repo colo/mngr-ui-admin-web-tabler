@@ -29,8 +29,11 @@
 </template>
 
 <script>
+import { BNavItem, BNavItemDropdown, BDropdownItem, BDropdownDivider } from 'bootstrap-vue'
+
 export default {
   name: 'BarDropdownsUser',
+  components: { BNavItem, BNavItemDropdown, BDropdownItem, BDropdownDivider },
   // props: {
   //   vertical: {
   //     type: Boolean,

@@ -2,12 +2,12 @@
 
     <div :class="containerClass" :style="containerStyle">
 
-      <nav-bar-list />
+      <nav-bar-list :list="list"/>
 
       <!-- Right aligned nav items -->
       <!-- <b-navbar-nav class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last" v-if="vertical !== true">
         <b-nav-form> -->
-          <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last" v-if="vertical !== true && condensed !== true">
+          <div v-if="vertical !== true && condensed !== true && search === true" class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
             <bar-search />
           </div>
         <!-- </b-nav-form>
@@ -18,9 +18,9 @@
 </template>
 
 <script>
-// import BarLogo from 'components/bar/logo'
-import BarSearch from 'components/bar/search'
-import NavBarList from 'components/navbar/list'
+// import BarLogo from 'components/layout/bar/logo'
+import BarSearch from 'components/layout/bar/search'
+import NavBarList from 'components/layout/navbar/list'
 
 export default {
   name: 'NavBar',
@@ -54,7 +54,17 @@ export default {
     background: {
       type: String,
       default: ''
-    }
+    },
+
+    list: {
+      type: Array,
+      default: undefined
+    },
+
+    search: {
+      type: Boolean,
+      default: true
+    },
   },
   computed: {
     // internalClass: function () {

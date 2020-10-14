@@ -192,9 +192,11 @@
 </template>
 
 <script>
+import { BCarousel, BCarouselSlide } from 'bootstrap-vue'
+
 export default {
   name: 'PageEmpty',
-
+  components: { BCarousel, BCarouselSlide },
   data () {
     return {
       slide: 0,

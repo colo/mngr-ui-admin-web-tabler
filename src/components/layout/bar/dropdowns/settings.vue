@@ -84,8 +84,11 @@
 <script>
 import { mapActions } from 'vuex'
 
+import { BNavItemDropdown, BDropdownForm, BDropdownDivider, BFormGroup, BFormCheckbox, BFormRadio } from 'bootstrap-vue'
+
 export default {
   name: 'BarDropdownsSettings',
+  components: { BNavItemDropdown, BDropdownForm, BDropdownDivider, BFormGroup, BFormCheckbox, BFormRadio },
   // props: {
   //   vertical: {
   //     type: Boolean,

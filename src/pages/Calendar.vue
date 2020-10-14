@@ -44,6 +44,10 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import { BButton, BModal, VBModal } from 'bootstrap-vue'
+Vue.directive('b-modal', VBModal)
+
 import * as Debug from 'debug'
 const debug = Debug('pages:Calendar')
 debug.log = console.log.bind(console) // don't forget to bind to console!
@@ -54,6 +58,7 @@ import interaction from '@fullcalendar/interaction'
 
 export default {
   name: 'PageEmpty',
+  components: { BButton, BModal },
 
   mounted: function () {
     // debug('mounted')

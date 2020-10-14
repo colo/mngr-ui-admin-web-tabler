@@ -16,17 +16,17 @@ import { mapActions, mapState } from 'vuex'
 
 import Layout from '@mixins/Layout'
 
-import VerticalNavBar from 'components/VerticalNavBar'
-import ContentFooter from 'components/ContentFooter'
+// import VerticalNavBar from 'components/VerticalNavBar'
+// import ContentFooter from 'components/ContentFooter'
 
 export default Vue.extend({
   name: 'EmptyLayout',
   mixins: [Layout],
 
-  components: {
-    VerticalNavBar,
-    ContentFooter
-  },
+  // components: {
+  //   VerticalNavBar,
+  //   ContentFooter
+  // },
   // props: {
   //   topbar: {
   //     type: Object,

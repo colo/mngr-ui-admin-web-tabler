@@ -6,9 +6,11 @@
 </template>
 
 <script>
+import { BNavbarBrand } from 'bootstrap-vue'
+
 export default {
   name: 'BarLogo',
-
+  components: { BNavbarBrand },
   props: {
     dark: {
       type: Boolean,

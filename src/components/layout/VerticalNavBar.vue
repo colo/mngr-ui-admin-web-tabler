@@ -10,7 +10,15 @@
         <bar-dropdowns :vertical="true"/>
 
         <b-collapse id="navbar-menu" is-nav>
-          <nav-bar :vertical="true" :dark="dark"/>
+          <nav-bar
+            :vertical="true"
+            :dark="dark"
+            :list="list"
+            :search="search"
+            :user="user"
+            :alerts="alerts"
+            :settings="settings"
+          />
         </b-collapse>
     </div>
     </b-navbar>
@@ -18,13 +26,15 @@
 </template>
 
 <script>
-import BarLogo from 'components/bar/logo'
-import BarDropdowns from 'components/bar/dropdowns'
-import NavBar from 'components/NavBar'
+import { BNavbar, BNavbarToggle, BCollapse } from 'bootstrap-vue'
+
+import BarLogo from 'components/layout/bar/logo'
+import BarDropdowns from 'components/layout/bar/dropdowns'
+import NavBar from 'components/layout/NavBar'
 
 export default {
   name: 'VerticalNavBar',
-  components: { BarLogo, BarDropdowns, NavBar },
+  components: { BNavbar, BNavbarToggle, BCollapse, BarLogo, BarDropdowns, NavBar },
 
   props: {
     // title: {
@@ -55,6 +65,26 @@ export default {
       default: false
     },
     logo: {
+      type: Boolean,
+      default: true
+    },
+    list: {
+      type: Array,
+      default: undefined
+    },
+    search: {
+      type: Boolean,
+      default: true
+    },
+    alerts: {
+      type: Boolean,
+      default: true
+    },
+    user: {
+      type: Boolean,
+      default: true
+    },
+    settings: {
       type: Boolean,
       default: true
     },

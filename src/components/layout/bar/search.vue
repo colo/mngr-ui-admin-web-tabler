@@ -8,8 +8,11 @@
 </template>
 
 <script>
+import { BFormInput } from 'bootstrap-vue'
+
 export default {
   name: 'BarSearch',
+  components: { BFormInput },
   props: {
     rounded: {
       type: Boolean,

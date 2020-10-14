@@ -7,6 +7,8 @@
       :background="navbar.background"
       :smallLogo="smallLogo"
       :logo="logo"
+      :list="navbar.list"
+      :search="search"
       />
 
     <div class="page">
@@ -18,6 +20,10 @@
           :vertical="true"
           :background="topbar.background"
           :grow="false"
+          :search="search"
+          :user="user"
+          :alerts="alerts"
+          :settings="settings"
         />
       </b-navbar>
       <div class="content">
@@ -38,18 +44,21 @@
 <script>
 import Vue from 'vue'
 
+import { BNavbar } from 'bootstrap-vue'
+
 import { mapActions, mapState } from 'vuex'
 
 import Layout from '@mixins/Layout'
 
-import VerticalNavBar from 'components/VerticalNavBar'
-import ContentFooter from 'components/ContentFooter'
+import VerticalNavBar from 'components/layout/VerticalNavBar'
+import ContentFooter from 'components/layout/ContentFooter'
 
 export default Vue.extend({
   name: 'MainLayout',
   mixins: [Layout],
 
   components: {
+    BNavbar,
     VerticalNavBar,
     ContentFooter
   },
@@ -85,7 +94,11 @@ export default Vue.extend({
       topbar: state => state.layout.VerticalLayout.topbar,
       smallLogo: state => state.layout.VerticalLayout.smallLogo,
       logo: state => state.layout.VerticalLayout.logo,
-      fluid: state => state.layout.fluid,
+      search: state => state.layout.VerticalLayout.search,
+      user: state => state.layout.VerticalLayout.user,
+      alerts: state => state.layout.VerticalLayout.alerts,
+      settings: state => state.layout.VerticalLayout.settings,
+      // fluid: state => state.layout.fluid,
     }),
     containerClass: function () {
       let appendClass = ''

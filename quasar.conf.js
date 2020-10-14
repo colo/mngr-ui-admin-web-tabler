@@ -82,10 +82,10 @@ module.exports = function (/* ctx */) {
           }
         })
 
-        cfg.module.rules.push({
-          test: /\.worker\.js$/,
-          use: { loader: 'worker-loader' },
-        })
+        // cfg.module.rules.push({
+        //   test: /\.worker\.js$/,
+        //   use: { loader: 'worker-loader' },
+        // })
 
         cfg.resolve.alias = {
           ...cfg.resolve.alias, // This adds the existing alias

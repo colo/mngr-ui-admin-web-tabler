@@ -353,7 +353,14 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import { BButton, BModal, VBModal } from 'bootstrap-vue'
+
+Vue.directive('b-modal', VBModal)
+
 export default {
-  name: 'PageModals'
+  name: 'PageModals',
+  components: { BButton, BModal }
+
 }
 </script>

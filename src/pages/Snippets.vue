@@ -16,17 +16,12 @@
     </div>
     <div class="row">
       <div class="col-md-6 col-xl-3">
-        <a class="card card-link" href="#">
-          <div class="card-body">
-            <div class="float-left mr-3">
-              <span class="avatar rounded" style="background-image: url(./static/avatars/001f.jpg)"></span>
-            </div>
-            <div class="lh-sm">
-              <div class="strong">Maryjo Lebarree</div>
-              <div class="text-muted">Civil Engineer</div>
-            </div>
-          </div>
-        </a>
+        <t-user-card-mini
+          name="Maryjo Lebarree"
+          title="Civil Engineer"
+          avatar="./static/avatars/001f.jpg"
+          :to="{ name: 'profile' }"
+        />
       </div>
       <div class="col-md-6 col-xl-3">
         <a class="card card-link" href="#">
@@ -68,7 +63,13 @@
         </a>
       </div>
       <div class="col-md-6 col-xl-3">
-        <div class="card">
+        <t-user-card
+          name="Thatcher Keel"
+          title="VP Sales"
+          avatar="./static/avatars/010m.jpg"
+          :to="{ name: 'profile' }"
+        />
+        <!-- <div class="card">
           <div class="card-body text-center">
             <div class="mb-3">
               <span class="avatar avatar-xl" style="background-image: url(./static/avatars/010m.jpg)"></span>
@@ -77,7 +78,7 @@
             <div class="text-muted">VP Sales</div>
           </div>
           <a href="#" class="card-btn">View full profile</a>
-        </div>
+        </div> -->
       </div>
       <div class="col-md-6 col-xl-3">
         <div class="card">
@@ -116,7 +117,14 @@
         </div>
       </div>
       <div class="col-md-6 col-xl-3">
-        <a class="card card-link" href="#">
+        <t-user-card-cover
+          name="Marsha Labat"
+          title="Research Associate"
+          avatar="./static/avatars/012f.jpg"
+          cover="./static/photos/2854fd67ddbd6217.jpg"
+          :to="{ name: 'profile' }"
+        />
+        <!-- <a class="card card-link" href="#">
           <div class="card-cover text-center" style="background-image: url(./static/photos/2854fd67ddbd6217.jpg
 )">
             <span class="avatar avatar-xl avatar-thumb" style="background-image: url(./static/avatars/012f.jpg)"></span>
@@ -125,7 +133,7 @@
             <div class="card-title mb-1">Marsha Labat</div>
             <div class="text-muted">Research Associate</div>
           </div>
-        </a>
+        </a> -->
       </div>
       <div class="col-md-6 col-xl-3">
         <a class="card card-link" href="#">
@@ -161,7 +169,17 @@
         </a>
       </div>
       <div class="col-xl-6">
-        <div class="card">
+        <t-user-card-status
+          name="Paweł Kuna"
+          title="Working in Yombu"
+          avatar="./static/avatars/000m.jpg"
+          :to="{ name: 'profile' }"
+          :status="{
+            label: 'online'
+          }"
+        />
+
+        <!-- <div class="card">
           <div class="card-body">
             <div class="row row-sm align-items-center">
               <div class="col-auto">
@@ -185,7 +203,6 @@
               </div>
               <div class="col-auto">
                 <b-dropdown  size="sm" variant="link" toggle-class="text-decoration-none btn-options" no-caret right>
-                  <!-- Using 'button-content' slot -->
                   <template v-slot:button-content>
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /><circle cx="12" cy="5" r="1" /></svg>
                   </template>
@@ -198,26 +215,27 @@
                   </b-dropdown-item>
 
                 </b-dropdown>
-                <!-- <div class="dropdown">
-                  <button class="btn-options" type="button" data-toggle="dropdown">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /><circle cx="12" cy="5" r="1" /></svg>
-                  </button>
-                  <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#">
-                      Action
-                    </a>
-                    <a class="dropdown-item" href="#">
-                      Another action
-                    </a>
-                  </div>
-                </div> -->
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="col-xl-6">
-        <div class="card">
+        <t-user-card-status
+          name="Mallory Hulme"
+          title="Working in Kare"
+          avatar="./static/avatars/002m.jpg"
+          :to="{ name: 'profile' }"
+          :action="{label: 'Suscribe', to: {path: '#'}, variant: 'outline-info'}"
+          :menu="[
+            {label: 'Chat', to: {path: '#'}},
+            /* {label: 'Profile', to: {path: '#'}, variant: 'outline-info'} */
+          ]"
+          :status="{
+            label: 'online'
+          }"
+        />
+        <!-- <div class="card">
           <div class="card-body">
             <div class="row row-sm align-items-center">
               <div class="col-auto">
@@ -241,7 +259,6 @@
               </div>
               <div class="col-auto">
                 <b-dropdown  size="sm" variant="link" toggle-class="text-decoration-none btn-options" no-caret right>
-                  <!-- Using 'button-content' slot -->
                   <template v-slot:button-content>
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /><circle cx="12" cy="5" r="1" /></svg>
                   </template>
@@ -254,26 +271,14 @@
                   </b-dropdown-item>
 
                 </b-dropdown>
-                <!-- <div class="dropdown">
-                  <button class="btn-options" type="button" data-toggle="dropdown">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /><circle cx="12" cy="5" r="1" /></svg>
-                  </button>
-                  <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#">
-                      Action
-                    </a>
-                    <a class="dropdown-item" href="#">
-                      Another action
-                    </a>
-                  </div>
-                </div> -->
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="col-md-6 col-xl-3">
-        <div class="card card-sm">
+        <t-card-mini />
+        <!-- <div class="card card-sm">
           <div class="card-body d-flex align-items-center">
             <span class="bg-blue text-white stamp mr-3"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" /><path d="M12 3v3m0 12v3" /></svg>
             </span>
@@ -284,10 +289,16 @@
               <div class="text-muted">12 waiting payments</div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="col-md-6 col-xl-3">
-        <div class="card card-sm">
+        <t-card-mini
+          title="78 Orders"
+          subtitle="32 shipped"
+          icon="<svg xmlns='http://www.w3.org/2000/svg' class='icon' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z'/><circle cx='9' cy='19' r='2' /><circle cx='17' cy='19' r='2' /><path d='M3 3h2l2 12a3 3 0 0 0 3 2h7a3 3 0 0 0 3 -2l1 -7h-15.2' />"
+          icon-class="bg-green text-white stamp "
+        />
+        <!-- <div class="card card-sm">
           <div class="card-body d-flex align-items-center">
             <span class="bg-green text-white stamp mr-3"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="9" cy="19" r="2" /><circle cx="17" cy="19" r="2" /><path d="M3 3h2l2 12a3 3 0 0 0 3 2h7a3 3 0 0 0 3 -2l1 -7h-15.2" /></svg>
             </span>
@@ -298,7 +309,7 @@
               <div class="text-muted">32 shipped</div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="col-md-6 col-xl-3">
         <div class="card card-sm">
@@ -329,7 +340,30 @@
         </div>
       </div>
       <div class="col-md-6 col-xl-3">
-        <div class="card card-sm">
+        <t-card-mini
+          title="132 Sales"
+          subtitle="12 waiting payments"
+        >
+          <div class="mr-3">
+            <div class="chart-sparkline chart-sparkline-square">
+              <peity
+                :type="'pie'"
+                :options="{
+                  width: 40,
+                  height: 40,
+                  stroke: '#206bc4',
+                  strokeWidth: 2,
+                  fill: ['#206bc4', 'rgba(110, 117, 130, 0.2)'],
+                  padding: .2,
+                  innerRadius: 17,
+                }"
+                :data="'56/100'"
+              >
+              </peity>
+            </div>
+          </div>
+        </t-card-mini>
+        <!-- <div class="card card-sm">
           <div class="card-body d-flex align-items-center">
             <div class="mr-3">
               <div class="chart-sparkline chart-sparkline-square" id="sparkline-76">
@@ -356,10 +390,33 @@
               <div class="text-muted">12 waiting payments</div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="col-md-6 col-xl-3">
-        <div class="card card-sm">
+        <t-card-mini
+          title="78 Orders"
+          subtitle="32 shipped"
+        >
+          <div class="mr-3">
+            <div class="chart-sparkline chart-sparkline-square" id="sparkline-77">
+              <peity
+                :type="'pie'"
+                :options="{
+                  width: 40,
+                  height: 40,
+                  stroke: '#5eba00',
+                  strokeWidth: 2,
+                  fill: ['#5eba00', 'rgba(110, 117, 130, 0.2)'],
+                  padding: .2,
+                  innerRadius: 17,
+                }"
+                :data="'56/100'"
+              >
+              </peity>
+            </div>
+          </div>
+        </t-card-mini>
+        <!-- <div class="card card-sm">
           <div class="card-body d-flex align-items-center">
             <div class="mr-3">
               <div class="chart-sparkline chart-sparkline-square" id="sparkline-77">
@@ -386,7 +443,7 @@
               <div class="text-muted">32 shipped</div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="col-md-6 col-xl-3">
         <div class="card card-sm">
@@ -449,7 +506,30 @@
         </div>
       </div>
       <div class="col-md-6 col-lg-4">
-        <div class="card card-sm">
+        <t-card-mini
+          title="1,700"
+          subtitle="Users"
+          :icon="''"
+        >
+          <template v-slot:right>
+            <div class="chart-sparkline" id="sparkline-80">
+              <peity
+                :type="'line'"
+                :options="{
+                  width: 64,
+                  height: 40,
+                  stroke: '#206bc4',
+                  strokeWidth: 2,
+                  fill: ['#d2e1f3'],
+                  padding: .2,
+                }"
+                :data="'20,0,40,30,40,30,80,60'"
+              >
+              </peity>
+            </div>
+          </template>
+        </t-card-mini>
+        <!-- <div class="card card-sm">
           <div class="card-body d-flex align-items-center">
             <div class="mr-3 lh-sm">
               <div class="strong">
@@ -475,8 +555,32 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="card card-sm">
+        </div> -->
+        <t-card-mini
+          title="1,700"
+          subtitle="Users"
+          icon="<svg xmlns='http://www.w3.org/2000/svg' class='icon' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z'/><path d='M12 20l-7 -7a4 4 0 0 1 6.5 -6a.9 .9 0 0 0 1 0a4 4 0 0 1 6.5 6l-7 7' /></svg>"
+          icon-class="bg-red text-white stamp mr-3"
+        >
+          <template v-slot:right>
+            <div class="chart-sparkline" id="sparkline-81">
+              <peity
+                :type="'bar'"
+                :options="{
+                  width: 64,
+                  height: 40,
+                  stroke: '#cd201f',
+                  strokeWidth: 2,
+                  fill: 'transparent',
+                  padding: .2,
+                }"
+                :data="'20,40,30,10,40,60,80,70'"
+              >
+              </peity>
+            </div>
+          </template>
+        </t-card-mini>
+        <!-- <div class="card card-sm">
           <div class="card-body d-flex align-items-center">
             <span class="bg-red text-white stamp mr-3"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M12 20l-7 -7a4 4 0 0 1 6.5 -6a.9 .9 0 0 0 1 0a4 4 0 0 1 6.5 6l-7 7" /></svg>
             </span>
@@ -504,7 +608,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="card card-sm">
           <div class="card-body d-flex align-items-center">
             <span class="bg-green text-white stamp mr-3"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="icon" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
@@ -695,11 +799,14 @@
       </div>
       <div class="col-md-6 col-lg-4">
         <div class="card">
-          <div class="progress card-progress">
+          <b-progress :max="100" height="4px">
+            <b-progress-bar :value="20" :class="'bg-red'"></b-progress-bar>
+          </b-progress>
+          <!-- <div class="progress card-progress">
             <div class="progress-bar bg-red" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
               <span class="sr-only">20% Complete</span>
             </div>
-          </div>
+          </div> -->
           <div class="card-body">
             <div class="dropdown card-options">
               <b-dropdown size="sm" variant="link" toggle-class="text-decoration-none btn-options" no-caret right>
@@ -716,17 +823,6 @@
                 </b-dropdown-item>
 
               </b-dropdown>
-              <!-- <button class="btn-options" type="button" data-toggle="dropdown">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /><circle cx="12" cy="5" r="1" /></svg>
-              </button>
-              <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="#">
-                  Action
-                </a>
-                <a class="dropdown-item" href="#">
-                  Another action
-                </a>
-              </div> -->
             </div>
             <div class="card-title">
               <h6 class="h4 mb-3"><a href="#">Tabler UI</a> <span class="badge">v1.0</span></h6>
@@ -747,11 +843,9 @@
           </div>
         </div>
         <div class="card">
-          <div class="progress card-progress">
-            <div class="progress-bar bg-green" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-              <span class="sr-only">20% Complete</span>
-            </div>
-          </div>
+          <b-progress :max="100" height="4px">
+            <b-progress-bar :value="20" :class="'bg-green'"></b-progress-bar>
+          </b-progress>
           <div class="card-body">
             <div class="dropdown card-options">
               <b-dropdown size="sm" variant="link" toggle-class="text-decoration-none btn-options" no-caret right>
@@ -768,31 +862,7 @@
                 </b-dropdown-item>
 
               </b-dropdown>
-              <!-- <button class="btn-options" type="button" data-toggle="dropdown">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /><circle cx="12" cy="5" r="1" /></svg>
-              </button>
-              <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="#">
-                  Action
-                </a>
-                <a class="dropdown-item" href="#">
-                  Another action
-                </a>
-              </div> -->
             </div>
-            <!-- <div class="dropdown card-options">
-              <button class="btn-options" type="button" data-toggle="dropdown">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /><circle cx="12" cy="5" r="1" /></svg>
-              </button>
-              <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="#">
-                  Action
-                </a>
-                <a class="dropdown-item" href="#">
-                  Another action
-                </a>
-              </div>
-            </div> -->
             <div class="card-title">
               <h6 class="h4 mb-3"><a href="#">Tabler React</a></h6>
             </div>
@@ -880,13 +950,30 @@
 </template>
 
 <script>
+import { BDropdown, BDropdownItem, BProgress, BProgressBar } from 'bootstrap-vue'
 import Peity from 'vue-peity'
+
+import TUserCardMini from 'components/TUserCardMini'
+import TUserCard from 'components/TUserCard'
+import TUserCardCover from 'components/TUserCardCover'
+import TUserCardStatus from 'components/TUserCardStatus'
+
+import TCardMini from 'components/TCardMini'
 
 export default {
   name: 'PageEmpty',
 
   components: {
-    Peity
+    Peity,
+    BDropdown,
+    BDropdownItem,
+    BProgress,
+    BProgressBar,
+    TUserCardMini,
+    TUserCard,
+    TUserCardCover,
+    TUserCardStatus,
+    TCardMini
   },
 
 }

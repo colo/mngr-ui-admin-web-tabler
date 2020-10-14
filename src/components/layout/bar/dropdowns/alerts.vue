@@ -14,8 +14,11 @@
 </template>
 
 <script>
+import { BNavItemDropdown, BDropdownText } from 'bootstrap-vue'
+
 export default {
   name: 'BarDropdownsAlerts',
+  components: { BNavItemDropdown, BDropdownText },
   // props: {
   //   vertical: {
   //     type: Boolean,

@@ -1,19 +1,21 @@
 <template>
   <div class="navbar-expand-md" >
     <b-collapse id="navbar-menu" is-nav>
-      <b-navbar toggleable="md" :type="(dark) ? 'dark' : 'light'" tag="div" :style="containerStyle" >
-        <nav-bar :vertical="false" :dark="dark" :condensed="condensed" :fluid="fluid" :background="background"/>
+      <b-navbar toggleable="md" :type="(dark) ? 'dark' : 'light'" tag="div" :style="containerStyle">
+        <nav-bar :vertical="false" :dark="dark" :condensed="condensed" :fluid="fluid" :background="background" :list="list" :search="search"/>
       </b-navbar>
     </b-collapse>
   </div>
 </template>
 
 <script>
-import NavBar from 'components/NavBar'
+import { BCollapse, BNavbar, BNavbarToggle } from 'bootstrap-vue'
+
+import NavBar from 'components/layout/NavBar'
 
 export default {
   name: 'HorizontalNavBar',
-  components: { NavBar },
+  components: { BCollapse, BNavbar, BNavbarToggle, NavBar },
 
   props: {
     // title: {
@@ -41,7 +43,15 @@ export default {
     background: {
       type: String,
       default: ''
-    }
+    },
+    list: {
+      type: Array,
+      default: undefined
+    },
+    search: {
+      type: Boolean,
+      default: true
+    },
   },
   computed: {
     containerStyle: function () {
