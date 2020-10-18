@@ -11,9 +11,15 @@ const routes = [
     path: '/',
     // component: () => import('layouts/MainLayout.vue'),
     name: 'index',
-    component: () => import('pages/Index.vue'),
+    component: () => import('@apps/start/Index.vue'),
     // meta: { layout: 'VerticalLayout' },
 
+  },
+  {
+    path: '/signin',
+    name: 'signin',
+    component: () => import('@apps/signin/Index.vue'),
+    meta: { layout: 'EmptyLayout' },
   },
   // {
   //   path: '/empty',
@@ -148,12 +154,6 @@ const routes = [
   //   path: '/welcome',
   //   name: 'welcome',
   //   component: () => import('pages/Welcome.vue'),
-  //   meta: { layout: 'EmptyLayout' },
-  // },
-  // {
-  //   path: '/signin',
-  //   name: 'signin',
-  //   component: () => import('pages/Signin.vue'),
   //   meta: { layout: 'EmptyLayout' },
   // },
   // {

@@ -24,10 +24,13 @@
     "debug": "^4.2.0",
     "jquery": "^3.5.1",
     "jqvmap": "^1.5.1",
+    "js-pipeline": "git+https://github.com/colo/js-pipeline.git",
+    "node-app-socket.io-client": "git+https://github.com/colo/node-app-socket.io-client.git",
     "quasar": "^1.0.0",
     "vue-apexcharts": "^1.6.0",
     "vue-i18n": "^8.0.0",
-    "vue-peity": "^0.5.0"
+    "vue-peity": "^0.5.0",
+    "vuequery": "^2.1.1"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",
@@ -39,7 +42,8 @@
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
-    "eslint-plugin-vue": "^6.1.2"
+    "eslint-plugin-vue": "^6.1.2",
+    "worker-loader": "^2.0.0"
   },
   "browserslist": [
     "last 10 Chrome versions",

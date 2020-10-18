@@ -105,7 +105,7 @@ export default {
       default: true
     },
     user: {
-      type: Boolean,
+      type: [Boolean, Object],
       default: true
     },
     settings: {

@@ -3,7 +3,7 @@
   <b-navbar-nav :class="navClass" style="height: 48px;">
     <bar-dropdowns-settings v-if="settings === true"/>
     <bar-dropdowns-alerts v-if="alerts === true"/>
-    <bar-dropdowns-user v-if="user === true"/>
+    <bar-dropdowns-user v-if="user"/>
 
   </b-navbar-nav>
 </template>
@@ -30,7 +30,7 @@ export default {
       default: true
     },
     user: {
-      type: Boolean,
+      type: [Boolean, Object],
       default: true
     },
     settings: {

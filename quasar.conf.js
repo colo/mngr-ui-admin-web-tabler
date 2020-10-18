@@ -82,23 +82,24 @@ module.exports = function (/* ctx */) {
           }
         })
 
-        // cfg.module.rules.push({
-        //   test: /\.worker\.js$/,
-        //   use: { loader: 'worker-loader' },
-        // })
+        cfg.module.rules.push({
+          test: /\.worker\.js$/,
+          use: { loader: 'worker-loader' },
+        })
 
         cfg.resolve.alias = {
           ...cfg.resolve.alias, // This adds the existing alias
 
 
           // Add your own alias like this
-          // '@libs': path.resolve(__dirname, './src/libs'),
-          // '@etc': path.resolve(__dirname, './src/etc'),
+          '@static': path.resolve(__dirname, './src/static'),
+          '@libs': path.resolve(__dirname, './src/libs'),
+          '@etc': path.resolve(__dirname, './src/etc'),
           // '@components': path.resolve(__dirname, './src/components'),
           '@mixins': path.resolve(__dirname, './src/mixins'),
           // '@wrappers': path.resolve(__dirname, './src/components/wrappers'),
-          // '@apps': path.resolve(__dirname, './src/apps'),
-          // '@store': path.resolve(__dirname, './src/store'),
+          '@apps': path.resolve(__dirname, './src/apps'),
+          '@store': path.resolve(__dirname, './src/store'),
           // '@dashblocks': path.resolve(__dirname, './dashblocks'),
           // '@dashblocks-template': path.resolve(__dirname, './dashblocks-template'),
           // // '@skins': path.resolve(__dirname, './src/skins')
@@ -133,6 +134,7 @@ module.exports = function (/* ctx */) {
 
       // Quasar plugins
       plugins: [
+        'Cookies',
         'LocalStorage',
         'SessionStorage'
       ]
