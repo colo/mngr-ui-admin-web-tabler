@@ -5,6 +5,10 @@ import { mapActions, mapState } from 'vuex'
 
 import TopBar from 'components/layout/TopBar'
 
+let mootools = require('mootools')
+import DefaultConn from '@etc/default.http'
+let http = Object.merge(Object.clone(DefaultConn), { path: DefaultConn.path + 'user' })
+
 export default Vue.extend({
   name: 'MainLayout',
   components: {
@@ -12,6 +16,7 @@ export default Vue.extend({
   },
   data () {
     return {
+      // httpServer: http
     }
   },
   props: {
@@ -39,9 +44,9 @@ export default Vue.extend({
     //   type: Boolean,
     //   default: false
     // }
-    // background: {
-    //   type: String,
-    //   default: '' // #7952b3
+    // user: {
+    //   type: [Boolean, Object],
+    //   default: false
     // }
   },
   computed: {
@@ -71,6 +76,22 @@ export default Vue.extend({
 
       return appendStyle
     },
+    user: function () {
+      if (this.$store.state.user.data && this.$store.state.user.data.role) {
+        return {
+          name: this.$store.state.user.data.name + ' ' + this.$store.state.user.data.surname,
+          title: this.$store.state.user.data.role,
+          avatar: this.$store.state.user.data.avatar,
+          // actions: this.$store.state.user.data.actions,
+          actions: [{
+            label: 'Sign out',
+            to: { path: 'signout'}
+          }]
+        }
+      }
+
+      return this.$store.state.layout[this.mode].user
+    },
     // dark: {
     //   get () {
     //     return this.$store.state.layout.dark
@@ -81,10 +102,10 @@ export default Vue.extend({
     // }
   },
   methods: {
-    // ...mapActions({
-    //   setDark: 'layout/setDark',
-    //   // setMenuMini: 'layout/setMenuMini'
-    // }),
+    ...mapActions({
+      setMode: 'layout/setMode',
+      loadUser: 'user/load'
+    }),
     // https://forum.vuejs.org/t/how-do-i-add-remove-classes-to-body/1219/12
     toggleBodyClass: function (addRemoveClass, className) {
       const el = document.body
@@ -122,6 +143,8 @@ export default Vue.extend({
     this.toggleBodyClass('addClass', 'antialiased')
     this.toggleBodyStyle('display', 'block')
     // this.$q.dark.set(this.dark)
+
+    this.loadUser(http.scheme + '://' + http.host + ':' + http.port + http.path)
   },
   beforeDestroy: function () {
     this.toggleBodyClass('removeClass', 'theme-dark')

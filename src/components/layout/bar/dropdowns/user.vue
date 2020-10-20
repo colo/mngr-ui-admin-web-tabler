@@ -130,9 +130,11 @@ export default {
     },
     processedName: function () {
       let name = ''
-      let arr = this.name.split(' ')
-      for (let i = 0; i < arr.length; i++) {
-        name += arr[i].charAt(0).toUpperCase()
+      if (this.name && this.name !== null && this.name !== undefined) {
+        let arr = this.name.split(' ')
+        for (let i = 0; i < arr.length; i++) {
+          name += arr[i].charAt(0).toUpperCase()
+        }
       }
 
       return name

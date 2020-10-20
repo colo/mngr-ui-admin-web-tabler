@@ -36,6 +36,10 @@
 </template>
 
 <script>
+import * as Debug from 'debug'
+const debug = Debug('layouts:Horizontal')
+debug.log = console.log.bind(console) // don't forget to bind to console!
+
 import Vue from 'vue'
 import { mapActions, mapState } from 'vuex'
 
@@ -99,7 +103,7 @@ export default Vue.extend({
       smallLogo: state => state.layout.HorizontalLayout.smallLogo,
       logo: state => state.layout.HorizontalLayout.logo,
       search: state => state.layout.HorizontalLayout.search,
-      user: state => state.layout.HorizontalLayout.user,
+      // user: state => state.layout.HorizontalLayout.user,
       alerts: state => state.layout.HorizontalLayout.alerts,
       settings: state => state.layout.HorizontalLayout.settings,
     }),
@@ -112,6 +116,9 @@ export default Vue.extend({
     },
 
   },
-
+  // mounted: function () {
+  //   debug('mounted')
+  //   this.loadUser(this.httpServer.scheme + '://' + this.httpServer.host + ':' + this.httpServer.port + this.httpServer.path)
+  // },
 })
 </script>

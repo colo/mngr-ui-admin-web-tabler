@@ -53,6 +53,9 @@ export default Vue.extend({
   //   //   default: true
   //   // }
   // },
+  methods: {
+    loadUser: function () { return false }
+  },
   computed: {
     ...mapState({
       navbar: state => state.layout.VerticalLayout.navbar,

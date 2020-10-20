@@ -3,7 +3,7 @@
   <b-navbar-nav :class="navClass" style="height: 48px;">
     <bar-dropdowns-settings v-if="settings === true"/>
     <bar-dropdowns-alerts v-if="alerts === true"/>
-    <bar-dropdowns-user v-if="user"/>
+    <bar-dropdowns-user v-if="user" :avatar="user.avatar || null" :name="user.name || null" :title="user.title || null" :actions="user.actions  || null"/>
 
   </b-navbar-nav>
 </template>

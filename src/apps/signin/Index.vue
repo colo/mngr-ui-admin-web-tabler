@@ -5,7 +5,8 @@
         <div class="text-center mb-4">
           <!-- <img src="@static/logo.svg" height="36" alt=""> -->
         </div>
-        <b-form class="card card-md" action="http://localhost:8080/signin" method="post">
+        <b-form class="card card-md" v-on:submit.prevent="submit">
+          <!-- :action="uri" method="post"  -->
           <div class="card-body">
             <h2 class="mb-5 text-center">Login to your account</h2>
             <div class="mb-3">
@@ -16,6 +17,7 @@
                 type="email"
                 required
                 placeholder="Enter email"
+                v-model="form.username"
               ></b-form-input>
 
             </div>
@@ -32,6 +34,7 @@
                   name="password"
                   type="password"
                   placeholder="Password"
+                  v-model="form.password"
                 ></b-form-input>
                 <span class="input-group-text">
                   <a href="#" class="link-secondary" title="Show password" data-toggle="tooltip"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="2" /><path d="M2 12l1.5 2a11 11 0 0 0 17 0l1.5 -2" /><path d="M2 12l1.5 -2a11 11 0 0 1 17 0l1.5 2" /></svg>
@@ -80,34 +83,43 @@ debug.log = console.log.bind(console) // don't forget to bind to console!
 
 import { BForm, BFormInput, BButton, BLink } from 'bootstrap-vue'
 
+import HttpSignin from '@etc/signin.http'
+
 export default {
   name: 'PageSignin',
 
   components: { BForm, BFormInput, BButton, BLink },
-  // data () {
-  //   return {
-  //     form: {
-  //       username: '',
-  //       password: '',
-  //     }
-  //   }
-  // },
-  //
-  // methods: {
-  //   submit: function () {
-  //     axios.post('http://localhost:8080/signin', this.form)
-  //       .then((res) => {
-  //         // Perform Success Action
-  //         debug('res', res)
-  //       })
-  //       .catch((error) => {
-  //         debug('error', error)
-  //         // error.response.status Check status code
-  //       })
-  //       // .finally(() => {
-  //       //   // Perform action in always
-  //       // })
-  //   }
-  // }
+  data () {
+    return {
+      form: {
+        username: undefined,
+        password: undefined
+      }
+    }
+  },
+  computed: {
+    uri: function () {
+      let http = HttpSignin()
+      return http.scheme + '://' + http.host + ':' + http.port + '' + http.path
+    }
+  },
+
+  methods: {
+    submit: function () {
+      this.$axios.post(this.uri, this.form, { withCredentials: true })
+        .then((res) => {
+          // Perform Success Action
+          debug('res', res)
+          this.$router.push({ name: 'index'})
+        })
+        .catch((error) => {
+          debug('error', error)
+          // error.response.status Check status code
+        })
+        // .finally(() => {
+        //   // Perform action in always
+        // })
+    }
+  }
 }
 </script>
