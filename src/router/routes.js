@@ -14,6 +14,8 @@ import Error from 'pages/Error.vue'
 import Signin from '@apps/signin/Index.vue'
 import Signout from '@apps/signout/Index.vue'
 
+import Test from '@apps/test/Index.vue'
+
 const routes = [
   {
     path: '/',
@@ -21,6 +23,15 @@ const routes = [
     name: 'index',
     // component: () => import('@apps/start/Index.vue'),
     component: Index
+    // meta: { layout: 'VerticalLayout' },
+
+  },
+  {
+    path: '/test',
+    // component: () => import('layouts/MainLayout.vue'),
+    name: 'test',
+    // component: () => import('@apps/start/Index.vue'),
+    component: Test
     // meta: { layout: 'VerticalLayout' },
 
   },
