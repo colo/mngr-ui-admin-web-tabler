@@ -953,12 +953,12 @@
 import { BDropdown, BDropdownItem, BProgress, BProgressBar } from 'bootstrap-vue'
 import Peity from 'vue-peity'
 
-import TUserCardMini from 'components/TUserCardMini'
-import TUserCard from 'components/TUserCard'
-import TUserCardCover from 'components/TUserCardCover'
-import TUserCardStatus from 'components/TUserCardStatus'
+import TUserCardMini from 'components/tabler/TUserCardMini'
+import TUserCard from 'components/tabler/TUserCard'
+import TUserCardCover from 'components/tabler/TUserCardCover'
+import TUserCardStatus from 'components/tabler/TUserCardStatus'
 
-import TCardMini from 'components/TCardMini'
+import TCardMini from 'components/tabler/TCardMini'
 
 export default {
   name: 'PageEmpty',

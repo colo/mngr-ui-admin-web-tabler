@@ -856,7 +856,7 @@
 </template>
 
 <script>
-import TUserCardProgress from 'components/TUserCardProgress'
+import TUserCardProgress from 'components/tabler/TUserCardProgress'
 
 export default {
   name: 'PageUsers',

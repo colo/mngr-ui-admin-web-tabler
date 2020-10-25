@@ -290,8 +290,8 @@
 </template>
 
 <script>
-import TBlogCard from 'components/TBlogCard'
-import THorizontalBlogCard from 'components/THorizontalBlogCard'
+import TBlogCard from 'components/tabler/TBlogCard'
+import THorizontalBlogCard from 'components/tabler/THorizontalBlogCard'
 
 export default {
   name: 'PageBlog',

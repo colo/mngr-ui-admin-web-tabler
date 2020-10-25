@@ -35,6 +35,10 @@ import TestLayout from './layouts/TestLayout.vue'
 // import DefaultConn from '@etc/default.http'
 // let http = Object.merge(Object.clone(DefaultConn), { path: DefaultConn.path + 'user' })
 
+import VueObserveVisibility from 'vue-observe-visibility'
+
+Vue.use(VueObserveVisibility)
+
 export default {
   name: 'App',
   components: {

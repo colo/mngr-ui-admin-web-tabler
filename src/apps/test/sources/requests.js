@@ -1,5 +1,6 @@
 import * as Debug from 'debug'
 const debug = Debug('apps:test:periodical:requests')
+debug.log = console.log.bind(console) // don't forget to bind to console!
 
 const roundMilliseconds = function (timestamp) {
   let d = new Date(timestamp)
@@ -41,185 +42,43 @@ let init = false
 const generic_callback = function (data, metadata, key, vm) {
   debug('PERIODICAL HOST CALLBACK data %s %o', key, data)
 
-  // if (/periodical/.test(key) && metadata.opts && metadata.opts.params && metadata.opts.params.init === true) {
-  //   debug('PERIODICAL HOST CALLBACK data %s %o', key, data)
-  //   init = true
-  // }
+  /**
+  * tabular
+  **/
+  // let arr = []
+  // Object.each(data.os['os.cpus'], function (row, name) {
+  //   if (name === 'cores') {
+  //     arr = row
+  //   } else {
+  //     Array.each(row, function (column, index) {
+  //       arr[index].push(column[1])
+  //     })
+  //   }
+  // })
   //
-  // if (/periodical/.test(key) && (data.os || Object.getLength(data) > 0)) { // && init === true
-  //   let _data
-  //   if (data.os) _data = data.os // comes from 'Range'
-  //   else _data = data // comes from 'register'
-  //
-  //   // let _paths = []
-  //   // let _plugins_categories = []
-  //   // let _plugins_config_sorted = []
-  //
-  //   Object.each(_data, function (plugin, name) {
-  //     // name = name.toLowerCase()
-  //     let category
-  //     if (name !== undefined) {
-  //       name = name.replace('os.', '')
-  //       category = (name.indexOf('.') > -1) ? name.substring(0, name.indexOf('.')) : name
-  //       // if (!_paths.contains(path)) _paths.push(path)
-  //       // if (!_plugins_config[category]) _plugins_config[category] = {}
-  //       if (!vm.periodical.plugins_categories.contains(category)) vm.periodical.plugins_categories.push(category)
-  //
-  //       // _plugins_config[category][name] = config
-  //     }
-  //
-  //     if (plugin && Object.getLength(plugin) > 0) {
-  //       // if (!vm.periodical.plugins[name]) vm.periodical.$set(vm.periodical.plugins, name, { periodical: undefined, minute: undefined })
-  //       if (!vm.periodical.plugins.contains(name)) vm.periodical.plugins.push(name)
-  //       // if (!vm.periodical.plugins_data[name]) vm.periodical.plugins_data[name] = { periodical: undefined }
-  //
-  //       // vm.$nextTick(function () {
-  //       // if (vm.$refs[name + '.periodical'] && vm.$refs[name + '.periodical'][0]) { // if data already exists
-  //       // if (!vm.$refs[name + '.periodical'][0].$options.plugin_data) vm.$refs[name + '.periodical'][0].$options.plugin_data = { periodical: undefined, minute: undefined }
-  //
-  //       let _plugin = {}
-  //
-  //       Object.keys(plugin)
-  //         .sort()// sort keys alphabetically
-  //         .forEach(function (prop, i) {
-  //           // console.log(v, data[v]);
-  //           let data = plugin[prop]
-  //           if (Array.isArray(data) && data.length > 0) { // on 'register' data may be empty
-  //             _plugin[prop] = Array.clone(data)
-  //             _plugin[prop].sort(function (a, b) { return (a[0] < b[0]) ? 1 : ((a[0] > b[0]) ? -1 : 0) })
-  //           }
-  //         })
-  //
-  //       // debug('PERIODICAL HOST CALLBACK no prev data %s %o %o', name, _plugin)
-  //       // }
-  //
-  //       if (Object.getLength(_plugin) > 0) {
-  //         // debug('set_plugin_data PERIODICAL HOST CALLBACK %s %o', name, _plugin)
-  //         // vm.$refs[name + '.periodical'][0].set_data({ periodical: _plugin })
-  //         // vm.periodical.plugins_data[name] = { periodical: _plugin }
-  //         // vm.$set(vm.periodical.plugins_data, name, { periodical: _plugin })
-  //         // if (metadata.opts && metadata.opts.params && metadata.opts.params.init === true) {
-  //         //   vm.set_plugin_data(name, _plugin, 'periodical')
-  //         // }
-  //
-  //         vm.set_plugin_data(name, _plugin, 'periodical')
-  //       }
-  //       // }
-  //       // })
-  //     }
-  //   })
-  //
-  //   vm.periodical.plugins_categories.sort(function (a, b) { return (a > b) ? 1 : ((b > a) ? -1 : 0) })
-  //   vm.periodical.plugins.sort(function (a, b) { return (a > b) ? 1 : ((b > a) ? -1 : 0) })
-  //
-  //   // if (_plugins_categories.length > 0 && _plugins_categories.length !== vm.plugins_categories.length) {
-  //   //   vm.plugins_categories = _plugins_categories
-  //   // }
-  // }
-  // // else if (/minute/.test(key) && (data.os_historical || Object.getLength(data) > 0)) {
-  // //   let _data
-  // //   if (data.os_historical) _data = data.os_historical // comes from 'Range'
-  // //   else _data = data // comes from 'register'
-  // //
-  // //   debug('MINUTE HOST CALLBACK data %s %o', key, _data)
-  // //
-  // //   Object.each(data.os_historical, function (plugin, name) {
-  // //     if (plugin && Object.getLength(plugin) > 0) {
-  // //       // if (!vm.plugins[name]) vm.$set(vm.plugins, name, { periodical: undefined, minute: undefined })
-  // //       if (!vm.plugins.contains(name)) vm.plugins.push(name)
-  // //
-  // //       vm.$nextTick(function () {
-  // //         if (vm.$refs[name] && vm.$refs[name][0]) { // if data already exists
-  // //           if (!vm.$refs[name][0].$options.plugin_data) vm.$refs[name][0].$options.plugin_data = { periodical: undefined, minute: undefined }
-  // //
-  // //           let _plugin = {}
-  // //           if (
-  // //             vm.$refs[name][0].$options.plugin_data &&
-  // //             vm.$refs[name][0].$options.plugin_data.minute &&
-  // //             Object.getLength(vm.$refs[name][0].$options.plugin_data.minute) > 0
-  // //           ) {
-  // //             _plugin = JSON.parse(JSON.stringify(vm.$refs[name][0].$options.plugin_data.minute))
-  // //
-  // //             Object.each(plugin, function (data, prop) {
-  // //               if (_plugin[prop] && Array.isArray(_plugin[prop])) {
-  // //                 _plugin[prop].combine(data)
-  // //
-  // //                 // sort by first column, timestamp
-  // //                 _plugin[prop].sort(function (a, b) { return (a[0] < b[0]) ? 1 : ((a[0] > b[0]) ? -1 : 0) })
-  // //
-  // //                 // filter based on not repeated timestamp
-  // //                 // let filtered = _plugin[prop].filter(function (item, index) {
-  // //                 //   if (!_plugin[prop][index - 1] || !_plugin[prop][index + 1]) {
-  // //                 //     return true
-  // //                 //   } else {
-  // //                 //     return item[0] !== _plugin[prop][index - 1][0] && item[0] !== _plugin[prop][index + 1][0]
-  // //                 //   }
-  // //                 // })
-  // //                 //
-  // //                 let filtered = []
-  // //                 Array.each(_plugin[prop], function (item, index) {
-  // //                   if (index === 0) { filtered.push(item) } else if (item[0] !== _plugin[prop][index - 1][0]) {
-  // //                     filtered.push(item)
-  // //                   }
-  // //                 })
-  // //                 // debug('MINUTE HOST CALLBACK %s %o', name, filtered)
-  // //
-  // //                 _plugin[prop] = filtered
-  // //               } else {
-  // //                 debug('MINUTE HOST CALLBACK BUG %s %s %o %o', name, prop, _plugin[prop], data)
-  // //                 // _plugin[prop] = Array.clone(data)
-  // //                 // _plugin[prop].sort(function (a, b) { return (a[0] < b[0]) ? 1 : ((a[0] > b[0]) ? -1 : 0) })
-  // //               }
-  // //             })
-  // //           } else {
-  // //             // debug('MINUTE HOST CALLBACK no prev data %o ', plugin)
-  // //             _plugin = plugin
-  // //             Object.each(_plugin, function (data, prop) {
-  // //               // sort by first column, timestamp
-  // //               if (Array.isArray(data) && data.length > 0) { // on 'register' data may be empty
-  // //                 _plugin[prop] = Array.clone(data)
-  // //                 _plugin[prop].sort(function (a, b) { return (a[0] < b[0]) ? 1 : ((a[0] > b[0]) ? -1 : 0) })
-  // //               }
-  // //             })
-  // //           }
-  // //
-  // //           if (Object.getLength(_plugin) > 0) {
-  // //             debug('MINUTE HOST CALLBACK %s %o', name, _plugin)
-  // //
-  // //             vm.$refs[name][0].set_data({ minute: _plugin })
-  // //           }
-  // //         }
-  // //       })
-  // //     }
-  // //   })
-  // // }
-  // // else if (key === 'config.once' && data.os) {
-  // //   debug('PERIODICAL HOST CALLBACK CONFIG %o', data)
-  // //   let _plugins_config = {}
-  // //   let _plugins_config_sorted = []
-  // //   Array.each(data.os, function (group_path) {
-  // //     // debug('PERIODICAL HOST CALLBACK %o %o %s', group_path)
-  // //     let config = group_path[0].config // only one per path
-  // //     let category = (config && config.graph && config.graph.category) ? config.graph.category.toLowerCase() : 'uncategorized'
-  // //     let path = group_path[0].metadata.path
-  // //
-  // //     if (!_plugins_config[category]) _plugins_config[category] = {}
-  // //     if (!_plugins_config_sorted.contains(category)) _plugins_config_sorted.push(category)
-  // //
-  // //     _plugins_config[category][path] = config
-  // //   })
-  // //
-  // //   _plugins_config_sorted.sort(function (a, b) { return (a > b) ? 1 : ((b > a) ? -1 : 0) })
-  // //   let plugins_config = {}
-  // //   for (let i = 0; i < _plugins_config_sorted.length; i++) {
-  // //     let category = _plugins_config_sorted[i]
-  // //     plugins_config[category] = _plugins_config[category]
-  // //   }
-  // //
-  // //   if (Object.getLength(plugins_config) > 0) {
-  // //     vm.plugins_config = plugins_config
-  // //   }
-  // // }
+  // debug('PERIODICAL HOST CALLBACK data %s %o', key, data, arr)
+  // vm.$set(vm.stat, 'data', [arr])
+
+  /**
+  * stat
+  **/
+  let arr = []
+  // let index = 0
+  Object.each(data.os['os.cpus'], function (row, name) {
+    // if (name === 'cores') {
+    //   arr = row
+    // } else {
+    Array.each(row, function (column, index) {
+      if (!arr[index]) arr[index] = {timestamp: column.timestamp, value: {}}
+      arr[index].value[name] = column.value
+      // arr[index] = {timestamp}
+    })
+    // }
+    // index++
+  })
+
+  debug('PERIODICAL HOST CALLBACK data %s %o', key, data, arr)
+  vm.$set(vm.stat, 'data', [arr])
 }
 
 const host_once_component = {
@@ -246,7 +105,7 @@ const host_once_component = {
             query: {
               'from': 'os',
               // 'register': 'changes',
-              'format': 'tabular',
+              'format': 'stat',
               'index': false,
               /**
               * right now needed to match OUTPUT 'id' with this query (need to @fix)
@@ -261,7 +120,8 @@ const host_once_component = {
               ],
               'filter': [
                 { 'metadata': { 'host': vm.host } },
-                "r.row('metadata')('path').ne('os.procs')"
+                "r.row('metadata')('path').eq('os.cpus')"
+                // "r.row('metadata')('path').ne('os.procs')"
               ]
 
             }
@@ -302,11 +162,11 @@ const host_range_component = {
           source = [{
             params: { id: _key },
             path: 'all',
-            range: 'posix ' + roundMilliseconds(Date.now() - (3 * SECOND)) + '-' + roundMilliseconds(Date.now() - SECOND) + '/*',
+            range: 'posix ' + roundMilliseconds(Date.now() - (6 * SECOND)) + '-' + roundMilliseconds(Date.now() - SECOND) + '/*',
             query: {
               'from': 'os',
               // 'register': 'changes',
-              'format': 'tabular',
+              'format': 'stat',
               'index': false,
               /**
               * right now needed to match OUTPUT 'id' with this query (need to @fix)
@@ -326,7 +186,11 @@ const host_range_component = {
                   'orderBy': { 'index': 'r.desc(timestamp)' }
                 }
               ],
-              'filter': { 'metadata': { 'host': vm.host } }
+              'filter': [
+                { 'metadata': { 'host': vm.host } },
+                "r.row('metadata')('path').eq('os.cpus')"
+                // "r.row('metadata')('path').ne('os.procs')"
+              ]
 
             }
           }]

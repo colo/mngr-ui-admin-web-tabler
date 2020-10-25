@@ -504,7 +504,7 @@ import Vue from 'vue'
 import Layout from '@mixins/Layout'
 
 // import NavBar from 'components/NavBar'
-// import TopBar from 'components/TopBar'
+// import TopBar from 'components/tabler/TopBar'
 
 export default Vue.extend({
   name: 'TestLayout',

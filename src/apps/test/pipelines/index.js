@@ -5,7 +5,7 @@ import { EventBus } from '@libs/eventbus'
 import InputIO from './input/io'
 
 import * as Debug from 'debug'
-const debug = Debug('apps:start:pipelines')
+const debug = Debug('apps:test:pipelines')
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
 let qs = require('qs')
@@ -19,7 +19,7 @@ import IO from '@etc/start.io'
 let ios = []
 Array.each(IO(), function (io, index) {
   ios.push({
-    id: 'input.start.' + index,
+    id: 'input.test.' + index,
     module: InputIO,
     index: index
   },)
@@ -30,14 +30,14 @@ export default {
     {
       poll: {
         // suspended: true,
-        id: 'input.start',
+        id: 'input.test',
         conn: ios,
         // conn: [
         //
         //   Object.merge(
         //     // Object.clone(DefaultConn),
         //     {
-        //       id: 'input.start',
+        //       id: 'input.test',
         //       module: InputIO
         //
         //     }
@@ -69,7 +69,7 @@ export default {
     function (payload) {
       debug('OUTPUT', payload)
 
-      if (!payload.err) { EventBus.$emit('input.start.' + payload.metadata.input, payload) }
+      if (!payload.err) { EventBus.$emit('input.test.' + payload.metadata.input, payload) }
 
       // if (!payload.err) { EventBus.$emit('log', payload) }
     }

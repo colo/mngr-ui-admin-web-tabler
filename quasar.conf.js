@@ -100,7 +100,7 @@ module.exports = function (/* ctx */) {
           // '@wrappers': path.resolve(__dirname, './src/components/wrappers'),
           '@apps': path.resolve(__dirname, './src/apps'),
           '@store': path.resolve(__dirname, './src/store'),
-          // '@dashblocks': path.resolve(__dirname, './dashblocks'),
+          '@dashblocks': path.resolve(__dirname, './dashblocks'),
           // '@dashblocks-template': path.resolve(__dirname, './dashblocks-template'),
           // // '@skins': path.resolve(__dirname, './src/skins')
         }
