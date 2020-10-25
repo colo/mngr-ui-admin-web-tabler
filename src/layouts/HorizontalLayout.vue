@@ -47,9 +47,9 @@ import { BNavbar } from 'bootstrap-vue'
 
 import Layout from '@mixins/Layout'
 
-import HorizontalNavBar from 'components/layout/HorizontalNavBar'
-import TopBar from 'components/layout/TopBar'
-import ContentFooter from 'components/layout/ContentFooter'
+import HorizontalNavBar from 'components/tabler/layout/HorizontalNavBar'
+import TopBar from 'components/tabler/layout/TopBar'
+import ContentFooter from 'components/tabler/layout/ContentFooter'
 
 export default Vue.extend({
   name: 'HorizontalLayout',

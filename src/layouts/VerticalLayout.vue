@@ -50,8 +50,8 @@ import { mapActions, mapState } from 'vuex'
 
 import Layout from '@mixins/Layout'
 
-import VerticalNavBar from 'components/layout/VerticalNavBar'
-import ContentFooter from 'components/layout/ContentFooter'
+import VerticalNavBar from 'components/tabler/layout/VerticalNavBar'
+import ContentFooter from 'components/tabler/layout/ContentFooter'
 
 export default Vue.extend({
   name: 'MainLayout',

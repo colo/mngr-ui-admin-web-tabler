@@ -35,11 +35,11 @@
 <script>
 import { BNavbarToggle, BCollapse } from 'bootstrap-vue'
 
-import BarLogo from 'components/layout/bar/logo'
-import BarSearch from 'components/layout/bar/search'
-import BarDropdowns from 'components/layout/bar/dropdowns'
+import BarLogo from 'components/tabler/layout/bar/logo'
+import BarSearch from 'components/tabler/layout/bar/search'
+import BarDropdowns from 'components/tabler/layout/bar/dropdowns'
 // import HorizontalNavBar from 'components/HorizontalNavBar'
-import NavBar from 'components/layout/NavBar'
+import NavBar from 'components/tabler/layout/NavBar'
 
 export default {
   name: 'TopBar',

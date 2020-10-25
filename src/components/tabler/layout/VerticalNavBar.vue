@@ -28,9 +28,9 @@
 <script>
 import { BNavbar, BNavbarToggle, BCollapse } from 'bootstrap-vue'
 
-import BarLogo from 'components/layout/bar/logo'
-import BarDropdowns from 'components/layout/bar/dropdowns'
-import NavBar from 'components/layout/NavBar'
+import BarLogo from 'components/tabler/layout/bar/logo'
+import BarDropdowns from 'components/tabler/layout/bar/dropdowns'
+import NavBar from 'components/tabler/layout/NavBar'
 
 export default {
   name: 'VerticalNavBar',

@@ -74,6 +74,70 @@
         </b-tabs>
 
       </div>
+
+      <div class="col-sm-12 col-lg-12">
+        <b-tabs content-class="card-body" :class="'card'">
+          <b-tab title="Home" title-link-class="nav-link" >
+            <!-- <div class="netdata-chartblock-container"> -->
+              <chart
+                v-if="chart2"
+                :wrapper="{
+                  /* type: 'dygraph', */
+                  type: wrapper2,
+                  props: {}
+                  /* props: chart.props */
+                }"
+                :always_update="false"
+                ref="os.cpus2"
+                id="os.cpus2"
+                :EventBus="eventbus"
+                :stat="stat"
+                :config="chart2"
+                :reactive="false"
+                :no_buffer="false"
+              >
+              <!-- data: [processed_data] -->
+              <!-- stat -> length: 300, -->
+              <!-- :key="view.minute" -->
+              <!-- :always_update="true" re check this, what was used for?-->
+              </chart>
+            <!-- </div> -->
+          </b-tab>
+          <!-- <b-tab title="Profile" title-link-class="nav-link">
+            Fringilla egestas nunc quis tellus diam rhoncus ultricies tristique enim at diam, sem nunc amet, pellentesque id egestas velit sed
+          </b-tab> -->
+          <b-tab title-item-class="ml-auto"  title-link-class="nav-link">
+            <template v-slot:title>
+              <!-- <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><circle cx="12" cy="12" r="3" /></svg> -->
+              <b-dropdown variant="link" toggle-class="text-decoration-none btn-options" no-caret>
+                <!-- Using 'button-content' slot -->
+                <template v-slot:button-content>
+                  <a class="dropdown-toggle text-muted" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown
+                  </a>
+                </template>
+
+                <b-dropdown-item>
+                  Action
+                </b-dropdown-item>
+
+                <b-dropdown-item>
+                  Another action
+                </b-dropdown-item>
+
+              </b-dropdown>
+            </template>
+              <!-- Donec ac vitae diam amet vel leo egestas consequat rhoncus in luctus amet, facilisi sit mauris accumsan nibh habitant senectus -->
+          </b-tab>
+          <b-tab title-link-class="nav-link">
+            <template v-slot:title>
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><circle cx="12" cy="12" r="3" /></svg>
+            </template>
+              Donec ac vitae diam amet vel leo egestas consequat rhoncus in luctus amet, facilisi sit mauris accumsan nibh habitant senectus
+          </b-tab>
+        </b-tabs>
+
+      </div>
     </div>
   </q-page>
 </template>
@@ -105,6 +169,7 @@ import chart from 'components/chart'
 // import chartConfig from 'mngr-ui-admin-charts/defaults/frappeCharts'
 // import chartConfig from 'mngr-ui-admin-charts/os/cpus.frappeCharts.tabular'
 import chartConfig from 'mngr-ui-admin-charts/os/cpus.dbCharts.tabular'
+import chartConfig2 from 'mngr-ui-admin-charts/os/cpus.tabular'
 
 // import Wrapper from 'components/wrappers/dygraph'
 // import Wrapper from 'components/wrappers/dygraphBar'
@@ -122,6 +187,7 @@ import chartConfig from 'mngr-ui-admin-charts/os/cpus.dbCharts.tabular'
 // import Wrapper from 'components/wrappers/vueBars'
 // import Wrapper from 'components/wrappers/frappeCharts'
 import Wrapper from 'components/wrappers/dbChartsjs'
+import Wrapper2 from 'components/wrappers/dygraph'
 
 export default {
   mixins: [DataSourcesMixin],
@@ -165,13 +231,16 @@ export default {
         ]
       },
 
-      wrapper: Wrapper,
       eventbus: EventBus,
       // chart: Object.merge(chartConfig, {skip: 5}),
       /**
       * vGauge
       **/
       chart: chartConfig,
+      chart2: chartConfig2,
+
+      wrapper: Wrapper,
+      wrapper2: Wrapper2,
       stat: {
         data: [],
         length: 360

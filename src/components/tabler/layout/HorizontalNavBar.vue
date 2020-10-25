@@ -11,7 +11,7 @@
 <script>
 import { BCollapse, BNavbar, BNavbarToggle } from 'bootstrap-vue'
 
-import NavBar from 'components/layout/NavBar'
+import NavBar from 'components/tabler/layout/NavBar'
 
 export default {
   name: 'HorizontalNavBar',

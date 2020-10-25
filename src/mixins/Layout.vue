@@ -3,7 +3,7 @@ import Vue from 'vue'
 
 import { mapActions, mapState } from 'vuex'
 
-import TopBar from 'components/layout/TopBar'
+import TopBar from 'components/tabler/layout/TopBar'
 
 let mootools = require('mootools')
 import DefaultConn from '@etc/default.http'

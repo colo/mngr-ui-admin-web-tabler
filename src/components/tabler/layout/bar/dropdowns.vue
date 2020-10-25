@@ -11,9 +11,9 @@
 <script>
 import { BNavbarNav } from 'bootstrap-vue'
 
-import BarDropdownsAlerts from 'components/layout/bar/dropdowns/alerts'
-import BarDropdownsUser from 'components/layout/bar/dropdowns/user'
-import BarDropdownsSettings from 'components/layout/bar/dropdowns/settings'
+import BarDropdownsAlerts from 'components/tabler/layout/bar/dropdowns/alerts'
+import BarDropdownsUser from 'components/tabler/layout/bar/dropdowns/user'
+import BarDropdownsSettings from 'components/tabler/layout/bar/dropdowns/settings'
 
 export default {
   name: 'BarDropdowns',
