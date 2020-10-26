@@ -40,45 +40,99 @@ const WEEK = DAY * 7
 let init = false
 
 const generic_callback = function (data, metadata, key, vm) {
-  debug('PERIODICAL HOST CALLBACK data %s %o', key, data)
+  debug('PERIODICAL HOST CALLBACK data %s %o', key, data, metadata)
 
   /**
   * tabular
   **/
-  // let arr = []
-  // Object.each(data.os['os.cpus'], function (row, name) {
-  //   if (name === 'cores') {
-  //     arr = row
-  //   } else {
-  //     Array.each(row, function (column, index) {
-  //       arr[index].push(column[1])
-  //     })
-  //   }
-  // })
+  // if(data.os){
+  //   let arr = []
+  //   Object.each(data.os['os.cpus'], function (row, name) {
+  //     if (name === 'cores') {
+  //       arr = row
+  //     } else {
+  //       Array.each(row, function (column, index) {
+  //         arr[index].push(column[1])
+  //       })
+  //     }
+  //   })
   //
-  // debug('PERIODICAL HOST CALLBACK data %s %o', key, data, arr)
-  // vm.$set(vm.stat, 'data', [arr])
-
+  //   debug('PERIODICAL HOST CALLBACK data %s %o', key, data, arr)
+  //   vm.$set(vm.cpus_stat, 'data', [arr])
+  // }
   /**
   * stat
   **/
-  let arr = []
-  // let index = 0
-  Object.each(data.os['os.cpus'], function (row, name) {
-    // if (name === 'cores') {
-    //   arr = row
-    // } else {
-    Array.each(row, function (column, index) {
-      if (!arr[index]) arr[index] = {timestamp: column.timestamp, value: {}}
-      arr[index].value[name] = column.value
-      // arr[index] = {timestamp}
+  if (data.os) {
+    let arr = []
+    // let index = 0
+    Object.each(data.os['os.cpus'], function (row, name) {
+      // if (name === 'cores') {
+      //   arr = row
+      // } else {
+      Array.each(row, function (column, index) {
+        if (!arr[index]) arr[index] = {timestamp: column.timestamp, value: {}}
+        arr[index].value[name] = column.value
+        // arr[index] = {timestamp}
+      })
+      // }
+      // index++
     })
-    // }
-    // index++
-  })
 
-  debug('PERIODICAL HOST CALLBACK data %s %o', key, data, arr)
-  vm.$set(vm.stat, 'data', [arr])
+    debug('PERIODICAL HOST CALLBACK data %s %o', key, data, arr)
+    vm.$set(vm.cpus_stat, 'data', [arr])
+  }
+
+  if (data.logs) {
+    // let arr = []
+
+    // let index = 0
+    let domains_count = {}
+    Array.each(data.logs, function (row, index) {
+      // let ts = row.metadata.timestamp
+      let domain = row.metadata.domain
+
+      if (!domains_count[domain]) domains_count[domain] = 0
+      domains_count[domain]++
+
+      // if(!data[ts]) data[ts] = {}
+      // if(!data[ts][domain]) data[ts][domain] = 0
+      //
+      // data[ts][domain]
+      //
+    })
+
+    let _top_domains = []
+    Object.each(domains_count, function (count, domain) {
+      _top_domains.push({domain: domain, count: count})
+    })
+
+    _top_domains.sort(function (a, b) { return (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0) })
+
+    let top_domains = {}
+    Array.each(data.logs, function (row, index) {
+      let ts = roundMilliseconds(row.metadata.timestamp)
+      let domain = row.metadata.domain
+
+      let found = false
+      if (Object.some(_top_domains, function (row) { return row.domain === domain })) {
+        if (!domains_count[domain]) domains_count[domain] = 0
+        domains_count[domain]++
+
+        if (!top_domains[ts]) top_domains[ts] = {}
+        if (!top_domains[ts][domain]) top_domains[ts][domain] = 0
+        top_domains[ts][domain]++
+      }
+    })
+
+    let top_domains_stat = []
+    Object.each(top_domains, function (value, ts) {
+      top_domains_stat.push({timestamp: ts, value: value})
+    })
+
+    debug('PERIODICAL HOST CALLBACK domains %o', top_domains_stat)
+    vm.$set(vm.domains_stat, 'data', [top_domains_stat])
+  }
 }
 
 const host_once_component = {
@@ -97,35 +151,67 @@ const host_once_component = {
     ) {
       switch (_key) {
         case 'periodical.once':
-          source = [{
-            params: { id: _key, init: true },
-            path: 'all',
-            range: 'posix ' + roundMilliseconds(Date.now() - (6 * MINUTE)) + '-' + roundMilliseconds(Date.now()) + '/*',
-            // range: 'posix ' + (Date.now() - MINUTE) + '-' + Date.now() + '/*',
-            query: {
-              'from': 'os',
-              // 'register': 'changes',
-              'format': 'stat',
-              'index': false,
-              /**
+          source = [
+            {
+              params: { id: _key, init: true },
+              path: 'all',
+              range: 'posix ' + roundMilliseconds(Date.now() - (6 * MINUTE)) + '-' + roundMilliseconds(Date.now()) + '/*',
+              // range: 'posix ' + (Date.now() - MINUTE) + '-' + Date.now() + '/*',
+              query: {
+                'from': 'os',
+                // 'register': 'changes',
+                'format': 'stat',
+                'index': false,
+                /**
               * right now needed to match OUTPUT 'id' with this query (need to @fix)
               **/
-              'q': [
-                'data'
-              ],
-              'transformation': [
-                {
-                  'orderBy': { 'index': 'r.desc(timestamp)' }
-                }
-              ],
-              'filter': [
-                { 'metadata': { 'host': vm.host } },
-                "r.row('metadata')('path').eq('os.cpus')"
+                'q': [
+                  'data'
+                ],
+                'transformation': [
+                  {
+                    'orderBy': { 'index': 'r.desc(timestamp)' }
+                  }
+                ],
+                'filter': [
+                  { 'metadata': { 'host': vm.host } },
+                  "r.row('metadata')('path').eq('os.cpus')"
                 // "r.row('metadata')('path').ne('os.procs')"
-              ]
+                ]
 
-            }
-          }]
+              }
+            },
+            {
+              params: { id: _key, init: true },
+              path: 'all',
+              range: 'posix ' + roundMilliseconds(Date.now() - (6 * MINUTE)) + '-' + roundMilliseconds(Date.now()) + '/*',
+              // range: 'posix ' + (Date.now() - MINUTE) + '-' + Date.now() + '/*',
+              query: {
+                'from': 'logs',
+                // 'register': 'changes',
+                // 'format': 'stat',
+                'index': false,
+                /**
+              * right now needed to match OUTPUT 'id' with this query (need to @fix)
+              **/
+                'q': [
+                  // 'data'
+                  'metadata'
+                ],
+                'transformation': [
+                  {
+                    'orderBy': { 'index': 'r.desc(timestamp)' }
+                  }
+                ],
+                'filter': [
+                  { 'metadata': { 'host': vm.host } },
+                  "r.row('metadata')('path').eq('logs.educativa')",
+                  "r.row('metadata')('type').eq('periodical')"
+                // "r.row('metadata')('path').ne('os.procs')"
+                ]
+
+              }
+            }]
           break
       }
     }
@@ -212,7 +298,7 @@ const once = [
 ]
 
 const periodical = [
-  host_range_component
+  // host_range_component
 ]
 
 const requests = {

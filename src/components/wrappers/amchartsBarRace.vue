@@ -3,7 +3,8 @@
     <div
       :id="id"
       class="chartdiv"
-      :class="chart.class"
+      :class="config.class"
+      :style="config.style"
     />
   </div>
 </template>
@@ -104,8 +105,8 @@ export default {
   // computed: {
   //   // Augment passed options with defaults for Dygraphs
   //   // graphOptions: function () {
-  //   //   // let options = Object.merge(this.defaultOptions, this.chart.options)
-  //   //   let options = Object.merge(this.chart.options, this.defaultOptions)// right now force some default options like colours
+  //   //   // let options = Object.merge(this.defaultOptions, this.config.options)
+  //   //   let options = Object.merge(this.config.options, this.defaultOptions)// right now force some default options like colours
   //   //   /**
   //   //   * should add an option for general smooth plotting (true | false)
   //   //   **/
@@ -131,7 +132,7 @@ export default {
   //   //     colorSet: new am4core.ColorSet(),
   //   //     // imageSeries: undefined,
   //   //
-  //   //     chart: undefined,
+  //   //     config: undefined,
   //   //     label: undefined,
   //   //     categoryAxis: undefined,
   //   //   }

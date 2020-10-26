@@ -1,4 +1,4 @@
-<template>
+cpus_chart<template>
   <q-page>
     <!-- Page title -->
     <div class="page-header">
@@ -17,18 +17,19 @@
           <b-tab title="Home" title-link-class="nav-link" >
             <!-- <div class="netdata-chartblock-container"> -->
               <chart
-                v-if="chart"
+                v-if="domains_chart"
                 :wrapper="{
                   /* type: 'dygraph', */
-                  type: wrapper,
-                  props: chart.props
+                  type: domainsWrapper,
+                  props: {}
+                  /* props: domains_chart.props */
                 }"
                 :always_update="false"
                 ref="os.cpus"
                 id="os.cpus"
                 :EventBus="eventbus"
-                :stat="stat"
-                :config="chart"
+                :stat="domains_stat"
+                :config="domains_chart"
                 :reactive="false"
                 :no_buffer="false"
               >
@@ -80,10 +81,10 @@
           <b-tab title="Home" title-link-class="nav-link" >
             <!-- <div class="netdata-chartblock-container"> -->
               <chart
-                v-if="chart2"
+                v-if="cpus_chart"
                 :wrapper="{
                   /* type: 'dygraph', */
-                  type: wrapper2,
+                  type: cpusWrapper,
                   props: {}
                   /* props: chart.props */
                 }"
@@ -91,8 +92,8 @@
                 ref="os.cpus2"
                 id="os.cpus2"
                 :EventBus="eventbus"
-                :stat="stat"
-                :config="chart2"
+                :stat="cpus_stat"
+                :config="cpus_chart"
                 :reactive="false"
                 :no_buffer="false"
               >
@@ -168,8 +169,11 @@ import chart from 'components/chart'
 // import chartConfig from 'mngr-ui-admin-charts/os/cpus.vueBars.tabular'
 // import chartConfig from 'mngr-ui-admin-charts/defaults/frappeCharts'
 // import chartConfig from 'mngr-ui-admin-charts/os/cpus.frappeCharts.tabular'
-import chartConfig from 'mngr-ui-admin-charts/os/cpus.dbCharts.tabular'
-import chartConfig2 from 'mngr-ui-admin-charts/os/cpus.tabular'
+// import chartConfig from 'mngr-ui-admin-charts/os/cpus.dbCharts.tabular'
+// import chartConfig from 'mngr-ui-admin-charts/defaults/amcharts4'
+// import chartConfigDomains from 'mngr-ui-admin-charts/os/cpus.amcharts4.barRace'
+import chartConfigDomains from 'mngr-ui-admin-charts/defaults/dygraph.line'
+import chartConfigCpus from 'mngr-ui-admin-charts/os/cpus.tabular'
 
 // import Wrapper from 'components/wrappers/dygraph'
 // import Wrapper from 'components/wrappers/dygraphBar'
@@ -178,7 +182,7 @@ import chartConfig2 from 'mngr-ui-admin-charts/os/cpus.tabular'
 // import Wrapper from 'components/wrappers/vGauge'
 // import Wrapper from 'components/wrappers/vueEasyPieChart'
 
-// import amchartsBarRaceWrapper from 'components/wrappers/amchartsBarRace'
+import amchartsBarRaceWrapper from 'components/wrappers/amchartsBarRace'
 // import amchartsPieWrapper from 'components/wrappers/amchartsPie'
 // import amchartsWorldCityMapWrapper from 'components/wrappers/amchartsWorldCityMap'
 // import amchartsWorldCountryMapWrapper from 'components/wrappers/amchartsWorldCountryMap'
@@ -186,8 +190,8 @@ import chartConfig2 from 'mngr-ui-admin-charts/os/cpus.tabular'
 // import Wrapper from 'components/wrappers/vueTrend'
 // import Wrapper from 'components/wrappers/vueBars'
 // import Wrapper from 'components/wrappers/frappeCharts'
-import Wrapper from 'components/wrappers/dbChartsjs'
-import Wrapper2 from 'components/wrappers/dygraph'
+// import Wrapper from 'components/wrappers/dbChartsjs'
+import dygraphWrapper from 'components/wrappers/dygraph'
 
 export default {
   mixins: [DataSourcesMixin],
@@ -215,7 +219,7 @@ export default {
       id: 'input.test.periodical',
       path: 'all',
 
-      host: 'perseus',
+      host: 'draco',
       components: {
         'all': [
           {
@@ -236,12 +240,17 @@ export default {
       /**
       * vGauge
       **/
-      chart: chartConfig,
-      chart2: chartConfig2,
+      domains_chart: chartConfigDomains,
+      cpus_chart: chartConfigCpus,
 
-      wrapper: Wrapper,
-      wrapper2: Wrapper2,
-      stat: {
+      domainsWrapper: dygraphWrapper,
+      cpusWrapper: dygraphWrapper,
+      cpus_stat: {
+        data: [],
+        length: 360
+      },
+
+      domains_stat: {
         data: [],
         length: 360
       }
