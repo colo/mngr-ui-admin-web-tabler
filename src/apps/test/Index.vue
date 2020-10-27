@@ -1,4 +1,4 @@
-cpus_chart<template>
+<template>
   <q-page>
     <!-- Page title -->
     <div class="page-header">
@@ -25,8 +25,8 @@ cpus_chart<template>
                   /* props: domains_chart.props */
                 }"
                 :always_update="false"
-                ref="os.cpus"
-                id="os.cpus"
+                ref="domains"
+                id="domains"
                 :EventBus="eventbus"
                 :stat="domains_stat"
                 :config="domains_chart"
@@ -89,8 +89,8 @@ cpus_chart<template>
                   /* props: chart.props */
                 }"
                 :always_update="false"
-                ref="os.cpus2"
-                id="os.cpus2"
+                ref="os.cpus"
+                id="os.cpus"
                 :EventBus="eventbus"
                 :stat="cpus_stat"
                 :config="cpus_chart"
@@ -172,17 +172,19 @@ import chart from 'components/chart'
 // import chartConfig from 'mngr-ui-admin-charts/os/cpus.dbCharts.tabular'
 // import chartConfig from 'mngr-ui-admin-charts/defaults/amcharts4'
 // import chartConfigDomains from 'mngr-ui-admin-charts/os/cpus.amcharts4.barRace'
-import chartConfigDomains from 'mngr-ui-admin-charts/defaults/dygraph.line'
+// import chartConfigDomains from 'mngr-ui-admin-charts/defaults/dygraph.line'
+import chartConfigDomains from 'mngr-ui-admin-charts/educativa/domains.apexchart.bar'
 import chartConfigCpus from 'mngr-ui-admin-charts/os/cpus.tabular'
 
 // import Wrapper from 'components/wrappers/dygraph'
-// import Wrapper from 'components/wrappers/dygraphBar'
+import dygraphBarWrapper from 'components/wrappers/dygraphBar'
 // import Wrapper from 'components/wrappers/dygraphDateTimeHistogram'
 // import Wrapper from 'components/wrappers/dygraphSparkLine'
 // import Wrapper from 'components/wrappers/vGauge'
 // import Wrapper from 'components/wrappers/vueEasyPieChart'
 
 import amchartsBarRaceWrapper from 'components/wrappers/amchartsBarRace'
+import vueApexChartsWrapper from 'components/wrappers/vueApexCharts'
 // import amchartsPieWrapper from 'components/wrappers/amchartsPie'
 // import amchartsWorldCityMapWrapper from 'components/wrappers/amchartsWorldCityMap'
 // import amchartsWorldCountryMapWrapper from 'components/wrappers/amchartsWorldCountryMap'
@@ -243,7 +245,7 @@ export default {
       domains_chart: chartConfigDomains,
       cpus_chart: chartConfigCpus,
 
-      domainsWrapper: dygraphWrapper,
+      domainsWrapper: vueApexChartsWrapper,
       cpusWrapper: dygraphWrapper,
       cpus_stat: {
         data: [],
