@@ -9,6 +9,7 @@
       v-if="Object.getLength(options) > 0 && options.chart"
       :options="options"
       :series="series"
+      v-bind="config.props"
       :id="id"
       :ref="id"
     >
@@ -145,8 +146,11 @@ export default {
     // },
 
     update (data) {
-      debug('update', this.id, data, this.get_data(data).getLast())
+      // debug('update', this.id, data, this.get_data(data).getLast())
       this.series = this.get_data(data)
+
+      this.options = Object.merge(this.graphOptions, this.config.options)// labels are probably updated too
+      debug('updated', this.id, this.series, this.options)
       // let val = this.get_data(data).getLast()
       // if (val && (!Array.isArray(val) || val.length === 2)) {
       //   if (Array.isArray(val) || val.length === 2) {
