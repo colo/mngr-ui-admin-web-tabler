@@ -172,10 +172,10 @@ import chart from 'components/chart'
 // import chartConfig from 'mngr-ui-admin-charts/os/cpus.dbCharts.tabular'
 // import chartConfig from 'mngr-ui-admin-charts/defaults/amcharts4'
 // import chartConfigDomains from 'mngr-ui-admin-charts/os/cpus.amcharts4.barRace'
-// import chartConfigDomains from 'mngr-ui-admin-charts/defaults/dygraph.line'
-import chartConfigDomains from 'mngr-ui-admin-charts/educativa/domains.apexchart.bar'
-// import chartConfigCpus from 'mngr-ui-admin-charts/os/cpus.tabular'
-import chartConfigCpus from 'mngr-ui-admin-charts/os/cpus.peity.pie'
+import chartConfigDomains from 'mngr-ui-admin-charts/defaults/dygraph.line'
+// import chartConfigDomains from 'mngr-ui-admin-charts/educativa/domains.apexchart.bar'
+import chartConfigCpus from 'mngr-ui-admin-charts/os/cpus.tabular'
+// import chartConfigCpus from 'mngr-ui-admin-charts/os/cpus.peity.pie'
 
 // import Wrapper from 'components/wrappers/dygraph'
 import dygraphBarWrapper from 'components/wrappers/dygraphBar'
@@ -247,9 +247,9 @@ export default {
       domains_chart: chartConfigDomains,
       cpus_chart: chartConfigCpus,
 
-      domainsWrapper: vueApexChartsWrapper,
-      // cpusWrapper: dygraphWrapper,
-      cpusWrapper: vuePeityWrapper,
+      domainsWrapper: dygraphBarWrapper,
+      cpusWrapper: dygraphWrapper,
+      // cpusWrapper: vuePeityWrapper,
       cpus_stat: {
         data: [],
         length: 360

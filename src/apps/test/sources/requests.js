@@ -340,7 +340,7 @@ const once = [
 ]
 
 const periodical = [
-  host_range_component
+  // host_range_component
 ]
 
 const requests = {
