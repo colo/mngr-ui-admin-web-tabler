@@ -97,7 +97,7 @@ export default {
 
   data () {
     return {
-      value: '',
+      value: '0/100',
 
       options: {
 

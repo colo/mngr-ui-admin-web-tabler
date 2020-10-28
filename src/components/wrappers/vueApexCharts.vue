@@ -68,18 +68,18 @@ export default {
   },
   computed: {
     // Augment passed options with defaults for Dygraphs
-    graphOptions: function () {
-      let options = Object.merge(this.defaultOptions, this.config.options)
-
-      // let line = Math.floor(options.size / 22)
-      // if (line < 3) {
-      //   line = 2
-      // }
-      //
-      // // this.$set(options, 'line-width', line)
-      // options['line-width'] = line
-      return options
-    },
+    // graphOptions: function () {
+    //   let options = Object.merge(this.defaultOptions, this.config.options)
+    //
+    //   // let line = Math.floor(options.size / 22)
+    //   // if (line < 3) {
+    //   //   line = 2
+    //   // }
+    //   //
+    //   // // this.$set(options, 'line-width', line)
+    //   // options['line-width'] = line
+    //   return options
+    // },
     defaultOptions: function () {
       return {
         // 'unit': '%',
@@ -109,20 +109,20 @@ export default {
       this.container_class_helper = (val === false) ? 'invisible' : ''
       // console.log('class visible', val, this.container_class_helper)
     },
-    dark: function () {
-      // this.optionsChanged = true
-      this.options = Object.merge(this.graphOptions, this.config.options)
-    },
-    colorScheme: function () {
-      this.options = Object.merge(this.graphOptions, this.config.options)
-    },
-    config: {
-      handler: function (val) {
-        debug('config.options updated', this.id, this.options)
-        this.options = Object.merge(this.graphOptions, this.config.options)
-      },
-      deep: true
-    }
+    // dark: function () {
+    //   // this.optionsChanged = true
+    //   this.options = Object.merge(this.graphOptions, this.config.options)
+    // },
+    // colorScheme: function () {
+    //   this.options = Object.merge(this.graphOptions, this.config.options)
+    // },
+    // config: {
+    //   handler: function (val) {
+    //     debug('config.options updated', this.id, this.options)
+    //     this.options = Object.merge(this.graphOptions, this.config.options)
+    //   },
+    //   deep: true
+    // }
   },
 
   // created () {
@@ -137,7 +137,11 @@ export default {
 
   methods: {
     create () {
-      this.options = Object.merge(this.graphOptions, this.config.options)
+      let options = Object.merge(this.defaultOptions, this.config.options)
+      // Object.each(options, function (value, prop) {
+      //   this.$set(this.options[prop], value)
+      // }.bind(this))
+      this.options = Object.assign({}, this.options, options)
       debug('create', this.id, this.options)
     },
     // format_value: function (percent) {
@@ -149,7 +153,20 @@ export default {
       // debug('update', this.id, data, this.get_data(data).getLast())
       this.series = this.get_data(data)
 
-      this.options = Object.merge(this.graphOptions, this.config.options)// labels are probably updated too
+      let options = Object.merge(this.defaultOptions, this.config.options)
+      this.options = Object.assign({}, this.options, options)
+
+      // // Object.each(options, function (value, prop) {
+      // //   this.$set(this.options, prop, value)
+      // // }.bind(this))
+      //
+      // this.$set(this.options, 'labels', options.labels)
+      // let _options = this.options
+      // this.options = _options
+      // Object.each(options, function (value, prop) {
+      //   this.$set(this.options, prop, value)
+      // }.bind(this))
+
       debug('updated', this.id, this.series, this.options)
       // let val = this.get_data(data).getLast()
       // if (val && (!Array.isArray(val) || val.length === 2)) {
