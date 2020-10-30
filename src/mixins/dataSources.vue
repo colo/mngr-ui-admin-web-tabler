@@ -510,12 +510,35 @@ export default {
         }
       }.bind(this))
     },
+    __components_sources_to_requests_merge: function (original_components, new_components) {
+      debug('__components_sources_to_requests_merge', original_components, new_components)
+      Object.each(new_components, function (data, name) {
+        if (!original_components[name]) {
+          original_components[name] = data
+        } else {
+          if (Array.isArray(original_components[name])) {
+            if (!Array.isArray(data)) data = [data]
+            original_components[name].combine(data)
+          } else {
+            let old = original_components[name]
+            original_components[name] = [old]
+
+            if (!Array.isArray(data)) data = [data]
+            original_components[name].combine(data)
+          }
+        }
+      })
+
+      return original_components
+    },
     __components_sources_to_requests: function (_components, pipeline_id) {
       pipeline_id = pipeline_id || this.pipeline_id
       let requests = {}
       let sources = {}
       if (this.$options._components_req[pipeline_id]) {
-        this.$options._components_req[pipeline_id] = Object.merge(this.$options._components_req[pipeline_id], _components)
+        // debug('__components_sources_to_requests MERGE', this.$options._components_req[pipeline_id], _components)
+        // this.$options._components_req[pipeline_id] = Object.merge(this.$options._components_req[pipeline_id], _components)
+        this.$options._components_req[pipeline_id] = this.__components_sources_to_requests_merge(this.$options._components_req[pipeline_id], _components)
       } else {
         this.$options._components_req[pipeline_id] = _components
       }
@@ -587,11 +610,11 @@ export default {
 
           requests[req_type].push({
             init: function (req, next, app) {
-              debug('INIT %s %o', key, query)
               let _query = query
               // if (typeof query === 'function') { _query = query.pass(key)().source }
               if (typeof query === 'function') { _query = query.attempt([key, self]).source }// don't use "this" as is the pipeline.input context
 
+              debug('INIT %s %o', key, _query)
               // if (query.bind && query.function) { _query = query.function.attempt(key, query.bind).source }
 
               if (_query !== undefined) {

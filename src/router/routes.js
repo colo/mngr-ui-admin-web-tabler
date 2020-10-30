@@ -9,6 +9,8 @@
 * https://forum.vuejs.org/t/this-route-only-returns-null-in-app-vue/64006/3
 **/
 import Index from '@apps/start/Index.vue'
+import Hosts from '@apps/hosts/Index.vue'
+
 import Error from 'pages/Error.vue'
 
 import Signin from '@apps/signin/Index.vue'
@@ -23,6 +25,15 @@ const routes = [
     name: 'index',
     // component: () => import('@apps/start/Index.vue'),
     component: Index
+    // meta: { layout: 'VerticalLayout' },
+
+  },
+  {
+    path: '/hosts',
+    // component: () => import('layouts/MainLayout.vue'),
+    name: 'hosts',
+    // component: () => import('@apps/start/Index.vue'),
+    component: Hosts
     // meta: { layout: 'VerticalLayout' },
 
   },
