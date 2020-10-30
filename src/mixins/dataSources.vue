@@ -75,27 +75,27 @@ export default {
   mounted: function () {
     // debug('lifecycle mounted %o', EventBus)
     // debug('lifecycle created')
-    let pipeline_id = []
-    if (!Array.isArray(this.pipeline_id)) {
-      pipeline_id = [this.pipeline_id]
-    } else {
-      pipeline_id = this.pipeline_id
-    }
-    Array.each(pipeline_id, function (id) {
-      // debug('lifecycle mounted %o %s', EventBus, id + '.' + this.path)
-      // if (EventBus && !EventBus._events[id + '.' + this.path])
-      if (
-        EventBus &&
-        (
-          !EventBus._events[id + '.' + this.path] ||
-          (EventBus._events[id + '.' + this.path] && EventBus._events[id + '.' + this.path].length === 0)
-          // (EventBus._events[id + '.' + this.path] && !EventBus._events[id + '.' + this.path].contains(this.__process_input_data))
-        )
-      ) {
-        EventBus.$on(id + '.' + this.path, this.__process_input_data)
-      }
-      // EventBus.$on(id + '.' + this.path, function (data) { debug('EventBus.$on', id + '.' + this.path, data) })
-    }.bind(this))
+    // let pipeline_id = []
+    // if (!Array.isArray(this.pipeline_id)) {
+    //   pipeline_id = [this.pipeline_id]
+    // } else {
+    //   pipeline_id = this.pipeline_id
+    // }
+    // Array.each(pipeline_id, function (id) {
+    //   // debug('lifecycle mounted %o %s', EventBus, id + '.' + this.path)
+    //   // if (EventBus && !EventBus._events[id + '.' + this.path])
+    //   if (
+    //     EventBus &&
+    //     (
+    //       !EventBus._events[id + '.' + this.path] ||
+    //       (EventBus._events[id + '.' + this.path] && EventBus._events[id + '.' + this.path].length === 0)
+    //       // (EventBus._events[id + '.' + this.path] && !EventBus._events[id + '.' + this.path].contains(this.__process_input_data))
+    //     )
+    //   ) {
+    //     EventBus.$on(id + '.' + this.path, this.__process_input_data)
+    //   }
+    //   // EventBus.$on(id + '.' + this.path, function (data) { debug('EventBus.$on', id + '.' + this.path, data) })
+    // }.bind(this))
 
     if (this.store && this.store === true) this.__register_store_module(this.id, sourceStore)
     // this.__bind_components_to_sources(this.components)
@@ -634,6 +634,23 @@ export default {
                   emit_query.params.id = (emit_query.params.id) ? pipeline_id + '[' + emit_query.params.id + ']' : pipeline_id + '[' + stringified + ']'
 
                   debug('io EMIT', _query[i], emit_query)
+
+                  // Array.each(pipeline_id, function (id) {
+                  // debug('lifecycle mounted %o %s', EventBus, pipeline_id + '.' + this.path)
+                  // if (EventBus && !EventBus._events[pipeline_id + '.' + this.path])
+                  if (
+                    EventBus &&
+                    (
+                      !EventBus._events[emit_query.params.id] ||
+                      (EventBus._events[emit_query.params.id] && EventBus._events[emit_query.params.id].length === 0)
+                      // (EventBus._events[pipeline_id + '.' + this.path] && !EventBus._events[pipeline_id + '.' + this.path].contains(this.__process_input_data))
+                    )
+                  ) {
+                    EventBus.$on(emit_query.params.id, self.__process_input_data)
+                  }
+                  // EventBus.$on(pipeline_id + '.' + this.path, function (data) { debug('EventBus.$on', pipeline_id + '.' + this.path, data) })
+                  // }.bind(self))
+
                   app.io.emit('/', emit_query)
                 }
               }

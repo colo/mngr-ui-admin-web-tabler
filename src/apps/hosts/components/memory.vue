@@ -117,17 +117,17 @@ export default {
       immediate: true
     }
   },
-  computed: {
-    percentage: function () {
-      let percentage = 0
-      debug('percentage', this.stat)
-      return percentage
-    }
-  },
+  // computed: {
+  //   percentage: function () {
+  //     let percentage = 0
+  //     debug('percentage', this.stat)
+  //     return percentage
+  //   }
+  // },
   data () {
     return {
       // height: '0px',
-      // percentage: 0,
+      percentage: 0,
       /**
       * dataSources
       **/

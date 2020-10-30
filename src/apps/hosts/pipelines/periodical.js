@@ -132,9 +132,13 @@ export default {
     // }
     function (payload) {
       if (!payload.err && /^input\.hosts\.periodical\[.*\]$/.test(payload.id)) {
-        payload.id = payload.id.replace('input.hosts.periodical[', '').slice(0, -1)
         debug('OUTPUT', payload)
-        EventBus.$emit('input.hosts.periodical.' + payload.metadata.input, payload)
+        // payload.id = payload.id.replace('input.hosts.periodical[', '').slice(0, -1)
+        // debug('OUTPUT', payload)
+        // EventBus.$emit('input.hosts.periodical.' + payload.metadata.input, payload)
+        let event_id = payload.id
+        payload.id = payload.id.replace('input.hosts.periodical[', '').slice(0, -1)
+        EventBus.$emit(event_id, payload)
       }
 
       // if (!payload.err) { EventBus.$emit('log', payload) }
