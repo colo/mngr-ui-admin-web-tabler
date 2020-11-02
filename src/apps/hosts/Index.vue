@@ -32,115 +32,19 @@
     </div>
     <div class="row row-deck row-cards">
       <div class="col-sm-6 col-md-4 col-lg-2">
-        <cpus />
+        <cpus :stat="stat_cpus"/>
       </div>
       <div class="col-sm-6 col-md-4 col-lg-2">
-        <memory />
+        <memory :stat="stat_memory"/>
+      </div>
+      <div class="col-sm-6 col-md-4 col-lg-2">
+        <net :stat="stat_net_in" type="In"/>
         <!-- <div class="card">
-          <div class="card-body">
-            <div class="d-flex align-items-center">
-              <div class="subheader">Revenue</div>
-              <div class="ml-auto lh-1">
-                <b-dropdown  variant="link" toggle-class="text-decoration-none btn-options" no-caret right>
-                  <template v-slot:button-content>
-                    <a class="dropdown-toggle text-muted" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Last 7 days
-                    </a>
-                  </template>
-
-                  <b-dropdown-item active>
-                    Last 7 days
-                  </b-dropdown-item>
-
-                  <b-dropdown-item>
-                    Last 30 days
-                  </b-dropdown-item>
-
-                  <b-dropdown-item>
-                    Last 3 months
-                  </b-dropdown-item>
-                </b-dropdown>
-              </div>
-            </div>
-            <div class="d-flex align-items-baseline">
-              <div class="h1 mb-0 mr-2">$4,300</div>
-              <div class="mr-auto">
-                <span class="text-green d-inline-flex align-items-center lh-1">
-                  8% <svg xmlns="http://www.w3.org/2000/svg" class="icon ml-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="3 17 9 11 13 15 21 7" /><polyline points="14 7 21 7 21 14" /></svg>
-                </span>
-              </div>
-            </div>
-          </div>
-          <apexchart
-            height="40"
-            id="chart-revenue-bg"
-            :options="{
-              chart: {
-                type: 'area',
-                fontFamily: 'inherit',
-                height: 40.0,
-                sparkline: {
-                enabled: true
-                },
-                animations: {
-                  enabled: false
-                },
-              },
-              dataLabels: {
-                enabled: false,
-              },
-              fill: {
-                opacity: .16,
-                type: 'solid'
-              },
-              stroke: {
-                width: 2,
-                lineCap: 'round',
-                curve: 'smooth',
-              },
-              grid: {
-                strokeDashArray: 4,
-              },
-              xaxis: {
-                labels: {
-                  padding: 0
-                },
-                tooltip: {
-                  enabled: false
-                },
-                axisBorder: {
-                  show: false,
-                },
-                type: 'datetime',
-              },
-              yaxis: {
-                labels: {
-                  padding: 4
-                },
-              },
-              labels: [
-                '2020-06-20', '2020-06-21', '2020-06-22', '2020-06-23', '2020-06-24', '2020-06-25', '2020-06-26', '2020-06-27', '2020-06-28', '2020-06-29', '2020-06-30', '2020-07-01', '2020-07-02', '2020-07-03', '2020-07-04', '2020-07-05', '2020-07-06', '2020-07-07', '2020-07-08', '2020-07-09', '2020-07-10', '2020-07-11', '2020-07-12', '2020-07-13', '2020-07-14', '2020-07-15', '2020-07-16', '2020-07-17', '2020-07-18', '2020-07-19'
-              ],
-              colors: ['#206bc4'],
-              legend: {
-                show: false,
-              },
-            }"
-            :series="[{
-              name: 'Profits',
-              data: [37, 35, 44, 28, 36, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53, 61, 27, 54, 43, 19, 46, 39, 62, 51, 35, 41, 67]
-            }]"
-          ></apexchart>
-        </div> -->
-      </div>
-      <div class="col-sm-6 col-md-4 col-lg-2">
-        <div class="card">
           <div class="card-body">
             <div class="d-flex align-items-center">
               <div class="subheader">New clients</div>
               <div class="ml-auto lh-1">
                 <b-dropdown  variant="link" toggle-class="text-decoration-none btn-options" no-caret right>
-                  <!-- Using 'button-content' slot -->
                   <template v-slot:button-content>
                     <a class="dropdown-toggle text-muted" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       Last 7 days
@@ -169,7 +73,6 @@
                 </span>
               </div>
             </div>
-            <!-- <div id="chart-new-clients" class="chart-sm"></div> -->
             <apexchart
               height="40"
               id="chart-new-clients"
@@ -228,16 +131,16 @@
               }]"
             ></apexchart>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="col-sm-6 col-md-4 col-lg-2">
-        <div class="card">
+        <net :stat="stat_net_out" type="Out"/>
+        <!-- <div class="card">
           <div class="card-body">
             <div class="d-flex align-items-center">
               <div class="subheader">Active users</div>
               <div class="ml-auto lh-1">
                 <b-dropdown  variant="link" toggle-class="text-decoration-none btn-options" no-caret right>
-                  <!-- Using 'button-content' slot -->
                   <template v-slot:button-content>
                     <a class="dropdown-toggle text-muted" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       Last 7 days
@@ -266,7 +169,6 @@
                 </span>
               </div>
             </div>
-            <!-- <div id="chart-active-users" class="chart-sm"></div> -->
             <apexchart
               height="40"
               id="chart-active-users"
@@ -327,141 +229,22 @@
               }]"
             ></apexchart>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="col-sm-6 col-md-4 col-lg-2">
         <div class="row">
-          <div class="col">
-            <div class="card card-sm">
-              <div class="card-body d-flex align-items-center">
-                <span class="bg-blue text-white stamp mr-3"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" /><path d="M12 3v3m0 12v3" /></svg>
-                </span>
-                <div class="mr-3 lh-sm">
-                  <div class="strong">
-                    132 Sales
-                  </div>
-                  <div class="text-muted">12 waiting payments</div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <loadavg :stat="stat_loadavg" />
+
           <div class="w-100 d-none d-md-block"></div>
 
-          <div class="col">
-            <div class="card card-sm">
-              <div class="card-body d-flex align-items-center">
-                <span class="bg-blue text-white stamp mr-3"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" /><path d="M12 3v3m0 12v3" /></svg>
-                </span>
-                <div class="mr-3 lh-sm">
-                  <div class="strong">
-                    132 Sales
-                  </div>
-                  <div class="text-muted">12 waiting payments</div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <uptime :stat="stat_uptime" />
         </div>
 
       </div>
       <div class="col-sm-6 col-md-4 col-lg-2">
-        <div class="card">
-          <div class="card-body">
-            <div class="d-flex align-items-center">
-              <div class="subheader">Active users</div>
-              <div class="ml-auto lh-1">
-                <b-dropdown  variant="link" toggle-class="text-decoration-none btn-options" no-caret right>
-                  <!-- Using 'button-content' slot -->
-                  <template v-slot:button-content>
-                    <a class="dropdown-toggle text-muted" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Last 7 days
-                    </a>
-                  </template>
 
-                  <b-dropdown-item active>
-                    Last 7 days
-                  </b-dropdown-item>
+        <blocks :stat="stat_blocks"/>
 
-                  <b-dropdown-item>
-                    Last 30 days
-                  </b-dropdown-item>
-
-                  <b-dropdown-item>
-                    Last 3 months
-                  </b-dropdown-item>
-                </b-dropdown>
-              </div>
-            </div>
-            <div class="d-flex align-items-baseline">
-              <div class="h1 mb-3 mr-2">2,986</div>
-              <div class="mr-auto">
-                <span class="text-green d-inline-flex align-items-center lh-1">
-                  4% <svg xmlns="http://www.w3.org/2000/svg" class="icon ml-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="3 17 9 11 13 15 21 7" /><polyline points="14 7 21 7 21 14" /></svg>
-                </span>
-              </div>
-            </div>
-            <!-- <div id="chart-active-users" class="chart-sm"></div> -->
-            <apexchart
-              height="40"
-              id="chart-active-users"
-              :options="{
-                chart: {
-                  type: 'bar',
-                  fontFamily: 'inherit',
-                  height: 40.0,
-                  sparkline: {
-                    enabled: true
-                  },
-                  animations: {
-                    enabled: false
-                  },
-                },
-                plotOptions: {
-                  bar: {
-                    columnWidth: '50%',
-                  }
-                },
-                dataLabels: {
-                  enabled: false,
-                },
-                fill: {
-                  opacity: 1,
-                },
-                grid: {
-                  strokeDashArray: 4,
-                },
-                xaxis: {
-                  labels: {
-                    padding: 0
-                  },
-                  tooltip: {
-                    enabled: false
-                  },
-                  axisBorder: {
-                    show: false,
-                  },
-                  type: 'datetime',
-                },
-                yaxis: {
-                  labels: {
-                    padding: 4
-                  },
-                },
-                labels: [
-                  '2020-06-20', '2020-06-21', '2020-06-22', '2020-06-23', '2020-06-24', '2020-06-25', '2020-06-26', '2020-06-27', '2020-06-28', '2020-06-29', '2020-06-30', '2020-07-01', '2020-07-02', '2020-07-03', '2020-07-04', '2020-07-05', '2020-07-06', '2020-07-07', '2020-07-08', '2020-07-09', '2020-07-10', '2020-07-11', '2020-07-12', '2020-07-13', '2020-07-14', '2020-07-15', '2020-07-16', '2020-07-17', '2020-07-18', '2020-07-19'
-                ],
-                colors: ['#206bc4'],
-                legend: {
-                  show: false,
-                },
-              }"
-              :series="[{
-                name: 'Profits',
-                data: [37, 35, 44, 28, 36, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53, 61, 27, 54, 43, 19, 46, 39, 62, 51, 35, 41, 67]
-              }]"
-            ></apexchart>
-          </div>
-        </div>
       </div>
       <div class="col-lg-7">
         <div class="card">
@@ -1387,6 +1170,10 @@ import DataSourcesMixin from '@mixins/dataSources'
 
 import cpus from '@apps/hosts/components/cpus'
 import memory from '@apps/hosts/components/memory'
+import net from '@apps/hosts/components/net'
+import loadavg from '@apps/hosts/components/loadavg'
+import uptime from '@apps/hosts/components/uptime'
+import blocks from '@apps/hosts/components/blocks'
 
 import { requests, store } from './sources/index'
 
@@ -1442,7 +1229,11 @@ export default {
     chartTabular,
     chart,
     cpus,
-    memory
+    memory,
+    net,
+    loadavg,
+    uptime,
+    blocks
   },
 
   data () {
@@ -1458,7 +1249,7 @@ export default {
       id: 'input.hosts.periodical',
       path: 'all',
 
-      host: 'draco',
+      // host: 'perseus',
       components: {
         'all': [
           {
@@ -1475,6 +1266,13 @@ export default {
       },
 
       eventbus: EventBus,
+      stat_memory: [],
+      stat_cpus: [],
+      stat_loadavg: [],
+      stat_uptime: [],
+      stat_blocks: [],
+      stat_net_in: [],
+      stat_net_out: [],
       // // chart: Object.merge(chartConfig, {skip: 5}),
       // /**
       // * vGauge
@@ -1500,45 +1298,45 @@ export default {
     /**
     * @start pipelines
     **/
-    // create_pipelines: function (create_id, next) {
-    //   debug('create_pipelines %o', JSON.parse(JSON.stringify(this.$options.pipelines)))
-    //
-    //   let template = Object.clone(Pipeline)
-    //
-    //   let pipeline_id = template.input[0].poll.id
-    //
-    //   if (!create_id || create_id === undefined || create_id === pipeline_id) {
-    //     // template.input[0].poll.conn[0].requests = this.__components_sources_to_requests(this.components[pipeline_id], pipeline_id)
-    //     let components_requests = {}
-    //
-    //     if (this.$options.pipelines[pipeline_id]) {
-    //       components_requests = this.__merge_requests(pipeline_id, this.__components_sources_to_requests(this.components, pipeline_id))
-    //
-    //       this.destroy_pipelines(pipeline_id)
-    //     } else {
-    //       components_requests = this.__components_sources_to_requests(this.components, pipeline_id)
-    //     }
-    //
-    //     debug('create_pipelines REQUESTS %o', components_requests)
-    //
-    //     Array.each(template.input[0].poll.conn, function (conn, index) {
-    //       template.input[0].poll.conn[index].requests = components_requests
-    //     })
-    //
-    //     let pipe = new JSPipeline(template)
-    //
-    //     this.$options.__pipelines_cfg[pipeline_id] = {
-    //       ids: [],
-    //       connected: [],
-    //       suspended: pipe.inputs.every(function (input) { return input.options.suspended }, this)
-    //     }
-    //
-    //     this.$options.pipelines[pipeline_id] = pipe
-    //   }
-    //   debug('create_pipelines %o', this.$options.pipelines)
-    //
-    //   if (next) { next() }
-    // }
+    create_pipelines: function (create_id, next) {
+      debug('create_pipelines %o', JSON.parse(JSON.stringify(this.$options.pipelines)), create_id)
+
+      let template = Object.clone(Pipeline)
+
+      let pipeline_id = template.input[0].poll.id
+
+      if (!create_id || create_id === undefined || create_id === pipeline_id) {
+        // template.input[0].poll.conn[0].requests = this.__components_sources_to_requests(this.components[pipeline_id], pipeline_id)
+        let components_requests = {}
+
+        if (this.$options.pipelines[pipeline_id]) {
+          components_requests = this.__merge_requests(pipeline_id, this.__components_sources_to_requests(this.components, pipeline_id))
+
+          this.destroy_pipelines(pipeline_id)
+        } else {
+          components_requests = this.__components_sources_to_requests(this.components, pipeline_id)
+        }
+
+        debug('create_pipelines REQUESTS %o', components_requests)
+
+        Array.each(template.input[0].poll.conn, function (conn, index) {
+          template.input[0].poll.conn[index].requests = components_requests
+        })
+
+        let pipe = new JSPipeline(template)
+
+        this.$options.__pipelines_cfg[pipeline_id] = {
+          ids: [],
+          connected: [],
+          suspended: pipe.inputs.every(function (input) { return input.options.suspended }, this)
+        }
+
+        this.$options.pipelines[pipeline_id] = pipe
+      }
+      debug('create_pipelines %o', this.$options.pipelines)
+
+      if (next) { next() }
+    }
 
     /**
     * @end pipelines

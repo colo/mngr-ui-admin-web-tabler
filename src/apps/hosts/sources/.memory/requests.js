@@ -1,5 +1,5 @@
 import * as Debug from 'debug'
-const debug = Debug('apps:hosts:cpus:requests')
+const debug = Debug('apps:hosts:memory:requests')
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
 const roundMilliseconds = function (timestamp) {
@@ -50,7 +50,7 @@ const generic_callback = function (data, metadata, key, vm) {
   **/
   // if(data.os){
   //   let arr = []
-  //   Object.each(data.os['os.cpus'], function (row, name) {
+  //   Object.each(data.os['os.memory'], function (row, name) {
   //     if (name === 'cores') {
   //       arr = row
   //     } else {
@@ -61,29 +61,46 @@ const generic_callback = function (data, metadata, key, vm) {
   //   })
   //
   //   debug('PERIODICAL HOST CALLBACK data %s %o', key, data, arr)
-  //   vm.$set(vm.cpus_stat, 'data', [arr])
+  //   vm.$set(vm.memory_stat, 'data', [arr])
   // }
   /**
   * stat
   **/
   if (data.os) {
-    let arr = []
-    // let index = 0
-    Object.each(data.os['os.cpus'], function (row, name) {
-      // if (name === 'cores') {
-      //   arr = row
-      // } else {
-      Array.each(row, function (column, index) {
-        if (!arr[index]) arr[index] = {timestamp: column.timestamp, value: {}}
-        arr[index].value[name] = column.value
-        // arr[index] = {timestamp}
-      })
-      // }
-      // index++
+    let hosts = {}
+    Array.each(data.os, function (row) {
+      let host = row.metadata.host
+      if (/^(?!.*(caelum|lynx)).*$/.test(host)) {
+        if (!hosts[host] || hosts[host].metadata.timestamp < row.metadata.timestamp) {
+          hosts[host] = row
+        }
+      }
     })
 
-    debug('PERIODICAL HOST CALLBACK data %s %o', key, data, arr)
-    vm.$set(vm.stat, 'data', [arr])
+    let memory = {timestamp: Date.now(), value: {freemem: 0, totalmem: 0}}
+    Object.each(hosts, function (row) {
+      memory.value.freemem += row.data.freemem
+      memory.value.totalmem += row.data.totalmem
+    })
+
+    debug('PERIODICAL HOST CALLBACK data %s %o', key, hosts, memory, vm)
+    // let arr = []
+    // // let index = 0
+    // Object.each(data.os['os.memory'], function (row, name) {
+    //   // if (name === 'cores') {
+    //   //   arr = row
+    //   // } else {
+    //   Array.each(row, function (column, index) {
+    //     if (!arr[index]) arr[index] = {timestamp: column.timestamp, value: {}}
+    //     arr[index].value[name] = column.value
+    //     // arr[index] = {timestamp}
+    //   })
+    //   // }
+    //   // index++
+    // })
+    //
+    // debug('PERIODICAL HOST CALLBACK data %s %o', key, data, arr)
+    vm.$set(vm.stat, 'data', [memory])
   }
 
   // if (data.logs) {
@@ -187,7 +204,7 @@ const generic_callback = function (data, metadata, key, vm) {
 //                 ],
 //                 'filter': [
 //                   { 'metadata': { 'host': vm.host } },
-//                   "r.row('metadata')('path').eq('os.cpus')"
+//                   "r.row('metadata')('path').eq('os.memory')"
 //                 // "r.row('metadata')('path').ne('os.procs')"
 //                 ]
 //
@@ -246,12 +263,12 @@ const host_range_component = {
     let key
 
     if (!_key) {
-      // key = ['cpus.periodical', 'config.range', 'minute.range']
-      key = ['cpus.periodical'] //, 'minute.range'
+      // key = ['memory.periodical', 'config.range', 'minute.range']
+      key = ['memory.periodical'] //, 'minute.range'
     }
 
     let filter = [
-      "r.row('metadata')('path').eq('os.cpus')"
+      "r.row('metadata')('path').eq('os.memory')"
     ]
 
     if (vm.host) {
@@ -262,11 +279,11 @@ const host_range_component = {
       _key
     ) {
       switch (_key) {
-        case 'cpus.periodical':
+        case 'memory.periodical':
           source = [{
             params: { id: _key },
             path: 'all',
-            range: 'posix ' + roundMilliseconds(Date.now() - (3 * SECOND)) + '-' + roundMilliseconds(Date.now() - SECOND) + '/*',
+            range: 'posix ' + roundMilliseconds(Date.now() - (5 * SECOND)) + '-' + roundMilliseconds(Date.now() - SECOND) + '/*',
             query: {
               'from': 'os',
               // 'register': 'changes',
@@ -284,7 +301,7 @@ const host_range_component = {
                 // },
                 // 'metadata',
                 'data',
-                {'metadata': ['host']}
+                {'metadata': ['host', 'timestamp']}
               ],
               'transformation': [
                 {
@@ -308,7 +325,7 @@ const host_range_component = {
 }
 
 const once = [
-  // host_once_component
+  host_range_component
 ]
 
 const periodical = [

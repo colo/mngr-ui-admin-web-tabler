@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-body">
       <div class="d-flex align-items-center">
-        <div class="subheader">MEM</div>
+        <div class="subheader">Disks (aprox. using {{this.default_block_size}}) blocks size)</div>
         <!-- <div class="ml-auto lh-1">
           <b-dropdown  variant="link" toggle-class="text-decoration-none btn-options" no-caret right>
             <template v-slot:button-content>
@@ -26,7 +26,7 @@
 
         </div> -->
       </div>
-      <div class="h1 mb-3">{{totalmem}} {{this.unit}}</div>
+      <div class="h1 mb-3">{{size}} {{unit}}</div>
       <div class="d-flex mb-2">
         <div>Usage: {{percentage}}%</div>
         <div class="ml-auto">
@@ -51,60 +51,13 @@
 </template>
 <script>
 import * as Debug from 'debug'
-const debug = Debug('apps:hosts:components:memory')
+const debug = Debug('apps:hosts:components:blocks')
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
 import { BProgress, BProgressBar } from 'bootstrap-vue'
 
-// import JSPipeline from 'js-pipeline'
-// import Pipeline from '@apps/hosts/pipelines/periodical'
-
-// import DataSourcesMixin from '@mixins/dataSources'
-
-// import { requests, store } from '@apps/hosts/sources/memory/index'
-
-// import { EventBus } from '@libs/eventbus'
-// import chartTabular from 'components/chart.tabular'
-// import chart from 'components/chart'
-// // import chartConfig from 'mngr-ui-admin-charts/os/memory.tabular'
-// // import chartConfig from 'mngr-ui-admin-charts/defaults/vGauge'
-// // import chartConfig from 'mngr-ui-admin-charts/defaults/vGauge.derived'
-// // import chartConfig from 'mngr-ui-admin-charts/os/memory.vGauge.derived.tabular'
-// // import chartConfig from 'mngr-ui-admin-charts/os/memory.vueEasyPieChart.tabular'
-// // import chartConfig from 'mngr-ui-admin-charts/os/memory.vueTrend.tabular'
-// // import chartConfig from 'mngr-ui-admin-charts/os/memory.vueBars.tabular'
-// // import chartConfig from 'mngr-ui-admin-charts/defaults/frappeCharts'
-// // import chartConfig from 'mngr-ui-admin-charts/os/memory.frappeCharts.tabular'
-// // import chartConfig from 'mngr-ui-admin-charts/os/memory.dbCharts.tabular'
-// // import chartConfig from 'mngr-ui-admin-charts/defaults/amcharts4'
-// // import chartConfigDomains from 'mngr-ui-admin-charts/os/memory.amcharts4.barRace'
-// import chartConfigDomains from 'mngr-ui-admin-charts/defaults/dygraph.line'
-// // import chartConfigDomains from 'mngr-ui-admin-charts/educativa/domains.apexchart.bar'
-// import chartConfigMemory from 'mngr-ui-admin-charts/os/memory.tabular'
-// // import chartConfigMemory from 'mngr-ui-admin-charts/os/memory.peity.pie'
-//
-// // import Wrapper from 'components/wrappers/dygraph'
-// import dygraphBarWrapper from 'components/wrappers/dygraphBar'
-// // import Wrapper from 'components/wrappers/dygraphDateTimeHistogram'
-// // import Wrapper from 'components/wrappers/dygraphSparkLine'
-// // import Wrapper from 'components/wrappers/vGauge'
-// // import Wrapper from 'components/wrappers/vueEasyPieChart'
-//
-// import amchartsBarRaceWrapper from 'components/wrappers/amchartsBarRace'
-// import vueApexChartsWrapper from 'components/wrappers/vueApexCharts'
-// // import amchartsPieWrapper from 'components/wrappers/amchartsPie'
-// // import amchartsWorldCityMapWrapper from 'components/wrappers/amchartsWorldCityMap'
-// // import amchartsWorldCountryMapWrapper from 'components/wrappers/amchartsWorldCountryMap'
-//
-// // import Wrapper from 'components/wrappers/vueTrend'
-// // import Wrapper from 'components/wrappers/vueBars'
-// // import Wrapper from 'components/wrappers/frappeCharts'
-// // import Wrapper from 'components/wrappers/dbChartsjs'
-// import dygraphWrapper from 'components/wrappers/dygraph'
-// import vuePeityWrapper from 'components/wrappers/vuePeity'
-
 export default {
-  name: 'AppHostsMemory',
+  name: 'AppHostsBlocks',
   // mixins: [DataSourcesMixin],
 
   components: {
@@ -124,43 +77,44 @@ export default {
       default: function () { return [] }
     }
   },
-
   watch: {
     'stat': {
       handler: function (newVal, oldVal) {
-        debug('stat.data', oldVal, newVal, this.percentage)
-        let totalmem = 0
-        let val = (newVal !== undefined && newVal[0] && newVal[0].value) ? newVal[0] : (oldVal !== undefined && oldVal[0] && oldVal[0].value) ? oldVal[0] : { value: {totalmem: 0, freemem: 0}}
+        // let blocks = 0
+        let val = (newVal !== undefined && newVal[0] && newVal[0].value) ? newVal[0] : (oldVal !== undefined && oldVal[0] && oldVal[0].value) ? oldVal[0] : { timestamp: undefined, value: {availabe: 0, total: 0, used: 0}}
 
-        let percentage = (((val.value.totalmem - val.value.freemem) * 100) / val.value.totalmem).toFixed(2) * 1
+        let percentage = (((val.value.total - val.value.used) * 100) / val.value.total).toFixed(2) * 1
         this.prev_percentage = this.percentage
         this.percentage = (isNaN(percentage)) ? 0 : percentage
         this.diff_percentage = this.percentage - this.prev_percentage
         this.diff_percentage = ((this.diff_percentage === this.percentage) ? 0 : this.diff_percentage).toFixed(2) * 1
-        totalmem = val.value.totalmem
+        // total = val.value.total
+        debug('stat.data', oldVal, newVal, this.percentage)
+        this.blocks = val.value.total
 
+        let size = this.blocks * this.default_block_size
         // let info = 'Bytes'
         let unit = 'bytes'
         let divider = 1
-        if (totalmem > 1099511627776) {
-          unit = 'TB'
+        if (size > 1099511627776) {
+          unit = 'Tb'
           // info = 'MBytes'
           divider = 1099511627776
-        } else if (totalmem > 1073741824) {
-          unit = 'GB'
+        } else if (size > 1073741824) {
+          unit = 'Gb'
           // info = 'MBytes'
           divider = 1073741824
-        } else if (totalmem > 1048576) {
-          unit = 'MB'
+        } else if (size > 1048576) {
+          unit = 'Mb'
           // info = 'MBytes'
           divider = 1048576
-        } else if (totalmem > 1024) {
-          unit = 'KB'
+        } else if (size > 1024) {
+          unit = 'Kb'
           // info = 'KBytes'
           divider = 1024
         }
 
-        this.totalmem = (totalmem / divider).toFixed(1)
+        this.size = (size / divider).toFixed(1)
         this.unit = unit
       },
       deep: true,
@@ -179,8 +133,11 @@ export default {
       // height: '0px',
       diff_percentage: 0,
       prev_percentage: undefined,
+      // prev_value: undefined,
       percentage: 0,
-      totalmem: 0,
+      blocks: 0,
+      size: 0,
+      default_block_size: 1024,
       unit: 'bytes',
       /**
       * dataSources
@@ -188,10 +145,10 @@ export default {
       // store: false,
       // pipeline_id: ['input.hosts.periodical'],
       //
-      // id: 'input.hosts.memory.periodical',
+      // id: 'input.hosts.blocks.periodical',
       // path: 'all',
-
-      // host: 'draco',
+      //
+      // // host: 'draco',
       // components: {
       //   'all': [
       //     {
@@ -206,12 +163,12 @@ export default {
       //
       //   ]
       // },
-
-      // eventbus: EventBus,
       //
+      // eventbus: EventBus,
+
       // stat: {
       //   data: [],
-      //   length: 1
+      //   length: 2
       // },
 
     }
