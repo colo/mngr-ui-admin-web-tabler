@@ -57,11 +57,11 @@ export default {
           let insert_value = []
 
           if (Array.isArray(row.value)) {
-            Array.each(row.value, function (value, index) {
-              value = (value) ? value * 1 : 0 // int cast
-              row.value[index] = value
-              // if (!value || isNaN(value)) { row.value[index] = 0 } // or should be undefined?
-            })
+            // Array.each(row.value, function (value, index) {
+            //   value = (value) ? value * 1 : 0 // int cast
+            //   row.value[index] = value
+            //   // if (!value || isNaN(value)) { row.value[index] = 0 } // or should be undefined?
+            // })
             insert_value = row.value
           } else {
             insert_value = [row.timestamp, row.value]

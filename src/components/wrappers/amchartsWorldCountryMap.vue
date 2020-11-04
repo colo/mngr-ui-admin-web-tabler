@@ -4,15 +4,17 @@
     <div
       :id="id"
       class="chartdiv"
-      :class="chart.class"
+      :class="config.class"
     />
   </div>
 
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
+/**
+* This code, taken from amcharts demo ( https://www.amcharts.com/demos/drill-down-to-countries/ ) didn't work (as it used to from another project)
+* until downgraded to -> d3-geo@1.12.1 that's why I added it as a dependency in package.json
+*/
 
 import * as Debug from 'debug'
 const debug = Debug('components:wrappers:amchartsWorldCountrydMap')
@@ -115,11 +117,13 @@ export default {
       this.init_chart()
     },
     detroy: function () {
+      debug('detroy', this.id)
       if (this.$options['charts'][this.id].chart !== undefined && this.$options['charts'][this.id].chart.clear && typeof this.$options['charts'][this.id].chart.clear === 'function') {
         this.$options['charts'][this.id].chart.clear()
       }
     },
     get_data: function (data) {
+      debug('get_data', this.id)
       data = (data && data.length > 0) ? data : (this.chart_data && this.chart_data.length > 0 && this.chart_data[0][0]) ? this.chart_data : this.$options.charts[this.id].buffered_data
       data = JSON.parse(JSON.stringify(data))
       return data
@@ -206,6 +210,9 @@ export default {
       // Create map polygon series for world map
       let worldSeries = chart.series.push(new am4maps.MapPolygonSeries())
       worldSeries.useGeodata = true
+
+      debug('am4geodata_worldLow', am4geodata_worldLow)
+
       worldSeries.geodata = am4geodata_worldLow
       // Exclude Antartica
       worldSeries.exclude = ['AQ']
@@ -324,11 +331,13 @@ export default {
     // }
   },
   beforeDestroy () {
+    debug('beforeDestroy', this.id)
     if (this.$options['charts'][this.id].chart && typeof (this.$options['charts'][this.id].chart.dispose) === 'function') {
       this.$options['charts'][this.id].chart.dispose()
     }
   },
   beforeRouteLeave (to, from, next) {
+    debug('beforeRouteLeave', this.id)
     if (this.$options['charts'][this.id].chart && typeof (this.$options['charts'][this.id].chart.dispose) === 'function') {
       this.$options['charts'][this.id].chart.dispose()
     }

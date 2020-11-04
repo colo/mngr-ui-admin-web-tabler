@@ -4,7 +4,7 @@
     <div
       :id="id"
       class="chartdiv"
-      :class="chart.class"
+      :class="config.class"
     />
   </div>
 

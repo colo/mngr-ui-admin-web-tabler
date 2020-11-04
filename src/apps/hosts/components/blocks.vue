@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-body">
       <div class="d-flex align-items-center">
-        <div class="subheader">Disks (aprox. using {{this.default_block_size}}) blocks size)</div>
+        <div class="subheader">Disks (using {{this.default_block_size}} blocks size)</div>
         <!-- <div class="ml-auto lh-1">
           <b-dropdown  variant="link" toggle-class="text-decoration-none btn-options" no-caret right>
             <template v-slot:button-content>

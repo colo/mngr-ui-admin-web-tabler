@@ -279,9 +279,249 @@ const os_callback = function (data, metadata, key, vm) {
   }
 }
 
+const web_callback = function (data, metadata, key, vm) {
+  debug('PERIODICAL WEB CALLBACK data %s %o', key, data, metadata)
+
+  if (data.logs) {
+    let _data
+    if (data.logs) _data = data.logs // comes from 'Range'
+    else _data = data // comes from 'register'
+
+    // const END = vm.end()
+    const TOP = vm.top
+    let range = {start: undefined, end: undefined}
+    let timestamp = _data[0].metadata.timestamp // comes sorted by timestamp in desc order, so first item has the biggest timestamp
+    let smallest_start = roundMilliseconds(timestamp - (5 * SECOND))
+
+    /**
+    * GeoIP
+    **/
+    let city_counter = {}
+    let country_counter = {}
+    let continent_counter = {}
+    let world_map_city_counter = {}
+    let world_map_country_counter = {}
+    let _tmp_periodical_world_map_city_counter = {}
+    let _tmp_periodical_world_map_country_counter = {}
+
+    let geoip = []
+
+    Array.each(data.logs, function (row) {
+      let start = row.metadata.timestamp
+      let end = row.metadata.timestamp
+
+      if (start >= smallest_start) { // discard any document that is previous to our smallest_start timestamp
+        if (range.start === undefined || range.start > start) { range.start = start }
+        if (range.end === undefined || range.end < end) { range.end = end }
+
+        let host = row.metadata.host
+        let domain = row.metadata.domain
+
+        /**
+        * GeoIP
+        **/
+        if (row.data.geoip) {
+          geoip.push(row.data.geoip)
+
+          let country = (row.data.geoip.country) ? (row.data.geoip.country.names) ? (row.data.geoip.country.names.en) ? row.data.geoip.country.names.en : row.data.geoip.country.names.es : undefined : undefined
+          let continent = (row.data.geoip.continent) ? (row.data.geoip.continent.names) ? (row.data.geoip.continent.names.en) ? row.data.geoip.continent.names.en : row.data.geoip.continent.names.es : undefined : undefined
+          let city = (row.data.geoip.city && country) ? (row.data.geoip.city.names) ? (row.data.geoip.city.names.en) ? row.data.geoip.city.names.en + ' - ' + country : row.data.geoip.city.names.es + ' - ' + country : undefined : undefined
+
+          let world_map_city = (row.data.geoip.location && row.data.geoip.location.latitude && row.data.geoip.location.longitude) ? row.data.geoip.location + ':' + row.data.geoip.location.latitude : undefined
+          let world_map_city_name = (row.data.geoip.city) ? (row.data.geoip.city.names) ? (row.data.geoip.city.names.en) ? row.data.geoip.city.names.en + ' - ' + country : row.data.geoip.city.names.es + ' - ' + country : undefined : undefined
+
+          let world_map_country = (row.data.geoip.country && row.data.geoip.country.isoCode) ? row.data.geoip.country.isoCode : undefined
+
+          if (city && !city_counter[row.metadata.timestamp]) city_counter[row.metadata.timestamp] = {}
+          if (country && !country_counter[row.metadata.timestamp]) country_counter[row.metadata.timestamp] = {}
+          if (continent && !continent_counter[row.metadata.timestamp]) continent_counter[row.metadata.timestamp] = {}
+
+          if (world_map_city && world_map_city_name && !world_map_city_counter[row.metadata.timestamp]) world_map_city_counter[row.metadata.timestamp] = {}
+
+          if (world_map_country && country && !world_map_country_counter[row.metadata.timestamp]) world_map_country_counter[row.metadata.timestamp] = {}
+
+          if (city && country && !city_counter[row.metadata.timestamp][city]) city_counter[row.metadata.timestamp][city] = 0
+          if (country && !country_counter[row.metadata.timestamp][country]) country_counter[row.metadata.timestamp][country] = 0
+          if (continent && !continent_counter[row.metadata.timestamp][continent]) continent_counter[row.metadata.timestamp][continent] = 0
+
+          if (world_map_city && world_map_city_name && !world_map_city_counter[row.metadata.timestamp][world_map_city]) world_map_city_counter[row.metadata.timestamp][world_map_city] = { name: world_map_city_name, count: 0, latitude: row.data.geoip.location.latitude, longitude: row.data.geoip.location.longitude }
+
+          if (world_map_country && country && !world_map_city_counter[row.metadata.timestamp][world_map_country]) world_map_country_counter[row.metadata.timestamp][world_map_country] = {name: country, count: 0}
+
+          if (city) { city_counter[row.metadata.timestamp][city] += 1 }
+          if (country) country_counter[row.metadata.timestamp][country] += 1
+          if (continent) continent_counter[row.metadata.timestamp][continent] += 1
+
+          if (world_map_city && world_map_city_name) world_map_city_counter[row.metadata.timestamp][world_map_city].count += 1
+
+          if (world_map_country && country) world_map_country_counter[row.metadata.timestamp][world_map_country].count = country_counter[row.metadata.timestamp][country]
+        }
+      }
+    })
+
+    /**
+    * GeoIP
+    **/
+    let periodical_city_counter = {}
+    let periodical_country_counter = {}
+    let periodical_continent_counter = {}
+
+    Object.each(city_counter, function (val, ts) {
+      if (ts < smallest_start) {
+        delete city_counter[ts]
+        delete country_counter[ts]
+        delete continent_counter[ts]
+        delete world_map_city_counter[ts]
+        delete world_map_country_counter[ts]
+      } else {
+        let country_val = country_counter[ts]
+        let continent_val = continent_counter[ts]
+        let world_map_city_val = world_map_city_counter[ts]
+        let world_map_country_val = world_map_country_counter[ts]
+
+        Object.each(val, function (data, city) {
+          if (!periodical_city_counter[city]) periodical_city_counter[city] = 0
+          periodical_city_counter[city] += data
+        })
+
+        Object.each(country_val, function (data, country) {
+          if (!periodical_country_counter[country]) periodical_country_counter[country] = 0
+          periodical_country_counter[country] += data
+        })
+
+        Object.each(continent_val, function (data, continent) {
+          if (!periodical_continent_counter[continent]) periodical_continent_counter[continent] = 0
+          periodical_continent_counter[continent] += data
+        })
+
+        Object.each(world_map_city_val, function (data, world_map_city) {
+          // if (!periodical_continent_counter[continent]) periodical_continent_counter[continent] = 0
+          // periodical_continent_counter[continent] += data
+
+          if (!_tmp_periodical_world_map_city_counter[world_map_city]) {
+            _tmp_periodical_world_map_city_counter[world_map_city] = data
+          } else {
+            _tmp_periodical_world_map_city_counter[world_map_city].count += data.count
+          }
+        })
+
+        Object.each(world_map_country_val, function (data, world_map_country) {
+          // if (!periodical_continent_counter[continent]) periodical_continent_counter[continent] = 0
+          // periodical_continent_counter[continent] += data
+
+          if (!_tmp_periodical_world_map_country_counter[world_map_country]) {
+            _tmp_periodical_world_map_country_counter[world_map_country] = data
+          } else {
+            _tmp_periodical_world_map_country_counter[world_map_country].count += data.count
+          }
+        })
+      }
+    })
+
+    let periodical_world_map_city_counter = []
+
+    let periodical_top_world_map_city_counter = []
+
+    Object.each(_tmp_periodical_world_map_city_counter, function (data, world_map_city) {
+      periodical_world_map_city_counter.push({
+        title: data.name + ' ( hits: ' + data.count + ' )',
+        latitude: data.latitude,
+        longitude: data.longitude,
+        count: data.count,
+      })
+    })
+
+    periodical_world_map_city_counter = periodical_world_map_city_counter.sort((a, b) => (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0))
+
+    for (let i = 0; i < TOP; i++) {
+      let data = periodical_world_map_city_counter[i]
+
+      periodical_top_world_map_city_counter.push(data)
+    }
+
+    /**
+    * COUNTRY
+    **/
+    let periodical_world_map_country_counter = []
+
+    let periodical_top_world_map_country_counter = []
+
+    Object.each(_tmp_periodical_world_map_country_counter, function (data, world_map_country) {
+      periodical_world_map_country_counter.push({
+        id: world_map_country,
+        title: data.name + ' ( hits: ' + data.count + ' )',
+        name: data.name,
+        count: data.count,
+      })
+    })
+
+    periodical_world_map_country_counter = periodical_world_map_country_counter.sort((a, b) => (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0))
+
+    for (let i = 0; i < TOP; i++) {
+      let data = periodical_world_map_country_counter[i]
+
+      periodical_top_world_map_country_counter.push(data)
+    }
+
+    let top_city_counter = {}
+    let _top_city_counter = []
+    Object.each(periodical_city_counter, function (data, city) {
+      _top_city_counter.push(data)
+    })
+
+    _top_city_counter = _top_city_counter.sort((a, b) => b - a)
+
+    for (let i = 0; i < TOP; i++) {
+      let value = _top_city_counter[i]
+
+      Object.each(periodical_city_counter, function (data, city) {
+        if (data === value) {
+          top_city_counter[city] = data
+        }
+      })
+    }
+
+    let top_country_counter = {}
+    let _top_country_counter = []
+    Object.each(periodical_country_counter, function (data, country) {
+      _top_country_counter.push(data)
+    })
+
+    _top_country_counter = _top_country_counter.sort((a, b) => b - a)
+
+    for (let i = 0; i < TOP; i++) {
+      let value = _top_country_counter[i]
+
+      Object.each(periodical_country_counter, function (data, country) {
+        if (data === value) {
+          top_country_counter[country] = data
+        }
+      })
+    }
+
+    debug('PERIODICAL WEB GEOIP',
+      periodical_city_counter,
+      periodical_country_counter,
+      top_city_counter,
+      top_country_counter,
+      periodical_continent_counter,
+      periodical_world_map_city_counter,
+      periodical_top_world_map_city_counter,
+      periodical_world_map_country_counter,
+      periodical_top_world_map_country_counter
+    )
+
+    vm.stat_world_map_country_counter = periodical_world_map_country_counter
+    vm.stat_world_map_city_counter = periodical_world_map_city_counter
+    // vm.geoip = geoip
+  }
+}
+
 const generic_callback = function (data, metadata, key, vm) {
   debug('PERIODICAL HOST CALLBACK data %s %o', key, data, metadata)
   if (key === 'os.periodical') { os_callback(data, metadata, key, vm) }
+
+  if (key === 'nginx.periodical') { web_callback(data, metadata, key, vm) }
 }
 
 const host_range_component = {

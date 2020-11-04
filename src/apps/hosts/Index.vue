@@ -344,16 +344,7 @@
         </div>
       </div>
       <div class="col-lg-5">
-        <div class="card">
-          <div class="card-body">
-            <h3 class="card-title">Top countries</h3>
-            <div class="embed-responsive embed-responsive-16by9">
-              <div class="embed-responsive-item">
-                <div id="map-world" class="w-100 h-100"></div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <geoip :stat="stat_world_map_country_counter" type="countries-atlas"/>
       </div>
       <div class="col-lg-6">
         <div class="row row-cards row-deck">
@@ -1175,6 +1166,8 @@ import loadavg from '@apps/hosts/components/loadavg'
 import uptime from '@apps/hosts/components/uptime'
 import blocks from '@apps/hosts/components/blocks'
 
+import geoip from '@apps/hosts/components/geoip'
+
 import { requests, store } from './sources/index'
 
 import { EventBus } from '@libs/eventbus'
@@ -1228,12 +1221,19 @@ export default {
     BModal,
     chartTabular,
     chart,
+    /**
+    * os
+    **/
     cpus,
     memory,
     net,
     loadavg,
     uptime,
-    blocks
+    blocks,
+    /**
+    * web
+    **/
+    geoip
   },
 
   data () {
@@ -1265,7 +1265,7 @@ export default {
         ]
       },
 
-      eventbus: EventBus,
+      EventBus: EventBus,
       stat_memory: [],
       stat_cpus: [],
       stat_loadavg: [],
@@ -1273,6 +1273,12 @@ export default {
       stat_blocks: [],
       stat_net_in: [],
       stat_net_out: [],
+
+      stat_world_map_country_counter: [],
+      stat_world_map_city_counter: [],
+
+      top: 15,
+
       // // chart: Object.merge(chartConfig, {skip: 5}),
       // /**
       // * vGauge
