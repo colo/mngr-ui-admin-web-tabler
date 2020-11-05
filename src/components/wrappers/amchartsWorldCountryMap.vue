@@ -5,6 +5,7 @@
       :id="id"
       class="chartdiv"
       :class="config.class"
+      :style="config.style"
     />
   </div>
 
@@ -154,6 +155,8 @@ export default {
             country.color = dbColors.getColors(self.dark, self.colorScheme)[0]
           } else if (!country.color) {
             country.color = self.colorSet.getIndex(16)
+          } else {
+            if (country.color._value) { country.color = am4core.color(country.color._value) }
           }
 
           if (id === undefined || id === null) { // get country ISO with name
@@ -350,6 +353,6 @@ export default {
 <style scoped>
 .chartdiv {
   width: 100%;
-  height: 400px;
+  height: 100%;
 }
 </style>

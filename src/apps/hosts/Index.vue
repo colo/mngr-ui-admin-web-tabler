@@ -344,7 +344,7 @@
         </div>
       </div>
       <div class="col-lg-5">
-        <geoip :stat="stat_world_map_country_counter" type="countries-atlas"/>
+        <geoip :stat="geodata" :dark="dark" :mode="mode" :fluid="fluid"/>
       </div>
       <div class="col-lg-6">
         <div class="row row-cards row-deck">
@@ -1236,6 +1236,20 @@ export default {
     geoip
   },
 
+  props: {
+    dark: {
+      type: Boolean,
+      default: false,
+    },
+    fluid: {
+      type: Boolean,
+      default: false,
+    },
+    mode: {
+      type: String,
+      default: '',
+    },
+  },
   data () {
     return {
       height: '0px',
@@ -1274,9 +1288,19 @@ export default {
       stat_net_in: [],
       stat_net_out: [],
 
-      stat_world_map_country_counter: [],
-      stat_world_map_city_counter: [],
-
+      // stat_world_map_country_counter: [],
+      // stat_world_map_city_counter: [],
+      geodata: {
+        city_counter: [],
+        country_counter: [],
+        top_city_counter: [],
+        top_country_counter: [],
+        continent_counter: [],
+        world_map_city_counter: [],
+        top_world_map_city_counter: [],
+        world_map_country_counter: [],
+        top_world_map_country_counter: []
+      },
       top: 15,
 
       // // chart: Object.merge(chartConfig, {skip: 5}),

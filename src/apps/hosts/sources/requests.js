@@ -511,9 +511,19 @@ const web_callback = function (data, metadata, key, vm) {
       periodical_top_world_map_country_counter
     )
 
-    vm.stat_world_map_country_counter = periodical_world_map_country_counter
-    vm.stat_world_map_city_counter = periodical_world_map_city_counter
-    // vm.geoip = geoip
+    // vm.stat_world_map_country_counter = periodical_world_map_country_counter
+    // vm.stat_world_map_city_counter = periodical_world_map_city_counter
+    vm.geodata = {
+      city_counter: periodical_city_counter,
+      country_counter: periodical_country_counter,
+      top_city_counter: top_city_counter,
+      top_country_counter: top_country_counter,
+      continent_counter: periodical_continent_counter,
+      world_map_city_counter: periodical_world_map_city_counter,
+      top_world_map_city_counter: periodical_top_world_map_city_counter,
+      world_map_country_counter: periodical_world_map_country_counter,
+      top_world_map_country_counter: periodical_top_world_map_country_counter
+    }
   }
 }
 

@@ -24,7 +24,7 @@
       <div class="content">
         <div :class="containerClass">
           <q-page-container>
-            <router-view />
+            <router-view :dark="dark" :fluid="fluid" :mode="mode"/>
           </q-page-container>
         </div>
 

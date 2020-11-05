@@ -2,7 +2,7 @@
   <q-layout>
 
     <q-page-container>
-      <router-view />
+      <router-view :dark="dark" :fluid="fluid" :mode="mode"/>
     </q-page-container>
 
   </q-layout>

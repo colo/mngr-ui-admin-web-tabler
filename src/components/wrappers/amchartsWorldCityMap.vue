@@ -148,6 +148,8 @@ export default {
             city.color = dbColors.getColors(self.dark, self.colorScheme)[0]
           } else if (!city.color) {
             city.color = self.colorSet.getIndex(16)
+          } else {
+            if (city.color._value) { city.color = am4core.color(city.color._value) }
           }
           // else{
           //   city.color = city.color

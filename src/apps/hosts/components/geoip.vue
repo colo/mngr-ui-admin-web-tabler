@@ -13,11 +13,11 @@
               </a>
             </template>
 
-            <b-dropdown-item active>
+            <b-dropdown-item :to="{params: {geoip_view: 'world_map_country_counter'}}" :active="geoip_view === 'world_map_country_counter'">
               Countries
             </b-dropdown-item>
 
-            <b-dropdown-item>
+            <b-dropdown-item :to="{name: 'hosts', query: {geoip_view: 'world_map_city_counter'}}" :active="geoip_view === 'world_map_city_counter'">
               Cities
             </b-dropdown-item>
 
@@ -27,23 +27,26 @@
       </div>
       <div class="embed-responsive embed-responsive-16by9">
         <div class="embed-responsive-item">
-          <div class="w-100 h-100">
+          <!-- <div class="w-100 h-100"> -->
             <chart-tabular
-              v-if="type === 'countries-atlas'"
+              v-if="geoip_view === 'world_map_country_counter'"
               :wrapper="{
                 type: worldCountriesWrapper,
                 props:{
                   /* colorScheme: colorScheme, */
-                  /* dark: dark, */
+                  dark: dark,
                   followColorScheme: false
                 }
               }"
               :always_update="false"
-              :ref="'hosts.geodata.'+type"
-              :id="'hosts.geodata.'+type"
-              :config="{}"
+              :ref="'hosts.geoip.'+geoip_view"
+              :id="'hosts.geoip.'+geoip_view"
+              :config="{
+                style: (fluid !== true) ? {height: '250px'} : (mode === 'VerticalLayout') ? {height: '350px'} : {height: '400px'},
+                /* class: 'w-100 h-100' */
+              }"
               :stat="{
-                data: [stat],
+                data: [geodata],
                 length: 1,
                 numeric: false
               }"
@@ -54,21 +57,24 @@
             </chart-tabular>
 
             <chart-tabular
-              v-else-if="type === 'cities-atlas'"
+              v-else-if="geoip_view === 'world_map_city_counter'"
               :wrapper="{
                 type: worldCitiesWrapper,
                 props:{
                   /* colorScheme: colorScheme, */
-                  /* dark: dark, */
+                  dark: dark,
                   followColorScheme: false
                 }
               }"
               :always_update="false"
-              :ref="'hosts.geodata.'+type"
-              :id="'hosts.geodata.'+type"
-              :config="{}"
+              :ref="'hosts.geoip.'+geoip_view"
+              :id="'hosts.geoip.'+geoip_view"
+              :config="{
+                style: (fluid !== true) ? {height: '250px'} : (mode === 'VerticalLayout') ? {height: '350px'} : {height: '400px'},
+                /* class: 'w-100 h-100' */
+              }"
               :stat="{
-                data: [stat],
+                data: [geodata],
                 length: 1,
                 numeric: false
               }"
@@ -77,7 +83,7 @@
               :EventBus="EventBus"
             >
             </chart-tabular>
-          </div>
+          <!-- </div> -->
         </div>
       </div>
     </div>
@@ -85,7 +91,7 @@
 </template>
 <script>
 import * as Debug from 'debug'
-const debug = Debug('apps:hosts:components:geodata')
+const debug = Debug('apps:hosts:components:geoip')
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
 import { BDropdown, BDropdownItem } from 'bootstrap-vue'
@@ -94,6 +100,11 @@ import amchartsWorldCityMapWrapper from 'components/wrappers/amchartsWorldCityMa
 import chartTabular from 'components/chart.tabular'
 
 import { EventBus } from '@libs/eventbus'
+
+// import { mapState } from 'vuex'
+
+import { colors } from 'quasar'
+import * as am4core from '@amcharts/amcharts4/core'
 
 export default {
   name: 'AppHostsCountries',
@@ -110,34 +121,89 @@ export default {
     // chart
   },
 
+  // computed: {
+  //   ...mapState({
+  //     fluid: state => state.layout.fluid,
+  //   }),
+  //
+  // },
   props: {
-    type: {
-      type: String,
-      default: 'countries-atlas'
+    dark: {
+      type: Boolean,
+      default: false,
     },
+    fluid: {
+      type: Boolean,
+      default: false,
+    },
+    mode: {
+      type: String,
+      default: '',
+    },
+    // type: {
+    //   type: String,
+    //   default: 'countries-atlas'
+    // },
     stat: {
-      type: Array,
+      type: Object,
       default: function () {
-        return [{
-          timestamp: 0,
-          value: 0
-        }]
+        return {
+          city_counter: [],
+          country_counter: [],
+          top_city_counter: [],
+          top_country_counter: [],
+          continent_counter: [],
+          world_map_city_counter: [],
+          top_world_map_city_counter: [],
+          world_map_country_counter: [],
+          top_world_map_country_counter: []
+        }
       }
     }
   },
-  // watch: {
-  //   'stat': {
-  //     handler: function (newVal, oldVal) {
-  //       debug('stat.data', newVal, oldVal)
-  //       // let val = (newVal !== undefined && newVal[0] && newVal[0].value) ? newVal[0] : (oldVal !== undefined && oldVal[0] && oldVal[0].value) ? oldVal[0] : { timestamp: 0, value: { seconds: 0 } }
-  //       // if (newVal.length > 0) {
-  //       //   this.geodata = newVal
-  //       // }
-  //     },
-  //     deep: true,
-  //     immediate: true
-  //   }
-  // },
+  created: function () {
+    // debug('getBrand',
+    //   colors.lighten(window.getComputedStyle(document.documentElement).getPropertyValue('--bs-primary'), -10),
+    //   am4core.color(window.getComputedStyle(document.documentElement).getPropertyValue('--bs-primary')),
+    //   am4core.color(window.getComputedStyle(document.documentElement).getPropertyValue('--bs-primary')).lighten(0.1)
+    // )
+    //
+    // debug('create', this.mode)
+    const geoip_view = this.$route.query.geoip_view
+    if (geoip_view) {
+      this.geoip_view = geoip_view
+    }
+  },
+  watch: {
+    geoip_view: function (val) {
+      this.$router.push({ path: this.$route.path, query: Object.merge(Object.clone(this.$route.query), { geoip_view: val }) }).catch(err => { debug(err) })// catch 'NavigationDuplicated' error
+      // this.$router.push(`${this.$route.path}?tab=${val}`).catch(err => {})// catch 'NavigationDuplicated' error
+    },
+    'stat': {
+      handler: function (newVal, oldVal) {
+        newVal = JSON.parse(JSON.stringify(newVal)) // remove reactivity
+        debug('stat.data', newVal, this.geoip_view)
+
+        // // let val = (newVal !== undefined && newVal[0] && newVal[0].value) ? newVal[0] : (oldVal !== undefined && oldVal[0] && oldVal[0].value) ? oldVal[0] : { timestamp: 0, value: { seconds: 0 } }
+        if (newVal && newVal[this.geoip_view]) {
+          let val = newVal[this.geoip_view]
+          val.sort(function (a, b) { return (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0) })
+
+          Array.each(val, function (row, index) {
+            if (index > 10) index = 10
+            row.color = am4core.color(this.baseColor).lighten(index / 10)
+          }.bind(this))
+          this.geodata = val
+
+          debug('stat.data', this.geodata)
+        } else {
+          this.geodata = []
+        }
+      },
+      // deep: true,
+      // immediate: true
+    }
+  },
   // computed: {
   //   percentage: function () {
   //     let percentage = 0
@@ -147,7 +213,8 @@ export default {
   // },
   data () {
     return {
-      // geodata: [],
+      geodata: [],
+      baseColor: window.getComputedStyle(document.documentElement).getPropertyValue('--bs-primary'),
       // seconds: 0,
       // // height: '0px',
       // diff_percentage: 0,
@@ -161,6 +228,7 @@ export default {
       worldCitiesWrapper: amchartsWorldCityMapWrapper,
       EventBus: EventBus,
 
+      geoip_view: 'world_map_country_counter',
     }
   },
   methods: {
