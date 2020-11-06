@@ -294,6 +294,12 @@ const web_callback = function (data, metadata, key, vm) {
     let smallest_start = roundMilliseconds(timestamp - (5 * SECOND))
 
     /**
+    * Traffic
+    **/
+    let host_counter = {}
+    let domain_counter = {}
+
+    /**
     * GeoIP
     **/
     let city_counter = {}
@@ -316,6 +322,15 @@ const web_callback = function (data, metadata, key, vm) {
 
         let host = row.metadata.host
         let domain = row.metadata.domain
+
+        /**
+        * Traffic
+        **/
+        if (!host_counter[host]) host_counter[host] = 0
+        if (!domain_counter[domain]) domain_counter[domain] = 0
+
+        host_counter[host] += 1
+        domain_counter[domain] += 1
 
         /**
         * GeoIP
@@ -358,6 +373,45 @@ const web_callback = function (data, metadata, key, vm) {
         }
       }
     })
+
+    /**
+    * Traffic
+    **/
+    let top_host_counter = {}
+    let _top_host_counter = []
+    Object.each(host_counter, function (data, host) {
+      _top_host_counter.push(data)
+    })
+
+    _top_host_counter = _top_host_counter.sort((a, b) => b - a)
+
+    for (let i = 0; i < TOP; i++) {
+      let value = _top_host_counter[i]
+
+      Object.each(host_counter, function (data, host) {
+        if (data === value) {
+          top_host_counter[host] = data
+        }
+      })
+    }
+
+    let top_domain_counter = {}
+    let _top_domain_counter = []
+    Object.each(domain_counter, function (data, domain) {
+      _top_domain_counter.push(data)
+    })
+
+    _top_domain_counter = _top_domain_counter.sort((a, b) => b - a)
+
+    for (let i = 0; i < TOP; i++) {
+      let value = _top_domain_counter[i]
+
+      Object.each(domain_counter, function (data, domain) {
+        if (data === value) {
+          top_domain_counter[domain] = data
+        }
+      })
+    }
 
     /**
     * GeoIP
@@ -524,6 +578,13 @@ const web_callback = function (data, metadata, key, vm) {
       world_map_country_counter: periodical_world_map_country_counter,
       top_world_map_country_counter: periodical_top_world_map_country_counter
     }
+
+    vm.traffic = {
+      host_counter: host_counter,
+      domain_counter: domain_counter,
+      top_host_counter: top_host_counter,
+      top_domain_counter: top_domain_counter
+    }
   }
 }
 
@@ -621,7 +682,7 @@ const host_range_component = {
                 // },
                 // 'metadata',
                 'data',
-                {'metadata': ['host', 'timestamp', 'path']}
+                {'metadata': ['host', 'timestamp', 'path', 'domain']}
               ],
               'transformation': [
                 {

@@ -223,11 +223,11 @@ export default {
         }
       }
 
-      debug('values %o', newData)
+      debug('format_values %o', newData)
       return newData
     },
     handle_data: function (newData) {
-      debug('chart values', this.id, newData, this.categoryY, this.valueX)
+      debug('handle_data chart values', this.id, newData, this.categoryY, this.valueX)
       if (newData && newData !== null) { // && (newData.length > 0 || Object.getLength(newData) > 0)
         newData = this.format_values(newData)
 
@@ -303,6 +303,8 @@ export default {
       }
     },
     init_chart: function (newData) {
+      debug('init_chart')
+
       // newData = newData || []
       if (this.dark) {
         am4core.useTheme(am4themes_dark)
@@ -429,6 +431,6 @@ export default {
 <style scoped>
 .chartdiv {
   width: 100%;
-  height: 500px;
+  height: 100%;
 }
 </style>

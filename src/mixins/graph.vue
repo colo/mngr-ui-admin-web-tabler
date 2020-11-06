@@ -319,7 +319,7 @@ export default {
     },
     __create_watcher: function (name, chart) {},
     update_chart_stat: function (name, data, inmediate) {
-      debug('update_chart_stat', name, data, inmediate, this.config)
+      debug('update_chart_stat', this.id, name, data, inmediate)
 
       inmediate = (inmediate !== undefined) ? inmediate : (this.$options['charts'][this.id].firt_update === false)
       this.$options['charts'][this.id].firt_update = true
@@ -363,7 +363,7 @@ export default {
         // this.config.interval = this.config.skip
         let new_data = []
 
-        debug('update_chart_stat', this.$options['charts'][this.id].tabular.data)
+        debug('update_chart_stat', this.id, this.$options['charts'][this.id].tabular.data)
         Array.each(this.$options['charts'][this.id].tabular.data, function (row, index) {
           let timestamp = roundMilliseconds(row[0])
           // if(index % this.config.skip === 0) new_data.push(row)
@@ -467,24 +467,27 @@ export default {
     * UI related
     **/
     visibilityChanged (isVisible, entry) {
-      debug('visibilityChanged', this.id, isVisible, this.$options['charts'][this.id].visible, JSON.parse(JSON.stringify(this.$options['charts'][this.id].tabular.data)))
+      debug('visibilityChanged', this.id, this.$options['charts'])
+      if (this.$options['charts'][this.id]) {
+        debug('visibilityChanged', this.id, isVisible, this.$options['charts'][this.id].visible, JSON.parse(JSON.stringify(this.$options['charts'][this.id].tabular.data)))
 
-      /**
-      * update with current data is visibility changed from "unvisible" to visible
-      **/
-      let __visible = this.$options['charts'][this.id].visible
-      this.$options['charts'][this.id].visible = isVisible
-      let data = JSON.parse(JSON.stringify(this.$options['charts'][this.id].tabular.data))
+        /**
+        * update with current data is visibility changed from "unvisible" to visible
+        **/
+        let __visible = this.$options['charts'][this.id].visible
+        this.$options['charts'][this.id].visible = isVisible
+        let data = JSON.parse(JSON.stringify(this.$options['charts'][this.id].tabular.data))
 
-      debug('visibilityChanged', this.id, __visible, isVisible, data)
-      if (
-        (!__visible || __visible === false) &&
-        isVisible === true &&
-        data.length > 0
-      ) {
-        // this.no_buffer === false &&
-        // (this.stat.numeric === false || (this.stat.numeric === true && data[0][0]))
-        this.update_chart_stat(this.id, data, true)
+        debug('visibilityChanged', this.id, __visible, isVisible, data)
+        if (
+          (!__visible || __visible === false) &&
+          isVisible === true &&
+          data.length > 0
+        ) {
+          // this.no_buffer === false &&
+          // (this.stat.numeric === false || (this.stat.numeric === true && data[0][0]))
+          this.update_chart_stat(this.id, data, true)
+        }
       }
     }
   }

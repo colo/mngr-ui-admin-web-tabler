@@ -3,17 +3,17 @@
     <div class="card-body">
       <!-- <h3 class="card-title">Countries web access</h3> -->
       <div class="d-flex">
-        <h3 class="card-title">Web access</h3>
+        <h3 class="card-title">Traffic Summary</h3>
         <!-- <div class="subheader">Countries web access</div> -->
         <div class="ml-auto lh-1">
           <b-dropdown  variant="link" toggle-class="text-decoration-none btn-options" no-caret right>
             <template v-slot:button-content>
               <a class="dropdown-toggle text-muted" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{labels[geoip_view]}}
+                {{labels[traffic_view]}}
               </a>
             </template>
 
-            <b-dropdown-item v-for="(label, view) in labels" :key="view" :to="{name: 'hosts', query: { ...$route.query, geoip_view: view}}" :active="geoip_view === view" @click="setView(view)" replace>
+            <b-dropdown-item v-for="(label, view) in labels" :key="view" :to="{name: 'hosts', query: { ...$route.query, traffic_view: view}}" :active="traffic_view === view" @click="setView(view)" replace>
               {{label}}
             </b-dropdown-item>
 
@@ -22,11 +22,11 @@
         </div>
       </div>
       <!-- <div class="embed-responsive embed-responsive-16by9"> -->
-        <div :key="'hosts.geoip.'+geoip_view">
+        <div :key="'hosts.traffic.'+traffic_view">
           <!-- class="embed-responsive-item"  -->
           <!-- <div class="w-100 h-100"> -->
             <chart-tabular
-              v-if="geoip_view === 'world_map_country_counter' || geoip_view === 'top_world_map_country_counter'"
+              v-if="traffic_view === 'world_map_country_counter' || traffic_view === 'top_world_map_country_counter'"
               :wrapper="{
                 type: atlasCountriesWrapper,
                 props:{
@@ -36,14 +36,14 @@
                 }
               }"
               :always_update="false"
-              :ref="'hosts.geoip.'+geoip_view"
-              :id="'hosts.geoip.'+geoip_view"
+              :ref="'hosts.traffic.'+traffic_view"
+              :id="'hosts.traffic.'+traffic_view"
               :config="{
                 style: (fluid !== true) ? {height: '250px'} : (mode === 'VerticalLayout') ? {height: '350px'} : {height: '400px'},
                 /* class: 'w-100 h-100' */
               }"
               :stat="{
-                data: [geodata],
+                data: [trafficdata],
                 length: 1,
                 numeric: false
               }"
@@ -54,7 +54,7 @@
             </chart-tabular>
 
             <chart-tabular
-              v-else-if="geoip_view === 'world_map_city_counter' || geoip_view === 'top_world_map_city_counter'"
+              v-else-if="traffic_view === 'world_map_city_counter' || traffic_view === 'top_world_map_city_counter'"
               :wrapper="{
                 type: atlasCitiesWrapper,
                 props:{
@@ -64,14 +64,14 @@
                 }
               }"
               :always_update="false"
-              :ref="'hosts.geoip.'+geoip_view"
-              :id="'hosts.geoip.'+geoip_view"
+              :ref="'hosts.traffic.'+traffic_view"
+              :id="'hosts.traffic.'+traffic_view"
               :config="{
                 style: (fluid !== true) ? {height: '250px'} : (mode === 'VerticalLayout') ? {height: '350px'} : {height: '400px'},
                 /* class: 'w-100 h-100' */
               }"
               :stat="{
-                data: [geodata],
+                data: [trafficdata],
                 length: 1,
                 numeric: false
               }"
@@ -82,19 +82,19 @@
             </chart-tabular>
 
             <chart-tabular
-              v-else-if="geoip_view === 'country_counter' || geoip_view === 'city_counter'"
+              v-else-if="traffic_view === 'domain_counter' || traffic_view === 'host_counter'"
               :wrapper="{
                 type: barRaceWrapper,
-                props: (/country/.test(geoip_view)) ? Object.merge(barRaceConfigCountries.props, {sum:sum}) : Object.merge(barRaceConfigCities.props, {sum:sum})
+                props: (/domain/.test(traffic_view)) ? Object.merge(barRaceConfigDomains.props, {sum:sum}) : Object.merge(barRaceConfigHosts.props, {sum:sum})
               }"
               :always_update="false"
-              :ref="'hosts.geoip.'+geoip_view + ((sum === true) ? '_sum' : '')"
-              :id="'hosts.geoip.'+geoip_view + ((sum === true) ? '_sum' : '')"
-              :key="'hosts.geoip.'+geoip_view + ((sum === true) ? '_sum' : '')"
-              :config="(/country/.test(geoip_view)) ? barRaceConfigCountries : barRaceConfigCities"
+              :ref="'hosts.traffic.'+traffic_view + ((sum === true) ? '_sum' : '')"
+              :id="'hosts.traffic.'+traffic_view + ((sum === true) ? '_sum' : '')"
+              :key="'hosts.traffic.'+traffic_view + ((sum === true) ? '_sum' : '')"
+              :config="(/domain/.test(traffic_view)) ? barRaceConfigDomains : barRaceConfigHosts"
               :stat="{
                 data: [
-                  geodata
+                  trafficdata
                 ],
                 length: 1,
                 numeric: false
@@ -111,7 +111,7 @@
         <!-- Use quasar's invisible class to hide element but keep it using the same space  -->
         <div class="ml-auto lh-1">
           <b-form-checkbox
-            :class="(geoip_view !== 'country_counter' && geoip_view !== 'city_counter') ? 'invisible' : ''"
+            :class="(traffic_view !== 'domain_counter' && traffic_view !== 'host_counter') ? 'invisible' : ''"
             class="form-switch"
             v-model="sum"
             plain
@@ -126,7 +126,7 @@
 </template>
 <script>
 import * as Debug from 'debug'
-const debug = Debug('apps:hosts:components:geoip')
+const debug = Debug('apps:hosts:components:traffic')
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
 import { BDropdown, BDropdownItem, BFormCheckbox } from 'bootstrap-vue'
@@ -147,7 +147,7 @@ import { colors } from 'quasar'
 import * as am4core from '@amcharts/amcharts4/core'
 
 export default {
-  name: 'AppHostsGeoip',
+  name: 'AppHostsTraffic',
   // mixins: [DataSourcesMixin],
 
   components: {
@@ -189,15 +189,10 @@ export default {
       type: Object,
       default: function () {
         return {
-          city_counter: [],
-          country_counter: [],
-          top_city_counter: [],
-          top_country_counter: [],
-          continent_counter: [],
-          world_map_city_counter: [],
-          top_world_map_city_counter: [],
-          world_map_country_counter: [],
-          top_world_map_country_counter: []
+          host_counter: [],
+          domain_counter: [],
+          top_host_counter: [],
+          top_domain_counter: [],
         }
       }
     }
@@ -210,30 +205,30 @@ export default {
     // )
     //
     // debug('create', this.mode)
-    const geoip_view = this.$route.query.geoip_view
-    if (geoip_view) {
-      this.geoip_view = geoip_view
+    const traffic_view = this.$route.query.traffic_view
+    if (traffic_view) {
+      this.traffic_view = traffic_view
     }
   },
   watch: {
-    geoip_view: function (val) {
-      this.$router.push({ path: this.$route.path, query: Object.merge(Object.clone(this.$route.query), { geoip_view: val }) }).catch(err => { debug(err) })// catch 'NavigationDuplicated' error
+    traffic_view: function (val) {
+      this.$router.push({ path: this.$route.path, query: Object.merge(Object.clone(this.$route.query), { traffic_view: val }) }).catch(err => { debug(err) })// catch 'NavigationDuplicated' error
       // this.$router.push(`${this.$route.path}?tab=${val}`).catch(err => {})// catch 'NavigationDuplicated' error
     },
     'stat': {
       handler: function (newVal, oldVal) {
         newVal = JSON.parse(JSON.stringify(newVal)) // remove reactivity
-        debug('stat.data', newVal, this.geoip_view, amcharts4ConfigBarRace, this.barRaceConfigCities)
+        debug('stat.data', newVal, this.traffic_view, amcharts4ConfigBarRace, this.barRaceConfigHosts)
 
         // // let val = (newVal !== undefined && newVal[0] && newVal[0].value) ? newVal[0] : (oldVal !== undefined && oldVal[0] && oldVal[0].value) ? oldVal[0] : { timestamp: 0, value: { seconds: 0 } }
-        if (newVal && newVal[this.geoip_view]) {
-          let val = newVal[this.geoip_view]
+        if (newVal && newVal[this.traffic_view]) {
+          let val = newVal[this.traffic_view]
 
-          if (/world_map/.test(this.geoip_view)) {
+          if (/world_map/.test(this.traffic_view)) {
             val.sort(function (a, b) { return (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0) })
             let color = am4core.color(this.baseColor)
             Array.each(val, function (row, index) {
-              if (/world_map_city_counter/.test(this.geoip_view)) {
+              if (/world_map_city_counter/.test(this.traffic_view)) {
                 row.color = color
               } else {
                 if (index > 10) index = 10
@@ -242,11 +237,11 @@ export default {
             }.bind(this))
           }
 
-          this.geodata = val
+          this.trafficdata = val
 
-          debug('stat.data', this.geodata)
+          debug('stat.data', this.trafficdata)
         } else {
-          this.geodata = []
+          this.trafficdata = []
         }
       },
       // deep: true,
@@ -262,15 +257,13 @@ export default {
   // },
   data () {
     return {
-      geodata: [],
+      trafficdata: [],
       baseColor: window.getComputedStyle(document.documentElement).getPropertyValue('--bs-primary'),
       labels: {
-        top_world_map_country_counter: 'TOP Countries Atlas',
-        world_map_country_counter: 'Countries Atlas',
-        top_world_map_city_counter: 'TOP Cities Atlas',
-        world_map_city_counter: 'Cities Atlas',
-        country_counter: 'Countries bar race',
-        city_counter: 'Cities bar race'
+        host_counter: 'Hosts',
+        domain_counter: 'Domains',
+        // top_host_counter: 'TOP Hosts',
+        // top_domain_counter: 'TOP Domains',
       },
 
       sum: false,
@@ -279,10 +272,10 @@ export default {
       atlasCitiesWrapper: amchartsWorldCityMapWrapper,
       barRaceWrapper: amchartsBarRaceWrapper,
 
-      barRaceConfigCountries: Object.merge(Object.clone(amcharts4ConfigBarRace), {
+      barRaceConfigDomains: Object.merge(Object.clone(amcharts4ConfigBarRace), {
         style: (this.fluid !== true) ? {height: '250px'} : (this.mode === 'VerticalLayout') ? {height: '350px'} : {height: '400px'},
         props: {
-          categoryY: 'geodata',
+          categoryY: 'trafficdata',
           valueX: undefined,
           /* label: (sum === true) ? 'Per COUNTRY count (sum)' : 'Per COUNTRY count', */
           // zoom: apply_zoom,
@@ -292,10 +285,10 @@ export default {
         }
       }),
 
-      barRaceConfigCities: Object.merge(Object.clone(amcharts4ConfigBarRace), {
+      barRaceConfigHosts: Object.merge(Object.clone(amcharts4ConfigBarRace), {
         style: (this.fluid !== true) ? {height: '250px'} : (this.mode === 'VerticalLayout') ? {height: '350px'} : {height: '400px'},
         props: {
-          categoryY: 'geodata',
+          categoryY: 'trafficdata',
           valueX: undefined,
           /* label: (sum === true) ? 'Per COUNTRY count (sum)' : 'Per COUNTRY count', */
           // zoom: apply_zoom,
@@ -307,13 +300,13 @@ export default {
 
       EventBus: EventBus,
 
-      geoip_view: 'top_world_map_country_counter',
+      traffic_view: 'domain_counter',
     }
   },
   methods: {
     setView: function (val) {
-      this.geodata = []
-      this.geoip_view = val
+      this.trafficdata = []
+      this.traffic_view = val
     },
     /**
     * @start pipelines

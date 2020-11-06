@@ -5,6 +5,7 @@
       :id="id"
       class="chartdiv"
       :class="config.class"
+      :style="config.style"
     />
   </div>
 
@@ -314,6 +315,6 @@ export default {
 <style scoped>
 .chartdiv {
   width: 100%;
-  height: 400px;
+  height: 100%;
 }
 </style>

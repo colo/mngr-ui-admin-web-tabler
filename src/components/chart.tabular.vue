@@ -56,7 +56,7 @@ export default {
         Array.each(data, function (row) {
           let insert_value = []
 
-          if (Array.isArray(row.value)) {
+          if (Array.isArray(row.value) || this.stat.numeric !== true) {
             // Array.each(row.value, function (value, index) {
             //   value = (value) ? value * 1 : 0 // int cast
             //   row.value[index] = value

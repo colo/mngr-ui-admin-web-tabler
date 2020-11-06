@@ -38,198 +38,14 @@
         <memory :stat="stat_memory"/>
       </div>
       <div class="col-sm-6 col-md-4 col-lg-2">
+
         <net :stat="stat_net_in" type="In"/>
-        <!-- <div class="card">
-          <div class="card-body">
-            <div class="d-flex align-items-center">
-              <div class="subheader">New clients</div>
-              <div class="ml-auto lh-1">
-                <b-dropdown  variant="link" toggle-class="text-decoration-none btn-options" no-caret right>
-                  <template v-slot:button-content>
-                    <a class="dropdown-toggle text-muted" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Last 7 days
-                    </a>
-                  </template>
 
-                  <b-dropdown-item active>
-                    Last 7 days
-                  </b-dropdown-item>
-
-                  <b-dropdown-item>
-                    Last 30 days
-                  </b-dropdown-item>
-
-                  <b-dropdown-item>
-                    Last 3 months
-                  </b-dropdown-item>
-                </b-dropdown>
-              </div>
-            </div>
-            <div class="d-flex align-items-baseline">
-              <div class="h1 mb-3 mr-2">6,782</div>
-              <div class="mr-auto">
-                <span class="text-yellow d-inline-flex align-items-center lh-1">
-                  0% <svg xmlns="http://www.w3.org/2000/svg" class="icon ml-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                </span>
-              </div>
-            </div>
-            <apexchart
-              height="40"
-              id="chart-new-clients"
-              :options="{
-                chart: {
-                  type: 'line',
-                  fontFamily: 'inherit',
-                  height: 40.0,
-                  sparkline: {
-                    enabled: true
-                  },
-                  animations: {
-                    enabled: false
-                  },
-                },
-                fill: {
-                  opacity: 1,
-                },
-                stroke: {
-                  width: [2, 1],
-                  dashArray: [0, 3],
-                  lineCap: 'round',
-                  curve: 'smooth',
-                },
-                grid: {
-                  strokeDashArray: 4,
-                },
-                xaxis: {
-                  labels: {
-                    padding: 0
-                  },
-                  tooltip: {
-                    enabled: false
-                  },
-                  type: 'datetime',
-                },
-                yaxis: {
-                  labels: {
-                    padding: 4
-                  },
-                },
-                labels: [
-                  '2020-06-20', '2020-06-21', '2020-06-22', '2020-06-23', '2020-06-24', '2020-06-25', '2020-06-26', '2020-06-27', '2020-06-28', '2020-06-29', '2020-06-30', '2020-07-01', '2020-07-02', '2020-07-03', '2020-07-04', '2020-07-05', '2020-07-06', '2020-07-07', '2020-07-08', '2020-07-09', '2020-07-10', '2020-07-11', '2020-07-12', '2020-07-13', '2020-07-14', '2020-07-15', '2020-07-16', '2020-07-17', '2020-07-18', '2020-07-19'
-                ],
-                colors: ['#206bc4', '#a8aeb7'],
-                legend: {
-                  show: false,
-                },
-              }"
-              :series="[{
-                name: 'May',
-                data: [37, 35, 44, 28, 36, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53, 61, 27, 54, 43, 4, 46, 39, 62, 51, 35, 41, 67]
-              },{
-                name: 'April',
-                data: [93, 54, 51, 24, 35, 35, 31, 67, 19, 43, 28, 36, 62, 61, 27, 39, 35, 41, 27, 35, 51, 46, 62, 37, 44, 53, 41, 65, 39, 37]
-              }]"
-            ></apexchart>
-          </div>
-        </div> -->
       </div>
       <div class="col-sm-6 col-md-4 col-lg-2">
+
         <net :stat="stat_net_out" type="Out"/>
-        <!-- <div class="card">
-          <div class="card-body">
-            <div class="d-flex align-items-center">
-              <div class="subheader">Active users</div>
-              <div class="ml-auto lh-1">
-                <b-dropdown  variant="link" toggle-class="text-decoration-none btn-options" no-caret right>
-                  <template v-slot:button-content>
-                    <a class="dropdown-toggle text-muted" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Last 7 days
-                    </a>
-                  </template>
 
-                  <b-dropdown-item active>
-                    Last 7 days
-                  </b-dropdown-item>
-
-                  <b-dropdown-item>
-                    Last 30 days
-                  </b-dropdown-item>
-
-                  <b-dropdown-item>
-                    Last 3 months
-                  </b-dropdown-item>
-                </b-dropdown>
-              </div>
-            </div>
-            <div class="d-flex align-items-baseline">
-              <div class="h1 mb-3 mr-2">2,986</div>
-              <div class="mr-auto">
-                <span class="text-green d-inline-flex align-items-center lh-1">
-                  4% <svg xmlns="http://www.w3.org/2000/svg" class="icon ml-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="3 17 9 11 13 15 21 7" /><polyline points="14 7 21 7 21 14" /></svg>
-                </span>
-              </div>
-            </div>
-            <apexchart
-              height="40"
-              id="chart-active-users"
-              :options="{
-                chart: {
-                  type: 'bar',
-                  fontFamily: 'inherit',
-                  height: 40.0,
-                  sparkline: {
-                    enabled: true
-                  },
-                  animations: {
-                    enabled: false
-                  },
-                },
-                plotOptions: {
-                  bar: {
-                    columnWidth: '50%',
-                  }
-                },
-                dataLabels: {
-                  enabled: false,
-                },
-                fill: {
-                  opacity: 1,
-                },
-                grid: {
-                  strokeDashArray: 4,
-                },
-                xaxis: {
-                  labels: {
-                    padding: 0
-                  },
-                  tooltip: {
-                    enabled: false
-                  },
-                  axisBorder: {
-                    show: false,
-                  },
-                  type: 'datetime',
-                },
-                yaxis: {
-                  labels: {
-                    padding: 4
-                  },
-                },
-                labels: [
-                  '2020-06-20', '2020-06-21', '2020-06-22', '2020-06-23', '2020-06-24', '2020-06-25', '2020-06-26', '2020-06-27', '2020-06-28', '2020-06-29', '2020-06-30', '2020-07-01', '2020-07-02', '2020-07-03', '2020-07-04', '2020-07-05', '2020-07-06', '2020-07-07', '2020-07-08', '2020-07-09', '2020-07-10', '2020-07-11', '2020-07-12', '2020-07-13', '2020-07-14', '2020-07-15', '2020-07-16', '2020-07-17', '2020-07-18', '2020-07-19'
-                ],
-                colors: ['#206bc4'],
-                legend: {
-                  show: false,
-                },
-              }"
-              :series="[{
-                name: 'Profits',
-                data: [37, 35, 44, 28, 36, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53, 61, 27, 54, 43, 19, 46, 39, 62, 51, 35, 41, 67]
-              }]"
-            ></apexchart>
-          </div>
-        </div> -->
       </div>
       <div class="col-sm-6 col-md-4 col-lg-2">
         <div class="row">
@@ -247,104 +63,14 @@
 
       </div>
       <div class="col-lg-7">
-        <div class="card">
-          <div class="card-body">
-            <h3 class="card-title">Traffic summary</h3>
-            <!-- <div id="chart-mentions" class="chart-lg"></div> -->
-            <apexchart
-              height="240"
-              id="chart-mentions"
-              :options="{
-                chart: {
-                  type: 'bar',
-                  fontFamily: 'inherit',
-                  height: 240,
-                  parentHeightOffset: 0,
-                  toolbar: {
-                    show: false,
-                  },
-                  animations: {
-                    enabled: false
-                  },
-                  stacked: true,
-                },
-                plotOptions: {
-                  bar: {
-                    columnWidth: '50%',
-                  }
-                },
-                dataLabels: {
-                  enabled: false,
-                },
-                fill: {
-                  opacity: 1,
-                },
-                grid: {
-                  padding: {
-                    top: -20,
-                    right: 0,
-                    left: -4,
-                    bottom: -4
-                  },
-                  strokeDashArray: 4,
-                  xaxis: {
-                    lines: {
-                      show: true
-                    }
-                  },
-                },
-                xaxis: {
-                  labels: {
-                    padding: 0
-                  },
-                  tooltip: {
-                    enabled: false
-                  },
-                  axisBorder: {
-                    show: false,
-                  },
-                  type: 'datetime',
-                },
-                yaxis: {
-                  labels: {
-                    padding: 4
-                  },
-                },
-                labels: [
-                  '2020-06-20', '2020-06-21', '2020-06-22', '2020-06-23', '2020-06-24', '2020-06-25', '2020-06-26', '2020-06-27', '2020-06-28', '2020-06-29', '2020-06-30', '2020-07-01', '2020-07-02', '2020-07-03', '2020-07-04', '2020-07-05', '2020-07-06', '2020-07-07', '2020-07-08', '2020-07-09', '2020-07-10', '2020-07-11', '2020-07-12', '2020-07-13', '2020-07-14', '2020-07-15', '2020-07-16', '2020-07-17', '2020-07-18', '2020-07-19', '2020-07-20', '2020-07-21', '2020-07-22', '2020-07-23', '2020-07-24', '2020-07-25', '2020-07-26'
-                ],
-                colors: ['#206bc4', '#79a6dc', '#bfe399'],
-                legend: {
-                  show: true,
-                  position: 'bottom',
-                  height: 32,
-                  offsetY: 8,
-                  markers: {
-                    width: 8,
-                    height: 8,
-                    radius: 100,
-                  },
-                  itemMargin: {
-                    horizontal: 8,
-                  },
-                },
-              }"
-              :series="[{
-                name: 'Web',
-                data: [1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 2, 12, 5, 8, 22, 6, 8, 6, 4, 1, 8, 24, 29, 51, 40, 47, 23, 26, 50, 26, 41, 22, 46, 47, 81, 46, 6]
-                },{
-                name: 'Social',
-                data: [2, 5, 4, 3, 3, 1, 4, 7, 5, 1, 2, 5, 3, 2, 6, 7, 7, 1, 5, 5, 2, 12, 4, 6, 18, 3, 5, 2, 13, 15, 20, 47, 18, 15, 11, 10, 0]
-                },{
-                name: 'Other',
-                data: [2, 9, 1, 7, 8, 3, 6, 5, 5, 4, 6, 4, 1, 9, 3, 6, 7, 5, 2, 8, 4, 9, 1, 2, 6, 7, 5, 1, 8, 3, 2, 3, 4, 9, 7, 1, 6]
-              }]"
-            ></apexchart>
-          </div>
-        </div>
+
+        <traffic :stat="traffic" :dark="dark" :mode="mode" :fluid="fluid"/>
+
       </div>
       <div class="col-lg-5">
+
         <geoip :stat="geodata" :dark="dark" :mode="mode" :fluid="fluid"/>
+
       </div>
       <div class="col-lg-6">
         <div class="row row-cards row-deck">
@@ -1159,6 +885,9 @@ import Pipeline from '@apps/hosts/pipelines/periodical'
 
 import DataSourcesMixin from '@mixins/dataSources'
 
+/**
+* System components
+**/
 import cpus from '@apps/hosts/components/cpus'
 import memory from '@apps/hosts/components/memory'
 import net from '@apps/hosts/components/net'
@@ -1166,7 +895,11 @@ import loadavg from '@apps/hosts/components/loadavg'
 import uptime from '@apps/hosts/components/uptime'
 import blocks from '@apps/hosts/components/blocks'
 
+/**
+* Web components
+**/
 import geoip from '@apps/hosts/components/geoip'
+import traffic from '@apps/hosts/components/traffic'
 
 import { requests, store } from './sources/index'
 
@@ -1233,7 +966,8 @@ export default {
     /**
     * web
     **/
-    geoip
+    geoip,
+    traffic
   },
 
   props: {
@@ -1301,7 +1035,15 @@ export default {
         world_map_country_counter: [],
         top_world_map_country_counter: []
       },
-      top: 15,
+
+      traffic: {
+        host_counter: [],
+        domain_counter: [],
+        top_host_counter: [],
+        top_domain_counter: []
+      },
+
+      top: 5,
 
       // // chart: Object.merge(chartConfig, {skip: 5}),
       // /**
