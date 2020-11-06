@@ -85,12 +85,12 @@
               v-else-if="geoip_view === 'country_counter' || geoip_view === 'city_counter'"
               :wrapper="{
                 type: barRaceWrapper,
-                props: (/country/.test(geoip_view)) ? Object.merge(barRaceConfigCountries.props, {sum:sum}) : Object.merge(barRaceConfigCities.props, {sum:sum})
+                props: (/country/.test(geoip_view)) ? Object.merge(barRaceConfigCountries.props, {sum:geoip_sum}) : Object.merge(barRaceConfigCities.props, {sum:geoip_sum})
               }"
               :always_update="false"
-              :ref="'hosts.geoip.'+geoip_view + ((sum === true) ? '_sum' : '')"
-              :id="'hosts.geoip.'+geoip_view + ((sum === true) ? '_sum' : '')"
-              :key="'hosts.geoip.'+geoip_view + ((sum === true) ? '_sum' : '')"
+              :ref="'hosts.geoip.'+geoip_view + ((geoip_sum === true) ? '_sum' : '')"
+              :id="'hosts.geoip.'+geoip_view + ((geoip_sum === true) ? '_sum' : '')"
+              :key="'hosts.geoip.'+geoip_view + ((geoip_sum === true) ? '_sum' : '')"
               :config="(/country/.test(geoip_view)) ? barRaceConfigCountries : barRaceConfigCities"
               :stat="{
                 data: [
@@ -113,8 +113,9 @@
           <b-form-checkbox
             :class="(geoip_view !== 'country_counter' && geoip_view !== 'city_counter') ? 'invisible' : ''"
             class="form-switch"
-            v-model="sum"
+            v-model="geoip_sum"
             plain
+            @input="setSum"
           >
             Sum
           </b-form-checkbox>
@@ -209,10 +210,16 @@ export default {
     //   am4core.color(window.getComputedStyle(document.documentElement).getPropertyValue('--bs-primary')).lighten(0.1)
     // )
     //
-    // debug('create', this.mode)
+
     const geoip_view = this.$route.query.geoip_view
     if (geoip_view) {
       this.geoip_view = geoip_view
+    }
+
+    const geoip_sum = this.$route.query.geoip_sum
+    debug('created geoip_sum', geoip_sum)
+    if (geoip_sum) {
+      this.geoip_sum = (geoip_sum === 'true')
     }
   },
   watch: {
@@ -273,8 +280,6 @@ export default {
         city_counter: 'Cities bar race'
       },
 
-      sum: false,
-
       atlasCountriesWrapper: amchartsWorldCountryMapWrapper,
       atlasCitiesWrapper: amchartsWorldCityMapWrapper,
       barRaceWrapper: amchartsBarRaceWrapper,
@@ -308,12 +313,19 @@ export default {
       EventBus: EventBus,
 
       geoip_view: 'top_world_map_country_counter',
+      geoip_sum: false,
     }
   },
   methods: {
     setView: function (val) {
       this.geodata = []
       this.geoip_view = val
+    },
+    setSum: function (val) {
+      debug('setSum', val)
+
+      this.geoip_sum = val
+      this.$router.replace({name: 'hosts', query: { ...this.$route.query, geoip_sum: val}})
     },
     /**
     * @start pipelines

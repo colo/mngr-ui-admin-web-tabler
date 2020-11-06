@@ -85,12 +85,12 @@
               v-else-if="traffic_view === 'domain_counter' || traffic_view === 'host_counter'"
               :wrapper="{
                 type: barRaceWrapper,
-                props: (/domain/.test(traffic_view)) ? Object.merge(barRaceConfigDomains.props, {sum:sum}) : Object.merge(barRaceConfigHosts.props, {sum:sum})
+                props: (/domain/.test(traffic_view)) ? Object.merge(barRaceConfigDomains.props, {sum:traffic_sum}) : Object.merge(barRaceConfigHosts.props, {sum:traffic_sum})
               }"
               :always_update="false"
-              :ref="'hosts.traffic.'+traffic_view + ((sum === true) ? '_sum' : '')"
-              :id="'hosts.traffic.'+traffic_view + ((sum === true) ? '_sum' : '')"
-              :key="'hosts.traffic.'+traffic_view + ((sum === true) ? '_sum' : '')"
+              :ref="'hosts.traffic.'+traffic_view + ((traffic_sum === true) ? '_sum' : '')"
+              :id="'hosts.traffic.'+traffic_view + ((traffic_sum === true) ? '_sum' : '')"
+              :key="'hosts.traffic.'+traffic_view + ((traffic_sum === true) ? '_sum' : '')"
               :config="(/domain/.test(traffic_view)) ? barRaceConfigDomains : barRaceConfigHosts"
               :stat="{
                 data: [
@@ -113,8 +113,9 @@
           <b-form-checkbox
             :class="(traffic_view !== 'domain_counter' && traffic_view !== 'host_counter') ? 'invisible' : ''"
             class="form-switch"
-            v-model="sum"
+            v-model="traffic_sum"
             plain
+            @input="setSum"
           >
             Sum
           </b-form-checkbox>
@@ -209,6 +210,12 @@ export default {
     if (traffic_view) {
       this.traffic_view = traffic_view
     }
+
+    const traffic_sum = this.$route.query.traffic_sum
+    debug('created traffic_sum', traffic_sum)
+    if (traffic_sum) {
+      this.traffic_sum = (traffic_sum === 'true')
+    }
   },
   watch: {
     traffic_view: function (val) {
@@ -266,8 +273,6 @@ export default {
         // top_domain_counter: 'TOP Domains',
       },
 
-      sum: false,
-
       atlasCountriesWrapper: amchartsWorldCountryMapWrapper,
       atlasCitiesWrapper: amchartsWorldCityMapWrapper,
       barRaceWrapper: amchartsBarRaceWrapper,
@@ -301,12 +306,19 @@ export default {
       EventBus: EventBus,
 
       traffic_view: 'domain_counter',
+      traffic_sum: false,
     }
   },
   methods: {
     setView: function (val) {
       this.trafficdata = []
       this.traffic_view = val
+    },
+    setSum: function (val) {
+      debug('setSum', val)
+
+      this.traffic_sum = val
+      this.$router.replace({name: 'hosts', query: { ...this.$route.query, traffic_sum: val}})
     },
     /**
     * @start pipelines
