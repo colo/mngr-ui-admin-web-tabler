@@ -279,6 +279,8 @@ const os_callback = function (data, metadata, key, vm) {
   }
 }
 
+import static_types from '@libs/web/static_extentions'
+
 const web_callback = function (data, metadata, key, vm) {
   debug('PERIODICAL WEB CALLBACK data %s %o', key, data, metadata)
 
@@ -298,6 +300,22 @@ const web_callback = function (data, metadata, key, vm) {
     **/
     let host_counter = {}
     let domain_counter = {}
+    let status_counter = {}
+    let type_counter = {}
+
+    let addr_counter = {}
+    let user_agent_os_counter = {}
+    let user_agent_os_family_counter = {}
+    let user_agent_engine_counter = {}
+    let user_agent_browser_counter = {}
+    let user_agent_device_counter = {}
+    let user_counter = {}
+    let referer_counter = {}
+
+    let unique_visitors_ip_uas = {}
+
+    let total_bytes_sent = {}
+    let total_requests = {}
 
     /**
     * GeoIP
@@ -331,6 +349,112 @@ const web_callback = function (data, metadata, key, vm) {
 
         host_counter[host] += 1
         domain_counter[domain] += 1
+
+        /**
+        * Traffic - status
+        **/
+        if (row.data.status) {
+          if (!status_counter[row.metadata.timestamp]) status_counter[row.metadata.timestamp] = {}
+          if (!status_counter[row.metadata.timestamp][row.data.status]) status_counter[row.metadata.timestamp][row.data.status] = 0
+          status_counter[row.metadata.timestamp][row.data.status] += 1
+        }
+
+        /**
+        * Traffic - type (static | dynamic)
+        **/
+        if (row.data.pathname) {
+          let value = (static_types.test(row.data.pathname)) ? 'static' : 'dynamic'
+          if (!type_counter[row.metadata.timestamp]) type_counter[row.metadata.timestamp] = {}
+          if (!type_counter[row.metadata.timestamp][value]) type_counter[row.metadata.timestamp][value] = 0
+          type_counter[row.metadata.timestamp][value] += 1
+        }
+
+        /**
+        * Traffic - requests
+        **/
+        if (!total_requests[row.metadata.timestamp]) total_requests[row.metadata.timestamp] = 0
+        total_requests[row.metadata.timestamp] += 1
+
+        /**
+        * Traffic - bytes
+        **/
+        if (row.data.body_bytes_sent) {
+          if (!total_bytes_sent[row.metadata.timestamp]) total_bytes_sent[row.metadata.timestamp] = 0
+          total_bytes_sent[row.metadata.timestamp] += row.data.body_bytes_sent
+        }
+
+        /**
+        * Traffic - addr
+        * UNIQUE VISITORS are calculated with remote_addr + user_agent
+        **/
+        if (row.data.remote_addr) {
+          let ip = row.data.remote_addr
+          if (!addr_counter[row.metadata.timestamp]) addr_counter[row.metadata.timestamp] = {}
+          if (!addr_counter[row.metadata.timestamp][ip]) addr_counter[row.metadata.timestamp][ip] = 0
+          addr_counter[row.metadata.timestamp][ip] += 1
+
+          if (!unique_visitors_ip_uas[ip]) unique_visitors_ip_uas[ip] = []
+          if (row.data.remote_user) unique_visitors_ip_uas[ip].combine([JSON.stringify(row.data.user_agent)])
+        }
+
+        /** user_agent **/
+        if (row.data.user_agent) {
+          // debug('user_agent %s', row.data.user_agent)
+
+          let os = row.data.user_agent.os.family
+          os = (row.data.user_agent.os.major) ? os + ' ' + row.data.user_agent.os.major : os
+
+          let engine = row.data.user_agent.engine.family
+          // engine = (row.data.user_agent.engine.major) ? engine + ' ' + row.data.user_agent.engine.major : engine
+          // engine = (row.data.user_agent.engine.minor) ? engine + '.' + row.data.user_agent.engine.minor : engine
+          // engine = (row.data.user_agent.engine.patch) ? engine + '.' + row.data.user_agent.engine.patch : engine
+
+          let browser = row.data.user_agent.ua.family
+          // browser = (row.data.user_agent.ua.major) ? browser + ' ' + row.data.user_agent.ua.major : browser
+          // browser = (row.data.user_agent.ua.minor) ? browser + '.' + row.data.user_agent.ua.minor : browser
+          // browser = (row.data.user_agent.ua.patch) ? browser + '.' + row.data.user_agent.ua.patch : browser
+          // browser = (row.data.user_agent.ua.type) ? browser + ' ' + row.data.user_agent.ua.type : browser
+
+          let device = (row.data.user_agent.device.brand) ? row.data.user_agent.device.brand : row.data.user_agent.device.family
+          device = (row.data.user_agent.device.model) ? device + ' ' + row.data.user_agent.device.model : device
+          device = (row.data.user_agent.device.type) ? device + ' - ' + row.data.user_agent.device.type : device
+
+          if (!user_agent_os_counter[row.metadata.timestamp]) user_agent_os_counter[row.metadata.timestamp] = {}
+          if (!user_agent_os_counter[row.metadata.timestamp][os]) user_agent_os_counter[row.metadata.timestamp][os] = 0
+          user_agent_os_counter[row.metadata.timestamp][os] += 1
+
+          if (!user_agent_engine_counter[row.metadata.timestamp]) user_agent_engine_counter[row.metadata.timestamp] = {}
+          if (!user_agent_engine_counter[row.metadata.timestamp][engine]) user_agent_engine_counter[row.metadata.timestamp][engine] = 0
+          user_agent_engine_counter[row.metadata.timestamp][engine] += 1
+
+          if (!user_agent_browser_counter[row.metadata.timestamp]) user_agent_browser_counter[row.metadata.timestamp] = {}
+          if (!user_agent_browser_counter[row.metadata.timestamp][browser]) user_agent_browser_counter[row.metadata.timestamp][browser] = 0
+          user_agent_browser_counter[row.metadata.timestamp][browser] += 1
+
+          if (!user_agent_device_counter[row.metadata.timestamp]) user_agent_device_counter[row.metadata.timestamp] = {}
+          if (!user_agent_device_counter[row.metadata.timestamp][device]) user_agent_device_counter[row.metadata.timestamp][device] = 0
+          user_agent_device_counter[row.metadata.timestamp][device] += 1
+        }
+
+        /**
+        * Traffic - remote user
+        **/
+        if (row.data.remote_user) {
+          if (!user_counter[row.metadata.timestamp]) user_counter[row.metadata.timestamp] = {}
+          if (!user_counter[row.metadata.timestamp][row.data.remote_user]) user_counter[row.metadata.timestamp][row.data.remote_user] = 0
+          user_counter[row.metadata.timestamp][row.data.remote_user] += 1
+        }
+
+        /**
+        * Traffic - referer
+        **/
+        if (row.data.referer.referer || row.data.referer.medium) {
+          // debug('PERIODICAL HOST CALLBACK referer %o', row.data.referer.referer, row.data.referer.medium)
+          let value = (row.data.referer.referer) ? row.data.referer.referer + ' - ' + row.data.referer.medium : row.data.referer.medium
+          if (!referer_counter[row.metadata.timestamp]) referer_counter[row.metadata.timestamp] = {}
+          if (!referer_counter[row.metadata.timestamp][value]) referer_counter[row.metadata.timestamp][value] = 0
+          referer_counter[row.metadata.timestamp][value] += 1
+        }
 
         /**
         * GeoIP
@@ -377,6 +501,10 @@ const web_callback = function (data, metadata, key, vm) {
     /**
     * Traffic
     **/
+
+    /**
+    * Traffic - host
+    **/
     let top_host_counter = {}
     let _top_host_counter = []
     Object.each(host_counter, function (data, host) {
@@ -395,6 +523,10 @@ const web_callback = function (data, metadata, key, vm) {
       })
     }
 
+    /**
+    * Traffic - domain
+    **/
+
     let top_domain_counter = {}
     let _top_domain_counter = []
     Object.each(domain_counter, function (data, domain) {
@@ -412,6 +544,294 @@ const web_callback = function (data, metadata, key, vm) {
         }
       })
     }
+
+    /**
+    * Traffic - status
+    **/
+    let periodical_status_counter = []
+    let periodical_status_counter_props = {}
+    Object.each(status_counter, function (val, ts) {
+      if (ts < smallest_start) {
+        delete status_counter[ts]
+      } else {
+        // Object.each(val, function (data, status) {
+        //   if (!periodical_status_counter[status]) periodical_status_counter[status] = 0
+        //   periodical_status_counter[status] += data
+        // })
+        periodical_status_counter_props = Object.merge(periodical_status_counter_props, val)
+
+        periodical_status_counter.push({timestamp: ts, value: val})
+      }
+    })
+
+    /**
+    * add missing properties with 0 value
+    **/
+    Object.each(periodical_status_counter_props, function (val, prop) {
+      Array.each(periodical_status_counter, function (row) {
+        if (!row.value[prop]) row.value[prop] = 0
+      })
+    })
+
+    /**
+    * Traffic - bytes & requests
+    **/
+    let periodical_bytes_counter = []
+    let periodical_requests_counter = []
+    Object.each(total_bytes_sent, function (val, ts) {
+      if (ts < smallest_start) {
+        delete total_bytes_sent[ts]
+        delete total_requests[ts]
+      } else {
+        let hit = total_requests[ts]
+        // periodical_bytes_counter += val
+        // periodical_requests_counter += hit
+        periodical_bytes_counter.push({timestamp: ts, value: { bytes: val} })
+        periodical_requests_counter.push({timestamp: ts, value: { hits: hit } })
+      }
+    })
+
+    /**
+    * Traffic - type (static | dynamic)
+    **/
+    let periodical_type_counter = []
+    let periodical_type_counter_props = {}
+    Object.each(type_counter, function (val, ts) {
+      if (ts < smallest_start) {
+        delete type_counter[ts]
+      } else {
+        // Object.each(val, function (data, type) {
+        //   if (!periodical_type_counter[type]) periodical_type_counter[type] = 0
+        //   periodical_type_counter[type] += data
+        // })
+        periodical_type_counter_props = Object.merge(periodical_type_counter_props, val)
+        periodical_type_counter.push({timestamp: ts, value: val})
+      }
+    })
+
+    /**
+    * add missing properties with 0 value
+    **/
+    Object.each(periodical_type_counter_props, function (val, prop) {
+      Array.each(periodical_type_counter, function (row) {
+        if (!row.value[prop]) row.value[prop] = 0
+      })
+    })
+
+    /**
+    * Traffic - addr
+    **/
+
+    // let periodical_addr_counter = []
+    // Object.each(addr_counter, function (val, ts) {
+    //   if (ts < smallest_start) {
+    //     delete addr_counter[ts]
+    //   } else {
+    //     // Object.each(val, function (data, addr) {
+    //     //   // if (!periodical_addr_counter[addr]) periodical_addr_counter[addr] = 0
+    //     //   // periodical_addr_counter[addr] += data
+    //     //   let value = {}
+    //     //   value[addr] = data
+    //     //   periodical_addr_counter.push({timestamp: ts, value: value })
+    //     // })
+    //     periodical_addr_counter.push({timestamp: ts, value: val })
+    //   }
+    // })
+    let top_addr_counter_by_ts = {}
+    let _top_addr_counter = []
+    Object.each(addr_counter, function (val, ts) {
+      if (ts < smallest_start) {
+        delete addr_counter[ts]
+      } else {
+        Object.each(val, function (data, addr) {
+          _top_addr_counter.push({addr: addr, count: data})
+        })
+      }
+    })
+
+    _top_addr_counter = _top_addr_counter.sort(function (a, b) { return (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0) })
+
+    for (let i = 0; i < TOP; i++) {
+      let value = _top_addr_counter[i]
+
+      Object.each(addr_counter, function (data, ts) {
+        // if (data[value.addr]) {
+        if (!top_addr_counter_by_ts[ts]) top_addr_counter_by_ts[ts] = {}
+        top_addr_counter_by_ts[ts][value.addr] = data[value.addr] || 0
+        // }
+      })
+    }
+
+    debug('PERIODICAL WEB ADDR', addr_counter, _top_addr_counter, top_addr_counter_by_ts)
+    let top_addr_counter = []
+    Object.each(top_addr_counter_by_ts, function (value, ts) {
+      top_addr_counter.push({timestamp: ts, value: value})
+    })
+    /**
+    * Traffic - user
+    **/
+    let periodical_user_counter = []
+    let periodical_user_counter_props = {}
+    Object.each(user_counter, function (val, ts) {
+      if (ts < smallest_start) {
+        delete user_counter[ts]
+      } else {
+        // Object.each(val, function (data, user) {
+        //   if (!periodical_user_counter[user]) periodical_user_counter[user] = 0
+        //   periodical_user_counter[user] += data
+        //
+        // })
+        periodical_user_counter_props = Object.merge(periodical_user_counter_props, val)
+        periodical_user_counter.push({timestamp: ts, value: val})
+      }
+    })
+
+    /**
+    * add missing properties with 0 value
+    **/
+    Object.each(periodical_user_counter_props, function (val, prop) {
+      Array.each(periodical_user_counter, function (row) {
+        if (!row.value[prop]) row.value[prop] = 0
+      })
+    })
+
+    /**
+    * Traffic - referer
+    **/
+    let periodical_referer_counter = []
+    let periodical_referer_counter_props = {}
+    Object.each(referer_counter, function (val, ts) {
+      if (ts < smallest_start) {
+        delete referer_counter[ts]
+      } else {
+        periodical_referer_counter_props = Object.merge(periodical_referer_counter_props, val)
+        // Object.each(val, function (data, referer) {
+        //   if (!periodical_referer_counter[referer]) periodical_referer_counter[referer] = 0
+        //   periodical_referer_counter[referer] += data
+        //
+        // })
+        periodical_referer_counter.push({timestamp: ts, value: val})
+      }
+    })
+
+    /**
+    * add missing properties with 0 value
+    **/
+    Object.each(periodical_referer_counter_props, function (val, prop) {
+      Array.each(periodical_referer_counter, function (row) {
+        if (!row.value[prop]) row.value[prop] = 0
+      })
+    })
+
+    /**
+    * Traffic - user agent
+    **/
+    let periodical_user_agent_os_counter = []
+    let periodical_user_agent_os_counter_props = {}
+    Object.each(user_agent_os_counter, function (val, ts) {
+      if (ts < smallest_start) {
+        delete user_agent_os_counter[ts]
+      } else {
+        // Object.each(val, function (data, os) {
+        //   if (!periodical_user_agent_os_counter[os]) periodical_user_agent_os_counter[os] = 0
+        //   periodical_user_agent_os_counter[os] += data
+        //
+        // })
+        periodical_user_agent_os_counter_props = Object.merge(periodical_user_agent_os_counter_props, val)
+        periodical_user_agent_os_counter.push({timestamp: ts, value: val})
+      }
+    })
+
+    /**
+    * add missing properties with 0 value
+    **/
+    Object.each(periodical_user_agent_os_counter_props, function (val, prop) {
+      Array.each(periodical_user_agent_os_counter, function (row) {
+        if (!row.value[prop]) row.value[prop] = 0
+      })
+    })
+
+    debug('PERIODICAL WEB TYPE', periodical_type_counter)
+
+    let periodical_user_agent_engine_counter = []
+    let periodical_user_agent_engine_counter_props = {}
+    Object.each(user_agent_engine_counter, function (val, ts) {
+      if (ts < smallest_start) {
+        delete user_agent_engine_counter[ts]
+      } else {
+        // Object.each(val, function (data, engine) {
+        //   if (!periodical_user_agent_engine_counter[engine]) periodical_user_agent_engine_counter[engine] = 0
+        //   periodical_user_agent_engine_counter[engine] += data
+        //
+        // })
+
+        periodical_user_agent_engine_counter_props = Object.merge(periodical_user_agent_engine_counter_props, val)
+        periodical_user_agent_engine_counter.push({timestamp: ts, value: val})
+      }
+    })
+
+    /**
+    * add missing properties with 0 value
+    **/
+    Object.each(periodical_user_agent_engine_counter_props, function (val, prop) {
+      Array.each(periodical_user_agent_engine_counter, function (row) {
+        if (!row.value[prop]) row.value[prop] = 0
+      })
+    })
+
+    let periodical_user_agent_device_counter = []
+    let periodical_user_agent_device_counter_props = {}
+    Object.each(user_agent_device_counter, function (val, ts) {
+      if (ts < smallest_start) {
+        delete user_agent_device_counter[ts]
+      } else {
+        // Object.each(val, function (data, device) {
+        //   if (!periodical_user_agent_device_counter[device]) periodical_user_agent_device_counter[device] = 0
+        //   periodical_user_agent_device_counter[device] += data
+        // })
+
+        periodical_user_agent_device_counter_props = Object.merge(periodical_user_agent_device_counter_props, val)
+        periodical_user_agent_device_counter.push({timestamp: ts, value: val})
+      }
+    })
+
+    /**
+    * add missing properties with 0 value
+    **/
+    Object.each(periodical_user_agent_device_counter_props, function (val, prop) {
+      Array.each(periodical_user_agent_device_counter, function (row) {
+        if (!row.value[prop]) row.value[prop] = 0
+      })
+    })
+
+    let periodical_user_agent_browser_counter = []
+    let periodical_user_agent_browser_counter_props = {}
+    Object.each(user_agent_browser_counter, function (val, ts) {
+      if (ts < smallest_start) {
+        delete user_agent_browser_counter[ts]
+      } else {
+        // Object.each(val, function (data, browser) {
+        //   if (!periodical_user_agent_browser_counter[browser]) periodical_user_agent_browser_counter[browser] = 0
+        //   periodical_user_agent_browser_counter[browser] += data
+        //
+        // })
+
+        periodical_user_agent_browser_counter_props = Object.merge(periodical_user_agent_browser_counter_props, val)
+        periodical_user_agent_browser_counter.push({timestamp: ts, value: val})
+      }
+    })
+
+    /**
+    * add missing properties with 0 value
+    **/
+    Object.each(periodical_user_agent_browser_counter_props, function (val, prop) {
+      Array.each(periodical_user_agent_browser_counter, function (row) {
+        if (!row.value[prop]) row.value[prop] = 0
+      })
+    })
+    /**
+    * @end Traffic - user agent
+    **/
 
     /**
     * GeoIP
@@ -580,6 +1000,18 @@ const web_callback = function (data, metadata, key, vm) {
     }
 
     vm.traffic = {
+      status_counter: periodical_status_counter,
+      type_counter: periodical_type_counter,
+      bytes_counter: periodical_bytes_counter,
+      requests_counter: periodical_requests_counter,
+      // addr_counter: periodical_addr_counter,
+      top_addr_counter: top_addr_counter,
+      user_counter: periodical_user_counter,
+      referer_counter: periodical_referer_counter,
+      user_agent_os_counter: periodical_user_agent_os_counter,
+      user_agent_engine_counter: periodical_user_agent_engine_counter,
+      user_agent_device_counter: periodical_user_agent_device_counter,
+      user_agent_browser_counter: periodical_user_agent_browser_counter,
       host_counter: host_counter,
       domain_counter: domain_counter,
       top_host_counter: top_host_counter,

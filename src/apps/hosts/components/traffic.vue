@@ -25,40 +25,32 @@
         <div :key="'hosts.traffic.'+traffic_view">
           <!-- class="embed-responsive-item"  -->
           <!-- <div class="w-100 h-100"> -->
-            <chart-tabular
-              v-if="traffic_view === 'world_map_country_counter' || traffic_view === 'top_world_map_country_counter'"
+            <chart
+              v-if="barChartRegEx.test(traffic_view)"
               :wrapper="{
-                type: atlasCountriesWrapper,
-                props:{
-                  /* colorScheme: colorScheme, */
-                  dark: dark,
-                  followColorScheme: false
-                }
+                type: barWrapper,
+                props: barConfigStatus.props
               }"
               :always_update="false"
               :ref="'hosts.traffic.'+traffic_view"
               :id="'hosts.traffic.'+traffic_view"
-              :config="{
-                style: (fluid !== true) ? {height: '250px'} : (mode === 'VerticalLayout') ? {height: '350px'} : {height: '400px'},
-                /* class: 'w-100 h-100' */
-              }"
+              :config="barConfigStatus"
               :stat="{
                 data: [trafficdata],
-                length: 1,
+                length: 30,
                 numeric: false
               }"
               :reactive="false"
-              :no_buffer="true"
+              :no_buffer="barChartNoBufferRegEx.test(traffic_view) ? true: false"
               :EventBus="EventBus"
             >
-            </chart-tabular>
+            </chart>
 
-            <chart-tabular
+            <!-- <chart-tabular
               v-else-if="traffic_view === 'world_map_city_counter' || traffic_view === 'top_world_map_city_counter'"
               :wrapper="{
                 type: atlasCitiesWrapper,
                 props:{
-                  /* colorScheme: colorScheme, */
                   dark: dark,
                   followColorScheme: false
                 }
@@ -68,7 +60,6 @@
               :id="'hosts.traffic.'+traffic_view"
               :config="{
                 style: (fluid !== true) ? {height: '250px'} : (mode === 'VerticalLayout') ? {height: '350px'} : {height: '400px'},
-                /* class: 'w-100 h-100' */
               }"
               :stat="{
                 data: [trafficdata],
@@ -79,7 +70,7 @@
               :no_buffer="true"
               :EventBus="EventBus"
             >
-            </chart-tabular>
+            </chart-tabular> -->
 
             <chart-tabular
               v-else-if="traffic_view === 'domain_counter' || traffic_view === 'host_counter'"
@@ -132,12 +123,21 @@ debug.log = console.log.bind(console) // don't forget to bind to console!
 
 import { BDropdown, BDropdownItem, BFormCheckbox } from 'bootstrap-vue'
 
+/**
+* Chart configs
+**/
 import amcharts4ConfigBarRace from 'mngr-ui-admin-charts/defaults/amcharts4.barRace'
+import barConfigStatus from './config/traffic.status.apexchart'
 
+/**
+* Chart Wrappers
+**/
 import amchartsWorldCountryMapWrapper from 'components/wrappers/amchartsWorldCountryMap'
 import amchartsWorldCityMapWrapper from 'components/wrappers/amchartsWorldCityMap'
 import amchartsBarRaceWrapper from 'components/wrappers/amchartsBarRace'
+import vueApexChartsWrapper from 'components/wrappers/vueApexCharts'
 
+import chart from 'components/chart'
 import chartTabular from 'components/chart.tabular'
 
 import { EventBus } from '@libs/eventbus'
@@ -160,7 +160,7 @@ export default {
     BFormCheckbox,
     // BModal,
     chartTabular,
-    // chart
+    chart
   },
 
   // computed: {
@@ -225,23 +225,21 @@ export default {
     'stat': {
       handler: function (newVal, oldVal) {
         newVal = JSON.parse(JSON.stringify(newVal)) // remove reactivity
-        debug('stat.data', newVal, this.traffic_view, amcharts4ConfigBarRace, this.barRaceConfigHosts)
+        debug('stat.data', newVal, this.traffic_view, this.barConfigStatus)
 
         // // let val = (newVal !== undefined && newVal[0] && newVal[0].value) ? newVal[0] : (oldVal !== undefined && oldVal[0] && oldVal[0].value) ? oldVal[0] : { timestamp: 0, value: { seconds: 0 } }
         if (newVal && newVal[this.traffic_view]) {
           let val = newVal[this.traffic_view]
 
-          if (/world_map/.test(this.traffic_view)) {
-            val.sort(function (a, b) { return (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0) })
-            let color = am4core.color(this.baseColor)
+          if (/bytes/.test(this.traffic_view)) {
+          //   val.sort(function (a, b) { return (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0) })
+          //   let color = am4core.color(this.baseColor)
             Array.each(val, function (row, index) {
-              if (/world_map_city_counter/.test(this.traffic_view)) {
-                row.color = color
-              } else {
-                if (index > 10) index = 10
-                row.color = color.lighten(index / 10)
-              }
-            }.bind(this))
+              row.value.bytes = (row.value.bytes / 1048576).toFixed(1) * 1 // to Mbs
+            })
+          }
+          if (/^(?!.*(host|domain)).*$/.test(this.traffic_view)) {
+            val.sort(function (a, b) { return (a.timestamp > b.timestamp) ? 1 : ((b.timestamp > a.timestamp) ? -1 : 0) })
           }
 
           this.trafficdata = val
@@ -267,15 +265,48 @@ export default {
       trafficdata: [],
       baseColor: window.getComputedStyle(document.documentElement).getPropertyValue('--bs-primary'),
       labels: {
+        requests_counter: 'Requests',
+        status_counter: 'Status',
+        type_counter: 'Type (static | dynamic)',
+        bytes_counter: 'Data transferred (Mbs)',
+        /* addr_counter: 'IP Addr', */
+        top_addr_counter: 'TOP IP Addresses',
+        user_counter: 'Users',
+        referer_counter: 'Referers',
+        user_agent_os_counter: 'User agent - OS',
+        user_agent_engine_counter: 'User agent - Engines',
+        user_agent_device_counter: 'User agent - Devices',
+        user_agent_browser_counter: 'User agent - Browsers',
         host_counter: 'Hosts',
         domain_counter: 'Domains',
         // top_host_counter: 'TOP Hosts',
         // top_domain_counter: 'TOP Domains',
       },
 
-      atlasCountriesWrapper: amchartsWorldCountryMapWrapper,
-      atlasCitiesWrapper: amchartsWorldCityMapWrapper,
+      // atlasCountriesWrapper: amchartsWorldCountryMapWrapper,
+      // atlasCitiesWrapper: amchartsWorldCityMapWrapper,
       barRaceWrapper: amchartsBarRaceWrapper,
+      barWrapper: vueApexChartsWrapper,
+
+      barConfigStatus: Object.merge(Object.clone(barConfigStatus), {
+        style: (this.fluid !== true) ? {height: '250px'} : (this.mode === 'VerticalLayout') ? {height: '350px'} : {height: '400px'},
+        props: {
+          /* colorScheme: colorScheme, */
+          dark: this.dark,
+          followColorScheme: false
+        },
+        options: {
+          chart: {
+            height: (this.fluid !== true) ? 250 : (this.mode === 'VerticalLayout') ? 350 : 400,
+          },
+          legend: {
+            height: (this.fluid !== true) ? 250 : (this.mode === 'VerticalLayout') ? 350 : 400,
+          }
+        }
+      }),
+
+      barChartRegEx: /^(?!.*(host|domain)).*$/,
+      barChartNoBufferRegEx: /addr|agent_os/,
 
       barRaceConfigDomains: Object.merge(Object.clone(amcharts4ConfigBarRace), {
         style: (this.fluid !== true) ? {height: '250px'} : (this.mode === 'VerticalLayout') ? {height: '350px'} : {height: '400px'},
@@ -305,7 +336,7 @@ export default {
 
       EventBus: EventBus,
 
-      traffic_view: 'domain_counter',
+      traffic_view: 'requests_counter',
       traffic_sum: false,
     }
   },

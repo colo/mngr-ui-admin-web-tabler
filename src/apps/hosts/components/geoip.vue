@@ -3,7 +3,7 @@
     <div class="card-body">
       <!-- <h3 class="card-title">Countries web access</h3> -->
       <div class="d-flex">
-        <h3 class="card-title">Web access</h3>
+        <h3 class="card-title">Geo data</h3>
         <!-- <div class="subheader">Countries web access</div> -->
         <div class="ml-auto lh-1">
           <b-dropdown  variant="link" toggle-class="text-decoration-none btn-options" no-caret right>
