@@ -42,6 +42,24 @@ let init = false
 let _top_domains = []
 let top_domains = {}
 
+let hosts = []
+
+const hosts_callback = function (data, metadata, key, vm) {
+  debug('PERIODICAL HOSTS CALLBACK data %s %o', key, data, metadata)
+
+  if (data.hosts) {
+    Array.each(data.hosts, function (row) {
+      // let path = row.metadata.path
+      let host = row.metadata.host
+
+      hosts.combine([host])
+    })
+
+    hosts.sort()
+    vm.hosts = hosts
+  }
+}
+
 const os_callback = function (data, metadata, key, vm) {
   debug('PERIODICAL OS CALLBACK data %s %o', key, data, metadata)
 
@@ -78,11 +96,12 @@ const os_callback = function (data, metadata, key, vm) {
       let path = row.metadata.path
       let host = row.metadata.host
 
+      hosts.combine([host])
       /**
       * MEMORY
       **/
       if (path === 'os.memory') {
-        if (/^(?!.*(caelum|lynx)).*$/.test(host) || vm.host === host) {
+        if (/^(?!.*(caelum|lynx)).*$/.test(host) || vm.selected_hosts.contains(host)) {
           if (!hosts_memory[host] || hosts_memory[host].metadata.timestamp < row.metadata.timestamp) {
             hosts_memory[host] = row
           }
@@ -94,7 +113,7 @@ const os_callback = function (data, metadata, key, vm) {
       **/
 
       if (path === 'os.cpus') {
-        if (/^(?!.*(caelum|lynx)).*$/.test(host) || vm.host === host) {
+        if (/^(?!.*(caelum|lynx)).*$/.test(host) || vm.selected_hosts.contains(host)) {
           if (!hosts_cpus[host] || hosts_cpus[host].metadata.timestamp < row.metadata.timestamp) {
             hosts_cpus[host] = row
           }
@@ -106,7 +125,7 @@ const os_callback = function (data, metadata, key, vm) {
       **/
 
       if (path === 'os.loadavg') {
-        if (/^(?!.*(caelum|lynx)).*$/.test(host) || vm.host === host) {
+        if (/^(?!.*(caelum|lynx)).*$/.test(host) || vm.selected_hosts.contains(host)) {
           if (!hosts_loadavg[host] || hosts_loadavg[host].metadata.timestamp < row.metadata.timestamp) {
             hosts_loadavg[host] = row
           }
@@ -118,7 +137,7 @@ const os_callback = function (data, metadata, key, vm) {
       **/
 
       if (path === 'os.uptime') {
-        if (/^(?!.*(caelum|lynx)).*$/.test(host) || vm.host === host) {
+        if (/^(?!.*(caelum|lynx)).*$/.test(host) || vm.selected_hosts.contains(host)) {
           if (!hosts_uptime[host] || hosts_uptime[host].metadata.timestamp < row.metadata.timestamp) {
             hosts_uptime[host] = row
           }
@@ -130,7 +149,7 @@ const os_callback = function (data, metadata, key, vm) {
       **/
 
       if (/^os\.mounts\..*\.blocks.*/.test(path)) {
-        if (/^(?!.*(caelum|lynx)).*$/.test(host) || vm.host === host) {
+        if (/^(?!.*(caelum|lynx)).*$/.test(host) || vm.selected_hosts.contains(host)) {
           if (!hosts_blocks[host] || !hosts_blocks[host][path] || hosts_blocks[host][path].metadata.timestamp < row.metadata.timestamp) {
             if (!hosts_blocks[host]) hosts_blocks[host] = {}
             hosts_blocks[host][path] = row
@@ -150,7 +169,7 @@ const os_callback = function (data, metadata, key, vm) {
               /^os\.networkInterfaces\.vnet.*\.bytes$/.test(path)
         )
       ) { // derived
-        if (/^(?!.*(caelum|lynx)).*$/.test(host) || vm.host === host) {
+        if (/^(?!.*(caelum|lynx)).*$/.test(host) || vm.selected_hosts.contains(host)) {
           // if (!hosts_net[host] || !hosts_net[host][path] || hosts_net[host][path].metadata.timestamp < row.metadata.timestamp) {
           //   if (!hosts_net[host]) hosts_net[host] = {}
           //   hosts_net[host][path] = row
@@ -301,6 +320,8 @@ const web_callback = function (data, metadata, key, vm) {
     let host_counter = {}
     let domain_counter = {}
     let status_counter = {}
+    let methods_counter = {}
+    let pathnames_counter = {}
     let type_counter = {}
 
     let addr_counter = {}
@@ -331,15 +352,19 @@ const web_callback = function (data, metadata, key, vm) {
     let geoip = []
 
     Array.each(data.logs, function (row) {
+      let path = row.metadata.path
+
       let start = row.metadata.timestamp
       let end = row.metadata.timestamp
 
-      if (start >= smallest_start) { // discard any document that is previous to our smallest_start timestamp
+      if (/nginx|apache/.test(path) && start >= smallest_start) { // discard any document that is previous to our smallest_start timestamp
         if (range.start === undefined || range.start > start) { range.start = start }
         if (range.end === undefined || range.end < end) { range.end = end }
 
         let host = row.metadata.host
         let domain = row.metadata.domain
+
+        hosts.combine([host])
 
         /**
         * Traffic
@@ -357,6 +382,24 @@ const web_callback = function (data, metadata, key, vm) {
           if (!status_counter[row.metadata.timestamp]) status_counter[row.metadata.timestamp] = {}
           if (!status_counter[row.metadata.timestamp][row.data.status]) status_counter[row.metadata.timestamp][row.data.status] = 0
           status_counter[row.metadata.timestamp][row.data.status] += 1
+        }
+
+        /**
+        * Traffic - method
+        **/
+        if (row.data.method) {
+          if (!methods_counter[row.metadata.timestamp]) methods_counter[row.metadata.timestamp] = {}
+          if (!methods_counter[row.metadata.timestamp][row.data.method]) methods_counter[row.metadata.timestamp][row.data.method] = 0
+          methods_counter[row.metadata.timestamp][row.data.method] += 1
+        }
+
+        /**
+        * Traffic - pathname
+        **/
+        if (row.data.pathname) {
+          if (!pathnames_counter[row.metadata.timestamp]) pathnames_counter[row.metadata.timestamp] = {}
+          if (!pathnames_counter[row.metadata.timestamp][row.data.pathname]) pathnames_counter[row.metadata.timestamp][row.data.pathname] = 0
+          pathnames_counter[row.metadata.timestamp][row.data.pathname] += 1
         }
 
         /**
@@ -569,6 +612,103 @@ const web_callback = function (data, metadata, key, vm) {
     **/
     Object.each(periodical_status_counter_props, function (val, prop) {
       Array.each(periodical_status_counter, function (row) {
+        if (!row.value[prop]) row.value[prop] = 0
+      })
+    })
+
+    /**
+    * Traffic - method
+    **/
+    let periodical_methods_counter = []
+    let periodical_methods_counter_props = {}
+    Object.each(methods_counter, function (val, ts) {
+      if (ts < smallest_start) {
+        delete methods_counter[ts]
+      } else {
+        // Object.each(val, function (data, method) {
+        //   if (!periodical_methods_counter[method]) periodical_methods_counter[method] = 0
+        //   periodical_methods_counter[method] += data
+        // })
+        periodical_methods_counter_props = Object.merge(periodical_methods_counter_props, val)
+
+        periodical_methods_counter.push({timestamp: ts, value: val})
+      }
+    })
+
+    /**
+    * add missing properties with 0 value
+    **/
+    Object.each(periodical_methods_counter_props, function (val, prop) {
+      Array.each(periodical_methods_counter, function (row) {
+        if (!row.value[prop]) row.value[prop] = 0
+      })
+    })
+
+    /**
+    * Traffic - pathname
+    **/
+    // let periodical_pathnames_counter = []
+    // let periodical_pathnames_counter_props = {}
+    // Object.each(pathnames_counter, function (val, ts) {
+    //   if (ts < smallest_start) {
+    //     delete pathnames_counter[ts]
+    //   } else {
+    //     // Object.each(val, function (data, pathname) {
+    //     //   if (!periodical_pathnames_counter[pathname]) periodical_pathnames_counter[pathname] = 0
+    //     //   periodical_pathnames_counter[pathname] += data
+    //     // })
+    //     periodical_pathnames_counter_props = Object.merge(periodical_pathnames_counter_props, val)
+    //
+    //     periodical_pathnames_counter.push({timestamp: ts, value: val})
+    //   }
+    // })
+    /**
+    * add missing properties with 0 value
+    **/
+    // Object.each(periodical_pathnames_counter_props, function (val, prop) {
+    //   Array.each(periodical_pathnames_counter, function (row) {
+    //     if (!row.value[prop]) row.value[prop] = 0
+    //   })
+    // })
+    //
+    let top_pathnames_counter_by_ts = {}
+    let _top_pathnames_counter = []
+    let periodical_pathnames_counter_props = {}
+    Object.each(pathnames_counter, function (val, ts) {
+      if (ts < smallest_start) {
+        delete pathnames_counter[ts]
+      } else {
+        Object.each(val, function (data, pathnames) {
+          _top_pathnames_counter.push({pathnames: pathnames, count: data})
+        })
+      }
+    })
+
+    _top_pathnames_counter = _top_pathnames_counter.sort(function (a, b) { return (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0) })
+
+    for (let i = 0; i < TOP; i++) {
+      let value = _top_pathnames_counter[i]
+
+      Object.each(pathnames_counter, function (data, ts) {
+        // if (data[value.pathnames]) {
+        if (!top_pathnames_counter_by_ts[ts]) top_pathnames_counter_by_ts[ts] = {}
+        top_pathnames_counter_by_ts[ts][value.pathnames] = data[value.pathnames] || 0
+        // }
+      })
+    }
+
+    debug('PERIODICAL WEB ADDR', pathnames_counter, _top_pathnames_counter, top_pathnames_counter_by_ts)
+    let top_pathnames_counter = []
+    Object.each(top_pathnames_counter_by_ts, function (value, ts) {
+      periodical_pathnames_counter_props = Object.merge(periodical_pathnames_counter_props, value)
+      top_pathnames_counter.push({timestamp: ts, value: value})
+    })
+
+    /**
+    * add missing properties with 0 value
+    **/
+    Object.each(periodical_pathnames_counter_props, function (val, prop) {
+      Array.each(top_pathnames_counter, function (row) {
         if (!row.value[prop]) row.value[prop] = 0
       })
     })
@@ -1001,6 +1141,9 @@ const web_callback = function (data, metadata, key, vm) {
 
     vm.traffic = {
       status_counter: periodical_status_counter,
+      methods_counter: periodical_methods_counter,
+      // pathnames_counter: periodical_pathnames_counter,
+      top_pathnames_counter: top_pathnames_counter,
       type_counter: periodical_type_counter,
       bytes_counter: periodical_bytes_counter,
       requests_counter: periodical_requests_counter,
@@ -1021,10 +1164,12 @@ const web_callback = function (data, metadata, key, vm) {
 }
 
 const generic_callback = function (data, metadata, key, vm) {
-  debug('PERIODICAL HOST CALLBACK data %s %o', key, data, metadata)
+  debug('PERIODICAL GENERIC CALLBACK data %s %o', key, data, metadata)
+  if (key === 'hosts.periodical') { hosts_callback(data, metadata, key, vm) }
+
   if (key === 'os.periodical') { os_callback(data, metadata, key, vm) }
 
-  if (key === 'nginx.periodical') { web_callback(data, metadata, key, vm) }
+  if (key === 'logs.periodical') { web_callback(data, metadata, key, vm) }
 }
 
 const host_range_component = {
@@ -1038,25 +1183,67 @@ const host_range_component = {
 
     if (!_key) {
       // key = ['host.periodical', 'config.range', 'minute.range']
-      key = ['os.periodical', 'nginx.periodical'] //, 'minute.range'
+      key = ['hosts.periodical', 'os.periodical', 'logs.periodical'] //, 'minute.range'
     }
 
     let filter = [
       // "this.r.row('metadata')('path').eq('os.memory').or(this.r.row('metadata')('path').eq('os.cpus'))"
     ]
 
-    if (vm.host) {
-      filter.push({ 'metadata': { 'host': vm.host } })
+    if (vm.selected_hosts && vm.selected_hosts.length > 0) {
+      let hosts_filter
+      Array.each(vm.selected_hosts, function (host) {
+        if (hosts_filter === undefined) {
+          hosts_filter = "this.r.row('metadata')('host').eq('" + host + "')"
+        } else {
+          hosts_filter += ".or(this.r.row('metadata')('host').eq('" + host + "')"
+        }
+      })
+
+      if (vm.selected_hosts.length > 1) { // close each 'or'
+        Array.each(vm.selected_hosts, function (host, index) {
+          if (index < vm.selected_hosts.length - 1) { hosts_filter += ')' }
+        })
+      }
+      filter.push(hosts_filter)
     }
 
+    debug('host_range_component FILTER ', filter)
+
     let os_filter = Array.clone(filter)
-    let logs_nginx_filter = Array.clone(filter)
-    logs_nginx_filter.push({ 'metadata': { 'path': 'logs.nginx' } })
+    let logs_filter = Array.clone(filter)
+    logs_filter.push({ 'metadata': { 'path': 'logs.nginx' } })
 
     if (
       _key
     ) {
       switch (_key) {
+        case 'hosts.periodical':
+          source = [{
+            params: { id: _key },
+            path: 'all',
+            // range: 'posix ' + roundMilliseconds(Date.now() - (6 * SECOND)) + '-' + roundMilliseconds(Date.now() - SECOND) + '/*',
+            query: {
+              'from': 'hosts',
+              'index': false,
+              /**
+              * right now needed to match OUTPUT 'id' with this query (need to @fix)
+              **/
+              'q': [
+                'data',
+                'metadata'
+              ],
+              'transformation': [
+                {
+                  'orderBy': { 'index': 'r.asc(host)' }
+                }
+              ],
+              // 'filter': os_filter
+
+            }
+          }]
+          break
+
         case 'os.periodical':
           source = [{
             params: { id: _key },
@@ -1092,7 +1279,7 @@ const host_range_component = {
           }]
           break
 
-        case 'nginx.periodical':
+        case 'logs.periodical':
           source = [{
             params: { id: _key },
             path: 'all',
@@ -1121,7 +1308,7 @@ const host_range_component = {
                   'orderBy': { 'index': 'r.desc(timestamp)' }
                 }
               ],
-              'filter': logs_nginx_filter
+              'filter': logs_filter
 
             }
           }]

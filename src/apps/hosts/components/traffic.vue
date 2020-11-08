@@ -208,7 +208,7 @@ export default {
     // debug('create', this.mode)
     const traffic_view = this.$route.query.traffic_view
     if (traffic_view) {
-      this.traffic_view = traffic_view
+      this.traffic_view = (this.labels[traffic_view]) ? traffic_view : 'requests_counter'
     }
 
     const traffic_sum = this.$route.query.traffic_sum
@@ -219,7 +219,7 @@ export default {
   },
   watch: {
     traffic_view: function (val) {
-      this.$router.push({ path: this.$route.path, query: Object.merge(Object.clone(this.$route.query), { traffic_view: val }) }).catch(err => { debug(err) })// catch 'NavigationDuplicated' error
+      this.$router.push({ path: this.$route.path, query: Object.merge(Object.clone(this.$route.query), { traffic_view: val }) }).catch(err => { debug('traffic_view', err) })
       // this.$router.push(`${this.$route.path}?tab=${val}`).catch(err => {})// catch 'NavigationDuplicated' error
     },
     'stat': {
@@ -267,6 +267,9 @@ export default {
       labels: {
         requests_counter: 'Requests',
         status_counter: 'Status',
+        methods_counter: 'Methods',
+        // pathnames_counter: 'Pathnames',
+        top_pathnames_counter: 'TOP Pathnames',
         type_counter: 'Type (static | dynamic)',
         bytes_counter: 'Data transferred (Mbs)',
         /* addr_counter: 'IP Addr', */
@@ -349,7 +352,7 @@ export default {
       debug('setSum', val)
 
       this.traffic_sum = val
-      this.$router.replace({name: 'hosts', query: { ...this.$route.query, traffic_sum: val}})
+      this.$router.replace({name: 'hosts', query: { ...this.$route.query, traffic_sum: val}}).catch(err => { debug('setSum', err) })
     },
     /**
     * @start pipelines
