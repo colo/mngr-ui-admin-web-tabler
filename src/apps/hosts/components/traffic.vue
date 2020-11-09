@@ -73,7 +73,7 @@
             </chart-tabular> -->
 
             <chart-tabular
-              v-else-if="traffic_view === 'domain_counter' || traffic_view === 'host_counter'"
+              v-else-if="traffic_view === 'domains_counter' || traffic_view === 'hosts_counter'"
               :wrapper="{
                 type: barRaceWrapper,
                 props: (/domain/.test(traffic_view)) ? Object.merge(barRaceConfigDomains.props, {sum:traffic_sum}) : Object.merge(barRaceConfigHosts.props, {sum:traffic_sum})
@@ -102,7 +102,7 @@
         <!-- Use quasar's invisible class to hide element but keep it using the same space  -->
         <div class="ml-auto lh-1">
           <b-form-checkbox
-            :class="(traffic_view !== 'domain_counter' && traffic_view !== 'host_counter') ? 'invisible' : ''"
+            :class="(traffic_view !== 'domains_counter' && traffic_view !== 'hosts_counter') ? 'invisible' : ''"
             class="form-switch"
             v-model="traffic_sum"
             plain
@@ -190,10 +190,10 @@ export default {
       type: Object,
       default: function () {
         return {
-          host_counter: [],
-          domain_counter: [],
-          top_host_counter: [],
-          top_domain_counter: [],
+          hosts_counter: [],
+          domains_counter: [],
+          top_hosts_counter: [],
+          top_domains_counter: [],
         }
       }
     }
@@ -235,7 +235,9 @@ export default {
           //   val.sort(function (a, b) { return (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0) })
           //   let color = am4core.color(this.baseColor)
             Array.each(val, function (row, index) {
-              row.value.bytes = (row.value.bytes / 1048576).toFixed(1) * 1 // to Mbs
+              // row.value.bytes = (row.value.bytes / 1048576).toFixed(1) * 1 // to Mbs
+              row.value.Mbytes = (row.value.bytes / 1048576).toFixed(1) * 1 // to Mbs
+              delete row.value.bytes
             })
           }
           if (/^(?!.*(host|domain)).*$/.test(this.traffic_view)) {
@@ -274,16 +276,16 @@ export default {
         bytes_counter: 'Data transferred (Mbs)',
         /* addr_counter: 'IP Addr', */
         top_addr_counter: 'TOP IP Addresses',
+        top_hosts_counter: 'TOP Hosts',
+        top_domains_counter: 'TOP Domains',
         user_counter: 'Users',
         referer_counter: 'Referers',
         user_agent_os_counter: 'User agent - OS',
         user_agent_engine_counter: 'User agent - Engines',
         user_agent_device_counter: 'User agent - Devices',
         user_agent_browser_counter: 'User agent - Browsers',
-        host_counter: 'Hosts',
-        domain_counter: 'Domains',
-        // top_host_counter: 'TOP Hosts',
-        // top_domain_counter: 'TOP Domains',
+        hosts_counter: 'Hosts bar race',
+        domains_counter: 'Domains bar race',
       },
 
       // atlasCountriesWrapper: amchartsWorldCountryMapWrapper,
@@ -308,7 +310,7 @@ export default {
         }
       }),
 
-      barChartRegEx: /^(?!.*(host|domain)).*$/,
+      barChartRegEx: /^(?!(hosts_counter|domains_counter)).*$/, /// ^(?!.*(hosts_counter|domains_counter)).*$/,
       barChartNoBufferRegEx: /addr|agent_os/,
 
       barRaceConfigDomains: Object.merge(Object.clone(amcharts4ConfigBarRace), {
