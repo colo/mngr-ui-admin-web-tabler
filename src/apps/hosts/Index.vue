@@ -7,7 +7,8 @@
         <div class="col-auto">
           <!-- Page pre-title -->
           <div class="page-pretitle">
-            Overview
+            <svg data-v-2a169e26="" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-md"><path data-v-2a169e26="" stroke="none" d="M0 0h24v24H0z"></path><rect data-v-2a169e26="" x="3" y="4" width="18" height="8" rx="3"></rect><rect data-v-2a169e26="" x="3" y="12" width="18" height="8" rx="3"></rect><line data-v-2a169e26="" x1="7" y1="8" x2="7" y2="8.01"></line><line data-v-2a169e26="" x1="7" y1="16" x2="7" y2="16.01"></line></svg>
+            Summary
           </div>
           <h2 class="page-title">
             Hosts: {{ (selected_hosts.length === 0 ) ? 'All' : selected_hosts.join(',')}}
@@ -44,7 +45,7 @@
               </b-form-group>
             </b-dropdown-form>
 
-            <!-- <b-dropdown-item :to="{name: 'hosts', query: { ...$route.query, hosts: ''}}">All</b-dropdown-item> -->
+            <!-- <b-dropdown-item :to="{ query: { ...$route.query, hosts: ''}}">All</b-dropdown-item> -->
             <b-dropdown-divider />
             <b-dropdown-form>
               <b-form-checkbox-group
@@ -812,9 +813,8 @@
       </div>
     </div>
 
-    <b-modal centered  size="lg" title="New report" modal-class="modal-blur" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- <b-modal centered  size="lg" title="New report" modal-class="modal-blur" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
       <template v-slot:default>
-        <!-- <div class="modal-body"> -->
           <div class="mb-3">
             <label class="form-label">Name</label>
             <input type="text" class="form-control" name="example-text-input" placeholder="Your report name">
@@ -873,8 +873,6 @@
               </div>
             </div>
           </div>
-        <!-- </div> -->
-        <!-- <div class="modal-body"> -->
           <div class="row">
             <div class="col-lg-6">
               <div class="mb-3">
@@ -895,7 +893,6 @@
               </div>
             </div>
           </div>
-        <!-- </div> -->
       </template>
       <template v-slot:modal-footer="{ close }">
         <b-button variant="link-secondary" @click="close()">Cancel</b-button>
@@ -905,14 +902,14 @@
         </b-button>
       </template>
 
-    </b-modal>
+    </b-modal> -->
   </q-page>
 </template>
 
 <script>
 import Vue from 'vue'
 import { BButton, BDropdown, BDropdownItem, BDropdownForm, BDropdownDivider, BFormCheckbox, BFormCheckboxGroup, BFormGroup, BModal, VBModal } from 'bootstrap-vue'
-Vue.directive('b-modal', VBModal)
+// Vue.directive('b-modal', VBModal)
 
 import * as Debug from 'debug'
 const debug = Debug('apps:hosts')
@@ -1134,7 +1131,7 @@ export default {
       set: function (val) {
         debug('allHostsSelected', val)
         if (val === true) {
-          this.$router.replace({name: 'hosts', query: { ...this.$route.query, selected_hosts: []}}).catch(err => { debug('allHostsSelected set', err) })
+          this.$router.replace({ query: { ...this.$route.query, selected_hosts: []}}).catch(err => { debug('allHostsSelected set', err) })
           this.selected_hosts = []
         }
       }
@@ -1142,7 +1139,7 @@ export default {
   },
   methods: {
     setHost: function (val) {
-      this.$router.replace({name: 'hosts', query: { ...this.$route.query, selected_hosts: this.selected_hosts}}).catch(err => { debug('setHost', err) })
+      this.$router.replace({ query: { ...this.$route.query, selected_hosts: this.selected_hosts}}).catch(err => { debug('setHost', err) })
     },
     // setAllHosts: function (val) {
     //   debug('setAllHosts', val)
@@ -1157,22 +1154,23 @@ export default {
     * @start pipelines
     **/
     create_pipelines: function (create_id, next) {
-      debug('create_pipelines %o', JSON.parse(JSON.stringify(this.$options.pipelines)), create_id)
+      debug('create_pipelines %o', JSON.parse(JSON.stringify(this.$options.pipelines)), create_id, this.components)
 
       let template = Object.clone(Pipeline)
+      template.input[0].poll.id = this.id
+      // let pipeline_id = template.input[0].poll.id
+      // let pipeline_id = this.id
 
-      let pipeline_id = template.input[0].poll.id
-
-      if (!create_id || create_id === undefined || create_id === pipeline_id) {
-        // template.input[0].poll.conn[0].requests = this.__components_sources_to_requests(this.components[pipeline_id], pipeline_id)
+      if (!create_id || create_id === undefined || create_id === this.id) {
+        // template.input[0].poll.conn[0].requests = this.__components_sources_to_requests(this.components[this.id], this.id)
         let components_requests = {}
 
-        if (this.$options.pipelines[pipeline_id]) {
-          components_requests = this.__merge_requests(pipeline_id, this.__components_sources_to_requests(this.components, pipeline_id))
+        if (this.$options.pipelines[this.id]) {
+          components_requests = this.__merge_requests(this.id, this.__components_sources_to_requests(this.components, this.id))
 
-          this.destroy_pipelines(pipeline_id)
+          this.destroy_pipelines(this.id)
         } else {
-          components_requests = this.__components_sources_to_requests(this.components, pipeline_id)
+          components_requests = this.__components_sources_to_requests(this.components, this.id)
         }
 
         debug('create_pipelines REQUESTS %o', components_requests)
@@ -1183,13 +1181,13 @@ export default {
 
         let pipe = new JSPipeline(template)
 
-        this.$options.__pipelines_cfg[pipeline_id] = {
+        this.$options.__pipelines_cfg[this.id] = {
           ids: [],
           connected: [],
           suspended: pipe.inputs.every(function (input) { return input.options.suspended }, this)
         }
 
-        this.$options.pipelines[pipeline_id] = pipe
+        this.$options.pipelines[this.id] = pipe
       }
       debug('create_pipelines %o', this.$options.pipelines)
 

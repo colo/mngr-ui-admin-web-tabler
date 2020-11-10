@@ -11,24 +11,24 @@ const navBarList = [
     to: {name: 'hosts'},
     icon: '<svg data-v-2a169e26="" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-md"><path data-v-2a169e26="" stroke="none" d="M0 0h24v24H0z"></path><rect data-v-2a169e26="" x="3" y="4" width="18" height="8" rx="3"></rect><rect data-v-2a169e26="" x="3" y="12" width="18" height="8" rx="3"></rect><line data-v-2a169e26="" x1="7" y1="8" x2="7" y2="8.01"></line><line data-v-2a169e26="" x1="7" y1="16" x2="7" y2="16.01"></line></svg>',
   },
-  // {
-  //   label: 'User Interface',
-  //   icon: '<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="12 3 20 7.5 20 16.5 12 21 4 16.5 4 7.5 12 3" /><line x1="12" y1="12" x2="20" y2="7.5" /><line x1="12" y1="12" x2="12" y2="21" /><line x1="12" y1="12" x2="4" y2="7.5" /><line x1="16" y1="5.25" x2="8" y2="9.75" /></svg>',
-  //   columns: 2,
-  //   list: [
-  //     { label: 'Empty page', to: {name: 'empty'}},
-  //     { label: 'Blank page', to: {name: 'blank'}},
-  //     { label: 'Buttons', to: {name: 'buttons'}},
-  //     { label: 'Cards', to: {name: 'cards'}},
-  //     { label: 'Dropdowns', to: {name: 'dropdowns'}},
-  //     { label: 'Icons', to: {name: 'icons'}},
-  //     { label: 'Modals', to: {name: 'modals'}},
-  //     { label: 'Tables', to: {name: 'tables'}},
-  //     { label: 'Calendar', to: {name: 'calendar'}},
-  //     { label: 'Carousel', to: {name: 'carousel'}},
-  //     { label: 'Lists', to: {name: 'lists'}}
-  //   ]
-  // },
+  {
+    label: 'Logs',
+    icon: '<svg data-v-2a169e26="" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-md"><path data-v-2a169e26="" stroke="none" d="M0 0h24v24H0z"></path><path data-v-2a169e26="" d="M16 6h3a1 1 0 0 1 1 1v11a2 2 0 0 1 -4 0v-13a1 1 0 0 0 -1 -1h-10a1 1 0 0 0 -1 1v12a3 3 0 0 0 3 3h11"></path><line data-v-2a169e26="" x1="8" y1="8" x2="12" y2="8"></line><line data-v-2a169e26="" x1="8" y1="12" x2="12" y2="12"></line><line data-v-2a169e26="" x1="8" y1="16" x2="12" y2="16"></line></svg>',
+    // columns: 2,
+    list: [
+      { label: 'Web', to: {name: 'logs_web'}},
+      // { label: 'Blank page', to: {name: 'blank'}},
+      // { label: 'Buttons', to: {name: 'buttons'}},
+      // { label: 'Cards', to: {name: 'cards'}},
+      // { label: 'Dropdowns', to: {name: 'dropdowns'}},
+      // { label: 'Icons', to: {name: 'icons'}},
+      // { label: 'Modals', to: {name: 'modals'}},
+      // { label: 'Tables', to: {name: 'tables'}},
+      // { label: 'Calendar', to: {name: 'calendar'}},
+      // { label: 'Carousel', to: {name: 'carousel'}},
+      // { label: 'Lists', to: {name: 'lists'}}
+    ]
+  },
   // {
   //   label: 'Form elements',
   //   to: {name: 'form-elements'},

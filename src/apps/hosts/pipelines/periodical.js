@@ -131,17 +131,35 @@ export default {
     //   // if (!payload.err) { EventBus.$emit('log', payload) }
     // }
     function (payload) {
-      if (!payload.err && /^input\.hosts\.periodical\[.*\]$/.test(payload.id)) {
-        debug('OUTPUT', payload)
-        // payload.id = payload.id.replace('input.hosts.periodical[', '').slice(0, -1)
-        // debug('OUTPUT', payload)
-        // EventBus.$emit('input.hosts.periodical.' + payload.metadata.input, payload)
-        let event_id = payload.id
-        payload.id = payload.id.replace('input.hosts.periodical[', '').slice(0, -1)
-        EventBus.$emit(event_id, payload)
-      }
+      // if (!payload.err && /^input\.hosts\.periodical\[.*\]$/.test(payload.id)) {
+      //   debug('OUTPUT', payload, this)
+      //   // payload.id = payload.id.replace('input.hosts.periodical[', '').slice(0, -1)
+      //   // debug('OUTPUT', payload)
+      //   // EventBus.$emit('input.hosts.periodical.' + payload.metadata.input, payload)
+      //   let event_id = payload.id
+      //   payload.id = payload.id.replace('input.hosts.periodical[', '').slice(0, -1)
+      //   EventBus.$emit(event_id, payload)
+      // }
 
-      // if (!payload.err) { EventBus.$emit('log', payload) }
+      debug('OUTPUT', payload, this)
+      if (!payload.err) {
+        Array.each(this.inputs, function (input) {
+          let id = (input.options && input.options.id) ? input.options.id : undefined
+          if (id !== undefined) {
+            debug('OUTPUT ID', payload, id)
+            // let _id = id.replace('.', '\\.')
+            let _id = id.split('.').join('\\.')
+            let id_regexp = new RegExp('^' + _id + '\\[.*\\]$')
+            debug('OUTPUT RexExp', id_regexp)
+            if (id_regexp.test(payload.id)) {
+              let event_id = payload.id
+              payload.id = payload.id.replace(id + '[', '').slice(0, -1)
+              EventBus.$emit(event_id, payload)
+              debug('OUTPUT EMIT', event_id, payload)
+            }
+          }
+        })
+      }
     }
   ]
 }

@@ -14,7 +14,7 @@ import hosts_callback from '@apps/hosts/libs/periodical'
 
 import os_callback from '@apps/system/libs/periodical'
 
-import web_callback from '@apps/web/libs/periodical'
+import web_callback from '@apps/logs/web/libs/periodical'
 
 const generic_callback = function (data, metadata, key, vm) {
   debug('PERIODICAL GENERIC CALLBACK data %s %o', key, data, metadata)
@@ -25,9 +25,9 @@ const generic_callback = function (data, metadata, key, vm) {
   if (key === 'logs.periodical') { web_callback(data, metadata, key, vm) }
 }
 
-const host_range_component = {
+const hosts_periodical = {
   params: function (_key, vm) {
-    // debug('PERIODICAL host_range_component %o %o', _key, vm)
+    debug('PERIODICAL hosts_periodical %o %o', _key, vm)
 
     // const MINUTE = 60000
 
@@ -36,36 +36,14 @@ const host_range_component = {
 
     if (!_key) {
       // key = ['host.periodical', 'config.range', 'minute.range']
-      key = ['hosts.periodical', 'os.periodical', 'logs.periodical'] //, 'minute.range'
+      key = ['hosts.periodical'] //, 'minute.range'
     }
 
     let filter = [
       // "this.r.row('metadata')('path').eq('os.memory').or(this.r.row('metadata')('path').eq('os.cpus'))"
     ]
 
-    if (vm.selected_hosts && vm.selected_hosts.length > 0) {
-      let hosts_filter
-      Array.each(vm.selected_hosts, function (host) {
-        if (hosts_filter === undefined) {
-          hosts_filter = "this.r.row('metadata')('host').eq('" + host + "')"
-        } else {
-          hosts_filter += ".or(this.r.row('metadata')('host').eq('" + host + "')"
-        }
-      })
-
-      if (vm.selected_hosts.length > 1) { // close each 'or'
-        Array.each(vm.selected_hosts, function (host, index) {
-          if (index < vm.selected_hosts.length - 1) { hosts_filter += ')' }
-        })
-      }
-      filter.push(hosts_filter)
-    }
-
-    debug('host_range_component FILTER ', filter)
-
-    let os_filter = Array.clone(filter)
-    let logs_filter = Array.clone(filter)
-    logs_filter.push({ 'metadata': { 'path': 'logs.nginx' } })
+    debug('hosts_periodical FILTER ', filter)
 
     if (
       _key
@@ -96,7 +74,63 @@ const host_range_component = {
             }
           }]
           break
+      }
+    }
 
+    // debug('MyChart periodical KEY ', key, source)
+
+    return { key, source }
+  },
+  callback: generic_callback
+
+}
+
+const hosts_summary_periodical = {
+  params: function (_key, vm) {
+    // debug('PERIODICAL hosts_summary_periodical %o %o', _key, vm)
+
+    // const MINUTE = 60000
+
+    let source
+    let key
+
+    if (!_key) {
+      // key = ['host.periodical', 'config.range', 'minute.range']
+      key = ['os.periodical', 'logs.periodical'] //, 'minute.range'
+    }
+
+    let filter = [
+      // "this.r.row('metadata')('path').eq('os.memory').or(this.r.row('metadata')('path').eq('os.cpus'))"
+    ]
+
+    if (vm.selected_hosts && vm.selected_hosts.length > 0) {
+      let hosts_filter
+      Array.each(vm.selected_hosts, function (host) {
+        if (hosts_filter === undefined) {
+          hosts_filter = "this.r.row('metadata')('host').eq('" + host + "')"
+        } else {
+          hosts_filter += ".or(this.r.row('metadata')('host').eq('" + host + "')"
+        }
+      })
+
+      if (vm.selected_hosts.length > 1) { // close each 'or'
+        Array.each(vm.selected_hosts, function (host, index) {
+          if (index < vm.selected_hosts.length - 1) { hosts_filter += ')' }
+        })
+      }
+      filter.push(hosts_filter)
+    }
+
+    debug('hosts_summary_periodical FILTER ', filter)
+
+    let os_filter = Array.clone(filter)
+    let logs_filter = Array.clone(filter)
+    logs_filter.push({ 'metadata': { 'path': 'logs.nginx' } })
+
+    if (
+      _key
+    ) {
+      switch (_key) {
         case 'os.periodical':
           source = [{
             params: { id: _key },
@@ -178,11 +212,13 @@ const host_range_component = {
 }
 
 const once = [
-  host_range_component
+  hosts_periodical,
+  hosts_summary_periodical
 ]
 
 const periodical = [
-  host_range_component
+  hosts_periodical,
+  hosts_summary_periodical
 ]
 
 const requests = {
@@ -190,5 +226,5 @@ const requests = {
   once: once
 }
 
-export { periodical, once }
+export { hosts_periodical, hosts_summary_periodical, periodical, once }
 export default requests

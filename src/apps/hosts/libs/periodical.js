@@ -9,7 +9,7 @@ import {roundMilliseconds, roundSeconds, roundMinutes, roundHours} from '@libs/t
 let hosts = []
 
 export default function (data, metadata, key, vm) {
-  debug('PERIODICAL HOSTS CALLBACK data %s %o', key, data, metadata)
+  debug('PERIODICAL HOSTS CALLBACK data %s %o', key, data, metadata, vm)
 
   if (data.hosts) {
     Array.each(data.hosts, function (row) {
@@ -20,6 +20,7 @@ export default function (data, metadata, key, vm) {
     })
 
     hosts.sort()
+    debug('PERIODICAL HOSTS CALLBACK UPDATE %s %o', hosts, vm.hosts)
     vm.hosts = hosts
   }
 }

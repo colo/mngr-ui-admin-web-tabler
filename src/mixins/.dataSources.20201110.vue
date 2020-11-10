@@ -52,7 +52,7 @@ export default {
     }
   },
   created: function () {
-    debug('lifecycle created', this.id, this._uid)
+    // debug('lifecycle created')
     // let pipeline_id = []
     // if (!Array.isArray(this.pipeline_id)) {
     //   pipeline_id = [this.pipeline_id]
@@ -75,7 +75,7 @@ export default {
 
   mounted: function () {
     // debug('lifecycle mounted %o', EventBus)
-    debug('lifecycle mounted', this.id, this._uid)
+    // debug('lifecycle created')
     // let pipeline_id = []
     // if (!Array.isArray(this.pipeline_id)) {
     //   pipeline_id = [this.pipeline_id]
@@ -127,7 +127,7 @@ export default {
   // },
 
   beforeRouteLeave (to, from, next) {
-    debug('lifecycle beforeRouteLeave', this.id, this._uid)
+    debug('lifecycle beforeRouteLeave')
     // called when the route that renders this component is about to
     // be navigated away from.
     // has access to `this` component instance.
@@ -155,17 +155,14 @@ export default {
       delete this.$options._components_req[pipeline_id]
     }.bind(this))
 
-    debug('lifecycle beforeRouteLeave $off EventBUS.EVENTS %o', this.$options._components_req_events)
-
     Array.each(this.$options._components_req_events, function (event) {
       EventBus.$off(event, this.__process_input_data)
-      debug('lifecycle beforeRouteLeave $off EventBUS.EVENTS %o %s', EventBus._events, event)
     }.bind(this))
 
     next()
   },
   destroyed () {
-    debug('lifecycle destroyed', this.id, this._uid)
+    debug('lifecycle destroyed')
 
     let pipeline_id = []
     if (!Array.isArray(this.pipeline_id)) {
@@ -178,11 +175,8 @@ export default {
       delete this.$options._components_req[pipeline_id]
     }.bind(this))
 
-    debug('lifecycle destroyed $off EventBUS.EVENTS %o', this.$options._components_req_events)
-
     Array.each(this.$options._components_req_events, function (event) {
       EventBus.$off(event, this.__process_input_data)
-      debug('lifecycle destroyed $off EventBUS.EVENTS %o %s', EventBus._events, event)
     }.bind(this))
 
     this.destroy_pipelines()
@@ -665,7 +659,7 @@ export default {
                   debug('io EMIT', _query[i], emit_query)
 
                   // Array.each(pipeline_id, function (id) {
-                  debug('__components_sources_to_requests EventBUS.EVENTS %o %s', EventBus._events, emit_query.params.id)
+                  // debug('lifecycle mounted %o %s', EventBus, pipeline_id + '.' + this.path)
                   // if (EventBus && !EventBus._events[pipeline_id + '.' + this.path])
                   if (
                     EventBus &&
@@ -676,7 +670,7 @@ export default {
                     )
                   ) {
                     EventBus.$on(emit_query.params.id, self.__process_input_data)
-                    self.$options._components_req_events = self.$options._components_req_events.combine([emit_query.params.id])
+                    this.$options._components_req_events.combine([emit_query.params.id])
                   }
                   // EventBus.$on(pipeline_id + '.' + this.path, function (data) { debug('EventBus.$on', pipeline_id + '.' + this.path, data) })
                   // }.bind(self))

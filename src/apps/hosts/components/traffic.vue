@@ -3,7 +3,7 @@
     <div class="card-body">
       <!-- <h3 class="card-title">Countries web access</h3> -->
       <div class="d-flex">
-        <h3 class="card-title">Traffic Summary</h3>
+        <h3 class="card-title"><b-link :to="{name: 'logs_web', query: { ...$route.query }}">Traffic Summary</b-link></h3>
         <!-- <div class="subheader">Countries web access</div> -->
         <div class="ml-auto lh-1">
           <b-dropdown  variant="link" toggle-class="text-decoration-none btn-options" no-caret right>
@@ -121,7 +121,7 @@ import * as Debug from 'debug'
 const debug = Debug('apps:hosts:components:traffic')
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
-import { BDropdown, BDropdownItem, BFormCheckbox } from 'bootstrap-vue'
+import { BDropdown, BDropdownItem, BFormCheckbox, BLink } from 'bootstrap-vue'
 
 /**
 * Chart configs
@@ -155,6 +155,7 @@ export default {
     // BProgress,
     // BProgressBar
     // BButton,
+    BLink,
     BDropdown,
     BDropdownItem,
     BFormCheckbox,
