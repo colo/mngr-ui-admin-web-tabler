@@ -5,20 +5,20 @@
 const App = require ( 'node-app-socket.io-client/index' )
 
 import * as Debug from "debug"
-const debug = Debug("apps:hosts:pipelines:input:io")
+const debug = Debug("apps:logs:web:pipelines:input:io")
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
 
-import IO from '@etc/hosts.io'
+import IO from '@etc/logs.web.io'
 
 export default new Class({
   Extends: App,
 
-  // types: ['count', 'hosts', 'paths'],
+  // types: ['count', 'logs', 'paths'],
   // recived: [],
 
   options: {
-    // path: '/hosts',
+    // path: '/logs',
 
     scheme: undefined,
     log: undefined,
@@ -47,7 +47,7 @@ export default new Class({
 
     io: {
 			middlewares: [], //namespace.use(fn)
-			// rooms: ['hosts'], //atomatically join connected sockets to this rooms
+			// rooms: ['logs'], //atomatically join connected sockets to this rooms
 			routes: {
 				// 'app.doc': [{
 				// 	// path: ':param',
@@ -58,7 +58,7 @@ export default new Class({
         'all': [{
 					// path: ':param',
 					// once: true, //socket.once
-					callbacks: ['hosts'],
+					callbacks: ['logs'],
 					// middlewares: [], //socket.use(fn)
 				}],
         // 'on': [{
@@ -81,12 +81,12 @@ export default new Class({
   //   debug('register %o', result)
   //
   // },
-  hosts: function(socket, next, doc){
+  logs: function(socket, next, doc){
     // let {type} = doc
-    debug('hosts %o', doc)
+    debug('logs %o', doc)
 
     if(doc.status){
-      debug('ERROR hosts %o', doc)
+      debug('ERROR logs %o', doc)
     }
     else if (doc.metadata && Array.isArray(doc.metadata.from)) {
 
@@ -94,8 +94,8 @@ export default new Class({
     // else if(
     //   doc.data
     //   && (!doc.metadata.opts || !doc.metadata.opts.params || Object.getLength(doc.metadata.opts.params) === 0)){
-    //   debug('hosts %o', doc)
-    //   // Array.each(doc.hosts.tags, function(tag){
+    //   debug('logs %o', doc)
+    //   // Array.each(doc.logs.tags, function(tag){
     //   //   debug('TAG %s', tag)
     //   //   // this.io.emit('/tags/'+tag)
     //   //   this.io.emit('/', {
@@ -111,11 +111,11 @@ export default new Class({
     //   //
     //   // }.bind(this))
     //   //
-    //   // Array.each(doc.hosts.hosts, function(host){
+    //   // Array.each(doc.logs.logs, function(host){
     //   //   debug('HOST %s', host)
     //   //   // this.io.emit('/tags/'+tag)
     //   //   this.io.emit('/', {
-    //   //     params: { prop: 'hosts' },
+    //   //     params: { prop: 'logs' },
     //   //     range: "posix 1557135759000-1557136059000/*",
     //   //     body: {
     //   //       // "transformation" : "limit:30000",
@@ -128,13 +128,13 @@ export default new Class({
     //   // }.bind(this))
     // }
     // else{
-    //   debug('OTHERS hosts %o', doc)
+    //   debug('OTHERS logs %o', doc)
     // }
 
     this.fireEvent('onDoc', [doc, { input_type: this, app: null }])
 
-    // store.commit('hosts/clear')
-    // store.commit('hosts/set', doc[type])
+    // store.commit('logs/clear')
+    // store.commit('logs/set', doc[type])
   },
   // app_doc: function(socket, next){
   //   if(this.recived.length < this.types.length){
@@ -160,7 +160,7 @@ export default new Class({
   //   //   this.io.close()
   //
 	// 	// arguments[1]()
-	// 	// this.io.to('hosts').emit('response', 'a new user has joined the room saying '+arguments[2]);
+	// 	// this.io.to('logs').emit('response', 'a new user has joined the room saying '+arguments[2]);
 	// 	// next(socket)
 	// },
 
@@ -170,10 +170,10 @@ export default new Class({
 		this.parent(options);//override default options
 
     // let _io = new App(DefaultConn)
-    // this.add_io(hostsIO)
+    // this.add_io(logsIO)
     this.add_io(IO()[options.index])
 
-		this.profile('hosts_init');//hosts profiling
+		this.profile('logs_init');//logs profiling
 
 
     this.addEvent('onConnect', function(){
@@ -195,7 +195,7 @@ export default new Class({
       //
       // }.bind(this), 1000)
 
-      // this.io.emit('on', 'hosts')
+      // this.io.emit('on', 'logs')
       // this.io.emit('on', 'changes', {
       //   params: { prop: undefined },
       //   // query: {
@@ -275,7 +275,7 @@ export default new Class({
       // })
 
       /**
-      * hosts queries
+      * logs queries
       **/
 
       // this.io.emit('/', {
@@ -324,7 +324,7 @@ export default new Class({
       // this.io.emit('/', { query: {}})
 
       /**
-      * hosts queries
+      * logs queries
       **/
 
 
@@ -355,9 +355,9 @@ export default new Class({
         // this.io.close()
     }.bind(this))
 
-		this.profile('hosts_init');//end profiling
+		this.profile('logs_init');//end profiling
 
-		this.log('hosts', 'info', 'hosts hostsed');
+		this.log('logs', 'info', 'logs logsed');
   },
 
 });

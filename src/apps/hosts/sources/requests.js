@@ -3,7 +3,7 @@ const debug = Debug('apps:hosts:periodical:requests')
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
 import {roundMilliseconds, roundSeconds, roundMinutes, roundHours} from '@libs/time/round'
-import {SECOND, MINUTE, HOUR, WEEK, MONTH} from '@libs/time/const'
+import {SECOND, MINUTE, HOUR, DAY, WEEK, MONTH} from '@libs/time/const'
 
 let init = false
 

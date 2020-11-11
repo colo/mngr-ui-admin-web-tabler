@@ -3,7 +3,7 @@ import * as Debug from 'debug'
 const debug = Debug('apps:system:libs:periodical')
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
-import {SECOND, MINUTE, HOUR, WEEK, MONTH} from '@libs/time/const'
+import {SECOND, MINUTE, HOUR, DAY, WEEK, MONTH} from '@libs/time/const'
 import {roundMilliseconds, roundSeconds, roundMinutes, roundHours} from '@libs/time/round'
 
 export default function (data, metadata, key, vm) {

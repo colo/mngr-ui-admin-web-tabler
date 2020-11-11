@@ -917,6 +917,7 @@ debug.log = console.log.bind(console) // don't forget to bind to console!
 
 import JSPipeline from 'js-pipeline'
 import Pipeline from '@apps/hosts/pipelines/periodical'
+import { requests, store } from './sources/index'
 
 import DataSourcesMixin from '@mixins/dataSources'
 
@@ -935,8 +936,6 @@ import blocks from '@apps/hosts/components/blocks'
 **/
 import geoip from '@apps/hosts/components/geoip'
 import traffic from '@apps/hosts/components/traffic'
-
-import { requests, store } from './sources/index'
 
 import { EventBus } from '@libs/eventbus'
 import chartTabular from 'components/chart.tabular'

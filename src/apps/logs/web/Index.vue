@@ -67,6 +67,7 @@
           </b-dropdown>
 
         </div>
+        <historical :selected_hosts="selected_hosts" type="hour"/>
       </div>
     </div>
 
@@ -88,6 +89,7 @@ import { hosts_periodical } from '@apps/hosts/sources/requests'
 
 import DataSourcesMixin from '@mixins/dataSources'
 
+import historical from '@apps/logs/web/components/historical'
 /**
 * Web components
 **/
@@ -113,6 +115,7 @@ export default {
     BFormCheckbox,
     BFormCheckboxGroup,
     BFormGroup,
+    historical,
     // BModal,
     // chartTabular,
     // chart,
@@ -137,11 +140,11 @@ export default {
       default: '',
     },
   },
-  watch: {
-    hosts: function (val) {
-      debug('watch hosts', val)
-    }
-  },
+  // watch: {
+  //   hosts: function (val) {
+  //     debug('watch hosts', val)
+  //   }
+  // },
   data () {
     return {
       // height: '0px',
