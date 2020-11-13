@@ -9,7 +9,7 @@ debug.log = console.log.bind(console) // don't forget to bind to console!
 import static_types from '@libs/web/static_extentions'
 
 export default function (data, metadata, key, vm) {
-  // debug('PERIODICAL WEB CALLBACK data %s %o', key, data, metadata, vm)
+  debug('PERIODICAL WEB CALLBACK 1st data %s %o', key, data, metadata, vm)
 
   if (data.logs) {
     let _data
@@ -62,207 +62,234 @@ export default function (data, metadata, key, vm) {
 
     let geoip = []
 
-    Array.each(data.logs, function (row) {
-      let path = row.metadata.path
+    Array.each(_data, function (row) {
+      try {
+      // debug('PERIODICAL WEB CALLBACK ROW %o', row)
 
-      let start = row.metadata.timestamp
-      let end = row.metadata.timestamp
+        let path = row.metadata.path
 
-      if (/nginx|apache/.test(path)) { //  && start >= smallest_start discard any document that is previous to our smallest_start timestamp
-        if (range.start === undefined || range.start > start) { range.start = start }
-        if (range.end === undefined || range.end < end) { range.end = end }
+        let start = row.metadata.timestamp
+        let end = row.metadata.timestamp
 
-        let host = row.metadata.host
-        let domain = row.metadata.domain
+        if (/nginx|apache/.test(path)) { //  && start >= smallest_start discard any document that is previous to our smallest_start timestamp
+          if (range.start === undefined || range.start > start) { range.start = start }
+          if (range.end === undefined || range.end < end) { range.end = end }
 
-        // hosts.combine([host])
+          let host = row.metadata.host
+          let domain = row.metadata.domain
 
-        /**
+          // hosts.combine([host])
+
+          /**
         * Traffic
         **/
-        if (!hosts_counter[host]) hosts_counter[host] = 0
-        if (!domains_counter[domain]) domains_counter[domain] = 0
+          if (!hosts_counter[host]) hosts_counter[host] = 0
+          if (!domains_counter[domain]) domains_counter[domain] = 0
 
-        hosts_counter[host] += 1
-        if (!hosts_counter_ts[row.metadata.timestamp]) hosts_counter_ts[row.metadata.timestamp] = {}
-        if (!hosts_counter_ts[row.metadata.timestamp][host]) hosts_counter_ts[row.metadata.timestamp][host] = 0
-        hosts_counter_ts[row.metadata.timestamp][host] += 1
+          hosts_counter[host] += 1
+          if (!hosts_counter_ts[row.metadata.timestamp]) hosts_counter_ts[row.metadata.timestamp] = {}
+          if (!hosts_counter_ts[row.metadata.timestamp][host]) hosts_counter_ts[row.metadata.timestamp][host] = 0
+          hosts_counter_ts[row.metadata.timestamp][host] += 1
 
-        domains_counter[domain] += 1
+          domains_counter[domain] += 1
 
-        if (!domains_counter_ts[row.metadata.timestamp]) domains_counter_ts[row.metadata.timestamp] = {}
-        if (!domains_counter_ts[row.metadata.timestamp][domain]) domains_counter_ts[row.metadata.timestamp][domain] = 0
-        domains_counter_ts[row.metadata.timestamp][domain] += 1
+          if (!domains_counter_ts[row.metadata.timestamp]) domains_counter_ts[row.metadata.timestamp] = {}
+          if (!domains_counter_ts[row.metadata.timestamp][domain]) domains_counter_ts[row.metadata.timestamp][domain] = 0
+          domains_counter_ts[row.metadata.timestamp][domain] += 1
 
-        /**
+          /**
         * Traffic - status
         **/
-        if (row.data.status) {
-          if (!status_counter[row.metadata.timestamp]) status_counter[row.metadata.timestamp] = {}
-          if (!status_counter[row.metadata.timestamp][row.data.status]) status_counter[row.metadata.timestamp][row.data.status] = 0
-          status_counter[row.metadata.timestamp][row.data.status] += 1
-        }
+          if (row.data.status) {
+            if (!status_counter[row.metadata.timestamp]) status_counter[row.metadata.timestamp] = {}
+            if (!status_counter[row.metadata.timestamp][row.data.status]) status_counter[row.metadata.timestamp][row.data.status] = 0
+            status_counter[row.metadata.timestamp][row.data.status] += 1
+          }
 
-        /**
+          /**
         * Traffic - method
         **/
-        if (row.data.method) {
-          if (!methods_counter[row.metadata.timestamp]) methods_counter[row.metadata.timestamp] = {}
-          if (!methods_counter[row.metadata.timestamp][row.data.method]) methods_counter[row.metadata.timestamp][row.data.method] = 0
-          methods_counter[row.metadata.timestamp][row.data.method] += 1
-        }
+          if (row.data.method) {
+            if (!methods_counter[row.metadata.timestamp]) methods_counter[row.metadata.timestamp] = {}
+            if (!methods_counter[row.metadata.timestamp][row.data.method]) methods_counter[row.metadata.timestamp][row.data.method] = 0
+            methods_counter[row.metadata.timestamp][row.data.method] += 1
+          }
 
-        /**
+          /**
         * Traffic - pathname
         **/
-        if (row.data.pathname) {
-          if (!pathnames_counter[row.metadata.timestamp]) pathnames_counter[row.metadata.timestamp] = {}
-          if (!pathnames_counter[row.metadata.timestamp][row.data.pathname]) pathnames_counter[row.metadata.timestamp][row.data.pathname] = 0
-          pathnames_counter[row.metadata.timestamp][row.data.pathname] += 1
-        }
+          if (row.data.pathname) {
+            if (!pathnames_counter[row.metadata.timestamp]) pathnames_counter[row.metadata.timestamp] = {}
+            if (!pathnames_counter[row.metadata.timestamp][row.data.pathname]) pathnames_counter[row.metadata.timestamp][row.data.pathname] = 0
+            pathnames_counter[row.metadata.timestamp][row.data.pathname] += 1
+          }
 
-        /**
+          /**
         * Traffic - type (static | dynamic)
         **/
-        if (row.data.pathname) {
-          let value = (static_types.test(row.data.pathname)) ? 'static' : 'dynamic'
-          if (!type_counter[row.metadata.timestamp]) type_counter[row.metadata.timestamp] = {}
-          if (!type_counter[row.metadata.timestamp][value]) type_counter[row.metadata.timestamp][value] = 0
-          type_counter[row.metadata.timestamp][value] += 1
-        }
+          if (row.data.pathname) {
+            let value = (static_types.test(row.data.pathname)) ? 'static' : 'dynamic'
+            if (!type_counter[row.metadata.timestamp]) type_counter[row.metadata.timestamp] = {}
+            if (!type_counter[row.metadata.timestamp][value]) type_counter[row.metadata.timestamp][value] = 0
+            type_counter[row.metadata.timestamp][value] += 1
+          }
 
-        /**
+          /**
         * Traffic - requests
         **/
-        if (!total_requests[row.metadata.timestamp]) total_requests[row.metadata.timestamp] = 0
-        total_requests[row.metadata.timestamp] += 1
+          if (!total_requests[row.metadata.timestamp]) total_requests[row.metadata.timestamp] = 0
+          total_requests[row.metadata.timestamp] += 1
 
-        /**
+          /**
         * Traffic - bytes
         **/
-        if (row.data.body_bytes_sent) {
-          if (!total_bytes_sent[row.metadata.timestamp]) total_bytes_sent[row.metadata.timestamp] = 0
-          total_bytes_sent[row.metadata.timestamp] += row.data.body_bytes_sent
-        }
+          if (row.data.body_bytes_sent) {
+            if (!total_bytes_sent[row.metadata.timestamp]) total_bytes_sent[row.metadata.timestamp] = 0
+            total_bytes_sent[row.metadata.timestamp] += row.data.body_bytes_sent
+          }
 
-        /**
+          /**
         * Traffic - addr
         * UNIQUE VISITORS are calculated with remote_addr + user_agent
         **/
-        if (row.data.remote_addr) {
-          let ip = row.data.remote_addr
-          if (!addr_counter[row.metadata.timestamp]) addr_counter[row.metadata.timestamp] = {}
-          if (!addr_counter[row.metadata.timestamp][ip]) addr_counter[row.metadata.timestamp][ip] = 0
-          addr_counter[row.metadata.timestamp][ip] += 1
+          if (row.data.remote_addr) {
+            let ip = row.data.remote_addr
+            if (!addr_counter[row.metadata.timestamp]) addr_counter[row.metadata.timestamp] = {}
+            if (!addr_counter[row.metadata.timestamp][ip]) addr_counter[row.metadata.timestamp][ip] = 0
+            addr_counter[row.metadata.timestamp][ip] += 1
 
-          if (!unique_visitors_ip_uas[ip]) unique_visitors_ip_uas[ip] = []
-          if (row.data.remote_user) unique_visitors_ip_uas[ip].combine([JSON.stringify(row.data.user_agent)])
-        }
+            if (!unique_visitors_ip_uas[ip]) unique_visitors_ip_uas[ip] = []
+            if (row.data.user_agent) unique_visitors_ip_uas[ip].combine([JSON.stringify(row.data.user_agent)])
+          }
 
-        /** user_agent **/
-        if (row.data.user_agent) {
+          /** user_agent **/
+          if (row.data.user_agent) {
           // debug('user_agent %s', row.data.user_agent)
 
-          let os = row.data.user_agent.os.family
-          os = (row.data.user_agent.os.major) ? os + ' ' + row.data.user_agent.os.major : os
+            let os = row.data.user_agent.os.family
+            os = (row.data.user_agent.os.major) ? os + ' ' + row.data.user_agent.os.major : os
 
-          let engine = row.data.user_agent.engine.family
-          // engine = (row.data.user_agent.engine.major) ? engine + ' ' + row.data.user_agent.engine.major : engine
-          // engine = (row.data.user_agent.engine.minor) ? engine + '.' + row.data.user_agent.engine.minor : engine
-          // engine = (row.data.user_agent.engine.patch) ? engine + '.' + row.data.user_agent.engine.patch : engine
+            let engine = row.data.user_agent.engine.family
+            // engine = (row.data.user_agent.engine.major) ? engine + ' ' + row.data.user_agent.engine.major : engine
+            // engine = (row.data.user_agent.engine.minor) ? engine + '.' + row.data.user_agent.engine.minor : engine
+            // engine = (row.data.user_agent.engine.patch) ? engine + '.' + row.data.user_agent.engine.patch : engine
 
-          let browser = row.data.user_agent.ua.family
-          // browser = (row.data.user_agent.ua.major) ? browser + ' ' + row.data.user_agent.ua.major : browser
-          // browser = (row.data.user_agent.ua.minor) ? browser + '.' + row.data.user_agent.ua.minor : browser
-          // browser = (row.data.user_agent.ua.patch) ? browser + '.' + row.data.user_agent.ua.patch : browser
-          // browser = (row.data.user_agent.ua.type) ? browser + ' ' + row.data.user_agent.ua.type : browser
+            let browser = row.data.user_agent.ua.family
+            // browser = (row.data.user_agent.ua.major) ? browser + ' ' + row.data.user_agent.ua.major : browser
+            // browser = (row.data.user_agent.ua.minor) ? browser + '.' + row.data.user_agent.ua.minor : browser
+            // browser = (row.data.user_agent.ua.patch) ? browser + '.' + row.data.user_agent.ua.patch : browser
+            // browser = (row.data.user_agent.ua.type) ? browser + ' ' + row.data.user_agent.ua.type : browser
 
-          let device = (row.data.user_agent.device.brand) ? row.data.user_agent.device.brand : row.data.user_agent.device.family
-          device = (row.data.user_agent.device.model) ? device + ' ' + row.data.user_agent.device.model : device
-          device = (row.data.user_agent.device.type) ? device + ' - ' + row.data.user_agent.device.type : device
+            let device = (row.data.user_agent.device.brand) ? row.data.user_agent.device.brand : row.data.user_agent.device.family
+            device = (row.data.user_agent.device.model) ? device + ' ' + row.data.user_agent.device.model : device
+            device = (row.data.user_agent.device.type) ? device + ' - ' + row.data.user_agent.device.type : device
 
-          if (!user_agent_os_counter[row.metadata.timestamp]) user_agent_os_counter[row.metadata.timestamp] = {}
-          if (!user_agent_os_counter[row.metadata.timestamp][os]) user_agent_os_counter[row.metadata.timestamp][os] = 0
-          user_agent_os_counter[row.metadata.timestamp][os] += 1
+            if (!user_agent_os_counter[row.metadata.timestamp]) user_agent_os_counter[row.metadata.timestamp] = {}
+            if (!user_agent_os_counter[row.metadata.timestamp][os]) user_agent_os_counter[row.metadata.timestamp][os] = 0
+            user_agent_os_counter[row.metadata.timestamp][os] += 1
 
-          if (!user_agent_engine_counter[row.metadata.timestamp]) user_agent_engine_counter[row.metadata.timestamp] = {}
-          if (!user_agent_engine_counter[row.metadata.timestamp][engine]) user_agent_engine_counter[row.metadata.timestamp][engine] = 0
-          user_agent_engine_counter[row.metadata.timestamp][engine] += 1
+            if (!user_agent_engine_counter[row.metadata.timestamp]) user_agent_engine_counter[row.metadata.timestamp] = {}
+            if (!user_agent_engine_counter[row.metadata.timestamp][engine]) user_agent_engine_counter[row.metadata.timestamp][engine] = 0
+            user_agent_engine_counter[row.metadata.timestamp][engine] += 1
 
-          if (!user_agent_browser_counter[row.metadata.timestamp]) user_agent_browser_counter[row.metadata.timestamp] = {}
-          if (!user_agent_browser_counter[row.metadata.timestamp][browser]) user_agent_browser_counter[row.metadata.timestamp][browser] = 0
-          user_agent_browser_counter[row.metadata.timestamp][browser] += 1
+            if (!user_agent_browser_counter[row.metadata.timestamp]) user_agent_browser_counter[row.metadata.timestamp] = {}
+            if (!user_agent_browser_counter[row.metadata.timestamp][browser]) user_agent_browser_counter[row.metadata.timestamp][browser] = 0
+            user_agent_browser_counter[row.metadata.timestamp][browser] += 1
 
-          if (!user_agent_device_counter[row.metadata.timestamp]) user_agent_device_counter[row.metadata.timestamp] = {}
-          if (!user_agent_device_counter[row.metadata.timestamp][device]) user_agent_device_counter[row.metadata.timestamp][device] = 0
-          user_agent_device_counter[row.metadata.timestamp][device] += 1
-        }
+            if (!user_agent_device_counter[row.metadata.timestamp]) user_agent_device_counter[row.metadata.timestamp] = {}
+            if (!user_agent_device_counter[row.metadata.timestamp][device]) user_agent_device_counter[row.metadata.timestamp][device] = 0
+            user_agent_device_counter[row.metadata.timestamp][device] += 1
+          }
 
-        /**
+          /**
         * Traffic - remote user
         **/
-        if (row.data.remote_user) {
-          if (!user_counter[row.metadata.timestamp]) user_counter[row.metadata.timestamp] = {}
-          if (!user_counter[row.metadata.timestamp][row.data.remote_user]) user_counter[row.metadata.timestamp][row.data.remote_user] = 0
-          user_counter[row.metadata.timestamp][row.data.remote_user] += 1
-        }
+          if (row.data.remote_user) {
+            if (!user_counter[row.metadata.timestamp]) user_counter[row.metadata.timestamp] = {}
+            if (!user_counter[row.metadata.timestamp][row.data.remote_user]) user_counter[row.metadata.timestamp][row.data.remote_user] = 0
+            user_counter[row.metadata.timestamp][row.data.remote_user] += 1
+          }
 
-        /**
+          /**
         * Traffic - referer
         **/
-        if (row.data.referer.referer || row.data.referer.medium) {
+          if (row.data.referer.referer || row.data.referer.medium) {
           // debug('PERIODICAL HOST CALLBACK referer %o', row.data.referer.referer, row.data.referer.medium)
-          let value = (row.data.referer.referer) ? row.data.referer.referer + ' - ' + row.data.referer.medium : row.data.referer.medium
-          if (!referer_counter[row.metadata.timestamp]) referer_counter[row.metadata.timestamp] = {}
-          if (!referer_counter[row.metadata.timestamp][value]) referer_counter[row.metadata.timestamp][value] = 0
-          referer_counter[row.metadata.timestamp][value] += 1
-        }
+            let value = (row.data.referer.referer) ? row.data.referer.referer + ' - ' + row.data.referer.medium : row.data.referer.medium
+            if (!referer_counter[row.metadata.timestamp]) referer_counter[row.metadata.timestamp] = {}
+            if (!referer_counter[row.metadata.timestamp][value]) referer_counter[row.metadata.timestamp][value] = 0
+            referer_counter[row.metadata.timestamp][value] += 1
+          }
 
-        /**
+          /**
         * GeoIP
         **/
-        if (row.data.geoip) {
-          geoip.push(row.data.geoip)
+          if (row.data.geoip) {
+            geoip.push(row.data.geoip)
 
-          let country = (row.data.geoip.country) ? (row.data.geoip.country.names) ? (row.data.geoip.country.names.en) ? row.data.geoip.country.names.en : row.data.geoip.country.names.es : undefined : undefined
-          let continent = (row.data.geoip.continent) ? (row.data.geoip.continent.names) ? (row.data.geoip.continent.names.en) ? row.data.geoip.continent.names.en : row.data.geoip.continent.names.es : undefined : undefined
-          let city = (row.data.geoip.city && country) ? (row.data.geoip.city.names) ? (row.data.geoip.city.names.en) ? row.data.geoip.city.names.en + ' - ' + country : row.data.geoip.city.names.es + ' - ' + country : undefined : undefined
+            let country = (row.data.geoip.country) ? (row.data.geoip.country.names) ? (row.data.geoip.country.names.en) ? row.data.geoip.country.names.en : row.data.geoip.country.names.es : undefined : undefined
+            let continent = (row.data.geoip.continent) ? (row.data.geoip.continent.names) ? (row.data.geoip.continent.names.en) ? row.data.geoip.continent.names.en : row.data.geoip.continent.names.es : undefined : undefined
+            let city = (row.data.geoip.city && country !== undefined) ? (row.data.geoip.city.names) ? (row.data.geoip.city.names.en) ? row.data.geoip.city.names.en + ' - ' + country : row.data.geoip.city.names.es + ' - ' + country : undefined : undefined
 
-          let world_map_city = (row.data.geoip.location && row.data.geoip.location.latitude && row.data.geoip.location.longitude) ? row.data.geoip.location.latitude + ':' + row.data.geoip.location.longitude : undefined
-          let world_map_city_name = (row.data.geoip.city) ? (row.data.geoip.city.names) ? (row.data.geoip.city.names.en) ? row.data.geoip.city.names.en + ' - ' + country : row.data.geoip.city.names.es + ' - ' + country : undefined : undefined
+            let world_map_city = (row.data.geoip.location && row.data.geoip.location.latitude && row.data.geoip.location.longitude) ? row.data.geoip.location.latitude + ':' + row.data.geoip.location.longitude : undefined
+            let world_map_city_name = (row.data.geoip.city && country !== undefined) ? (row.data.geoip.city.names) ? (row.data.geoip.city.names.en) ? row.data.geoip.city.names.en + ' - ' + country : row.data.geoip.city.names.es + ' - ' + country : undefined : undefined
 
-          let world_map_country = (row.data.geoip.country && row.data.geoip.country.isoCode) ? row.data.geoip.country.isoCode : undefined
+            let world_map_country = (row.data.geoip.country && row.data.geoip.country.isoCode) ? row.data.geoip.country.isoCode : undefined
 
-          if (city && !city_counter[row.metadata.timestamp]) city_counter[row.metadata.timestamp] = {}
-          if (country && !country_counter[row.metadata.timestamp]) country_counter[row.metadata.timestamp] = {}
-          if (continent && !continent_counter[row.metadata.timestamp]) continent_counter[row.metadata.timestamp] = {}
+            if (city !== undefined && !city_counter[row.metadata.timestamp]) city_counter[row.metadata.timestamp] = {}
+            if (country !== undefined && !country_counter[row.metadata.timestamp]) country_counter[row.metadata.timestamp] = {}
+            if (continent !== undefined && !continent_counter[row.metadata.timestamp]) continent_counter[row.metadata.timestamp] = {}
 
-          if (world_map_city && world_map_city_name && !world_map_city_counter[row.metadata.timestamp]) world_map_city_counter[row.metadata.timestamp] = {}
+            if (world_map_city !== undefined && world_map_city_name !== undefined && !world_map_city_counter[row.metadata.timestamp]) world_map_city_counter[row.metadata.timestamp] = {}
 
-          if (world_map_country && country && !world_map_country_counter[row.metadata.timestamp]) world_map_country_counter[row.metadata.timestamp] = {}
+            if (world_map_country !== undefined && country !== undefined && !world_map_country_counter[row.metadata.timestamp]) world_map_country_counter[row.metadata.timestamp] = {}
 
-          if (city && country && !city_counter[row.metadata.timestamp][city]) city_counter[row.metadata.timestamp][city] = 0
-          if (country && !country_counter[row.metadata.timestamp][country]) country_counter[row.metadata.timestamp][country] = 0
-          if (continent && !continent_counter[row.metadata.timestamp][continent]) continent_counter[row.metadata.timestamp][continent] = 0
+            if (city !== undefined && country !== undefined && !city_counter[row.metadata.timestamp][city]) city_counter[row.metadata.timestamp][city] = 0
+            if (country !== undefined && !country_counter[row.metadata.timestamp][country]) country_counter[row.metadata.timestamp][country] = 0
+            if (continent !== undefined && !continent_counter[row.metadata.timestamp][continent]) continent_counter[row.metadata.timestamp][continent] = 0
 
-          if (world_map_city && world_map_city_name && !world_map_city_counter[row.metadata.timestamp][world_map_city]) world_map_city_counter[row.metadata.timestamp][world_map_city] = { name: world_map_city_name, count: 0, latitude: row.data.geoip.location.latitude, longitude: row.data.geoip.location.longitude }
+            if (world_map_city !== undefined && world_map_city_name !== undefined && !world_map_city_counter[row.metadata.timestamp][world_map_city]) world_map_city_counter[row.metadata.timestamp][world_map_city] = { name: world_map_city_name, count: 0, latitude: row.data.geoip.location.latitude, longitude: row.data.geoip.location.longitude }
 
-          if (world_map_country && country && !world_map_city_counter[row.metadata.timestamp][world_map_country]) world_map_country_counter[row.metadata.timestamp][world_map_country] = {name: country, count: 0}
+            if (
+              world_map_country !== undefined &&
+              country !== undefined &&
+              world_map_city_counter[row.metadata.timestamp] &&
+              !world_map_city_counter[row.metadata.timestamp][world_map_country]
+            ) { world_map_country_counter[row.metadata.timestamp][world_map_country] = {name: country, count: 0} }
 
-          if (city) { city_counter[row.metadata.timestamp][city] += 1 }
-          if (country) country_counter[row.metadata.timestamp][country] += 1
-          if (continent) continent_counter[row.metadata.timestamp][continent] += 1
+            if (city !== undefined) { city_counter[row.metadata.timestamp][city] += 1 }
+            if (country !== undefined) country_counter[row.metadata.timestamp][country] += 1
+            if (continent !== undefined) continent_counter[row.metadata.timestamp][continent] += 1
 
-          debug('PERIODICAL WEB CALLBACK CITY %o', row, world_map_city_counter, world_map_city)
-          if (world_map_city && world_map_city_name) world_map_city_counter[row.metadata.timestamp][world_map_city].count += 1
+            // debug('PERIODICAL WEB CALLBACK GEOIP %o', row)
 
-          debug('PERIODICAL WEB CALLBACK COUNTRY %o', row, world_map_country_counter, world_map_country, country_counter)
-          if (world_map_country && country) world_map_country_counter[row.metadata.timestamp][world_map_country].count = country_counter[row.metadata.timestamp][country]
+            // debug('PERIODICAL WEB CALLBACK CITY %o', row, world_map_city_counter, world_map_city)
+            if (
+              world_map_city !== undefined &&
+              world_map_city_name !== undefined &&
+              world_map_city_counter[row.metadata.timestamp] &&
+              world_map_city_counter[row.metadata.timestamp][world_map_city]
+            ) { world_map_city_counter[row.metadata.timestamp][world_map_city].count += 1 }
+            // debug('PERIODICAL WEB CALLBACK CITY %o', row, world_map_city_counter, world_map_city)
+
+            if (
+              world_map_country !== undefined &&
+              country !== undefined &&
+              world_map_country_counter[row.metadata.timestamp] &&
+              world_map_country_counter[row.metadata.timestamp][world_map_country] &&
+              country_counter[row.metadata.timestamp] &&
+              country_counter[row.metadata.timestamp][country]
+            ) { world_map_country_counter[row.metadata.timestamp][world_map_country].count = country_counter[row.metadata.timestamp][country] }
+
+            // debug('PERIODICAL WEB CALLBACK COUNTRY %o', row, world_map_country_counter, world_map_country, country_counter, country)
+          }
         }
+      } catch (e) {
+        debug('PERIODICAL WEB CALLBACK ROW ERROR %o', e)
       }
     })
 
-    debug('PERIODICAL WEB CALLBACK data %s %o', key, data, metadata, vm)
+    // debug('PERIODICAL WEB CALLBACK END data %s %o', key, data, metadata, vm)
     /**
     * Traffic
     **/

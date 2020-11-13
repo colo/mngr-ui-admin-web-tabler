@@ -151,7 +151,8 @@ const debug = Debug('apps:test')
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
 import JSPipeline from 'js-pipeline'
-import Pipeline from '@apps/test/pipelines/periodical'
+// import Pipeline from '@apps/test/pipelines/periodical'
+import Pipeline from '@libs/pipelines'
 
 import DataSourcesMixin from '@mixins/dataSources'
 

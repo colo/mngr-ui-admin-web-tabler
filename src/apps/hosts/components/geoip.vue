@@ -115,8 +115,8 @@
             class="form-switch"
             v-model="geoip_sum"
             plain
-            @input="setSum"
           >
+          <!-- @input="setSum" -->
             Sum
           </b-form-checkbox>
 
@@ -203,7 +203,7 @@ export default {
       }
     }
   },
-  created: function () {
+  mounted: function () {
     // debug('getBrand',
     //   colors.lighten(window.getComputedStyle(document.documentElement).getPropertyValue('--bs-primary'), -10),
     //   am4core.color(window.getComputedStyle(document.documentElement).getPropertyValue('--bs-primary')),
@@ -219,12 +219,16 @@ export default {
     const geoip_sum = this.$route.query.geoip_sum
     debug('created geoip_sum', geoip_sum)
     if (geoip_sum) {
-      this.geoip_sum = (geoip_sum === 'true')
+      this.geoip_sum = (geoip_sum === 'true' || geoip_sum === true)
     }
   },
   watch: {
     geoip_view: function (val) {
-      this.$router.push({ path: this.$route.path, query: Object.merge(Object.clone(this.$route.query), { geoip_view: val }) }).catch(err => { debug(err) })// catch 'NavigationDuplicated' error
+      this.$router.replace({ path: this.$route.path, query: Object.merge(Object.clone(this.$route.query), { geoip_view: val }) }).catch(err => { debug(err) })// catch 'NavigationDuplicated' error
+      // this.$router.push(`${this.$route.path}?tab=${val}`).catch(err => {})// catch 'NavigationDuplicated' error
+    },
+    geoip_sum: function (val) {
+      this.$router.replace({ path: this.$route.path, query: Object.merge(Object.clone(this.$route.query), { geoip_sum: val }) }).catch(err => { debug('geoip_sum', err) })
       // this.$router.push(`${this.$route.path}?tab=${val}`).catch(err => {})// catch 'NavigationDuplicated' error
     },
     'stat': {
@@ -321,12 +325,12 @@ export default {
       this.geodata = []
       this.geoip_view = val
     },
-    setSum: function (val) {
-      debug('setSum', val)
-
-      this.geoip_sum = val
-      this.$router.replace({name: 'hosts', query: { ...this.$route.query, geoip_sum: val}})
-    },
+    // setSum: function (val) {
+    //   debug('setSum', val)
+    //
+    //   this.geoip_sum = val
+    //   // this.$router.replace({name: 'hosts', query: { ...this.$route.query, geoip_sum: val}})
+    // },
     /**
     * @start pipelines
     **/

@@ -106,8 +106,8 @@
             class="form-switch"
             v-model="traffic_sum"
             plain
-            @input="setSum"
           >
+          <!-- @input="setSum" -->
             Sum
           </b-form-checkbox>
 
@@ -199,7 +199,7 @@ export default {
       }
     }
   },
-  created: function () {
+  mounted: function () {
     // debug('getBrand',
     //   colors.lighten(window.getComputedStyle(document.documentElement).getPropertyValue('--bs-primary'), -10),
     //   am4core.color(window.getComputedStyle(document.documentElement).getPropertyValue('--bs-primary')),
@@ -215,12 +215,16 @@ export default {
     const traffic_sum = this.$route.query.traffic_sum
     debug('created traffic_sum', traffic_sum)
     if (traffic_sum) {
-      this.traffic_sum = (traffic_sum === 'true')
+      this.traffic_sum = (traffic_sum === 'true' || traffic_sum === true)
     }
   },
   watch: {
     traffic_view: function (val) {
-      this.$router.push({ path: this.$route.path, query: Object.merge(Object.clone(this.$route.query), { traffic_view: val }) }).catch(err => { debug('traffic_view', err) })
+      this.$router.replace({ path: this.$route.path, query: Object.merge(Object.clone(this.$route.query), { traffic_view: val }) }).catch(err => { debug('traffic_view', err) })
+      // this.$router.push(`${this.$route.path}?tab=${val}`).catch(err => {})// catch 'NavigationDuplicated' error
+    },
+    traffic_sum: function (val) {
+      this.$router.replace({ path: this.$route.path, query: Object.merge(Object.clone(this.$route.query), { traffic_sum: val }) }).catch(err => { debug('traffic_sum', err) })
       // this.$router.push(`${this.$route.path}?tab=${val}`).catch(err => {})// catch 'NavigationDuplicated' error
     },
     'stat': {
@@ -355,7 +359,7 @@ export default {
       debug('setSum', val)
 
       this.traffic_sum = val
-      this.$router.replace({name: 'hosts', query: { ...this.$route.query, traffic_sum: val}}).catch(err => { debug('setSum', err) })
+      // this.$router.replace({name: 'hosts', query: { ...this.$route.query, traffic_sum: val}}).catch(err => { debug('setSum', err) })
     },
     /**
     * @start pipelines
