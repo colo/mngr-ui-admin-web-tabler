@@ -20,9 +20,10 @@ const debug = Debug('apps:start')
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
 import JSPipeline from 'js-pipeline'
-import Pipeline from '@apps/start/pipelines/index'
+import Pipeline from '@libs/pipelines'
 
 import DataSourcesMixin from '@mixins/dataSources'
+import {SECOND, MINUTE, HOUR, DAY, WEEK, MONTH} from '@libs/time/const'
 
 import { requests, store } from './sources/index'
 
@@ -42,6 +43,8 @@ export default {
 
       id: 'start',
       path: 'all',
+
+      refresh: SECOND,
 
       components: {
         'all': [
@@ -64,22 +67,25 @@ export default {
     * @start pipelines
     **/
     create_pipelines: function (create_id, next) {
-      debug('create_pipelines %o', JSON.parse(JSON.stringify(this.$options.pipelines)))
+      debug('create_pipelines %o', JSON.parse(JSON.stringify(this.$options.pipelines)), create_id, this.components)
 
       let template = Object.clone(Pipeline)
+      template.input[0].poll.id = this.id
+      template.input[0].poll.requests.periodical = this.refresh
 
-      let pipeline_id = template.input[0].poll.id
+      // let pipeline_id = template.input[0].poll.id
+      // let pipeline_id = this.id
 
-      if (!create_id || create_id === undefined || create_id === pipeline_id) {
-        // template.input[0].poll.conn[0].requests = this.__components_sources_to_requests(this.components[pipeline_id], pipeline_id)
+      if (!create_id || create_id === undefined || create_id === this.id) {
+        // template.input[0].poll.conn[0].requests = this.__components_sources_to_requests(this.components[this.id], this.id)
         let components_requests = {}
 
-        if (this.$options.pipelines[pipeline_id]) {
-          components_requests = this.__merge_requests(pipeline_id, this.__components_sources_to_requests(this.components, pipeline_id))
+        if (this.$options.pipelines[this.id]) {
+          components_requests = this.__merge_requests(this.id, this.__components_sources_to_requests(this.components, this.id))
 
-          this.destroy_pipelines(pipeline_id)
+          this.destroy_pipelines(this.id)
         } else {
-          components_requests = this.__components_sources_to_requests(this.components, pipeline_id)
+          components_requests = this.__components_sources_to_requests(this.components, this.id)
         }
 
         debug('create_pipelines REQUESTS %o', components_requests)
@@ -90,13 +96,13 @@ export default {
 
         let pipe = new JSPipeline(template)
 
-        this.$options.__pipelines_cfg[pipeline_id] = {
+        this.$options.__pipelines_cfg[this.id] = {
           ids: [],
           connected: [],
           suspended: pipe.inputs.every(function (input) { return input.options.suspended }, this)
         }
 
-        this.$options.pipelines[pipeline_id] = pipe
+        this.$options.pipelines[this.id] = pipe
       }
       debug('create_pipelines %o', this.$options.pipelines)
 

@@ -67,7 +67,7 @@
           </b-dropdown>
 
         </div>
-        <historical :selected_hosts="selected_hosts" type="hour"/>
+        <historical :selected_hosts="selected_hosts" period="day"/>
       </div>
     </div>
 
@@ -84,10 +84,12 @@ const debug = Debug('apps:logs:web')
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
 import JSPipeline from 'js-pipeline'
-import Pipeline from '@apps/hosts/pipelines/periodical'
+import Pipeline from '@libs/pipelines'
 import { hosts_periodical } from '@apps/hosts/sources/requests'
 
 import DataSourcesMixin from '@mixins/dataSources'
+// import DashboardMixin from '@mixins/dashboard'
+import {SECOND, MINUTE, HOUR, DAY, WEEK, MONTH} from '@libs/time/const'
 
 import historical from '@apps/logs/web/components/historical'
 /**
@@ -154,7 +156,7 @@ export default {
 
       selected_hosts: [],
       /**
-      * dataSources
+      * DataSourcesMixin
       **/
       store: false,
       pipeline_id: ['input.logs.web.hosts.periodical'],
@@ -162,6 +164,7 @@ export default {
       id: 'input.logs.web.hosts.periodical',
       path: 'all',
 
+      refresh: SECOND * 5,
       // // host: 'perseus',
       components: {
         'all': [
@@ -256,6 +259,8 @@ export default {
 
       let template = Object.clone(Pipeline)
       template.input[0].poll.id = this.id
+      template.input[0].poll.requests.periodical = this.refresh
+
       // let pipeline_id = template.input[0].poll.id
       // let pipeline_id = this.id
 

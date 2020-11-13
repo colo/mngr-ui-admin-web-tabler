@@ -5,7 +5,7 @@ import { EventBus } from '@libs/eventbus'
 import InputIO from './input/io'
 
 import * as Debug from 'debug'
-const debug = Debug('apps:logs:web:pipelines:periodical')
+const debug = Debug('libs:pipelines')
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
 let qs = require('qs')
@@ -14,12 +14,12 @@ let buffer = []
 let buffer_expire = 0
 let expire_buffer_timeout = 1000 // one second
 
-import IO from '@etc/logs.web.io'
+import IO from './default.io'
 
 let ios = []
 Array.each(IO(), function (io, index) {
   ios.push({
-    id: 'input.logs.web.periodical' + index,
+    id: 'input.default' + index,
     module: InputIO,
     index: index
   },)
@@ -30,24 +30,12 @@ export default {
     {
       poll: {
         suspended: false,
-        id: 'input.logs.web.periodical',
+        id: 'input.default',
         conn: ios,
-        // conn: [
-        //
-        //   Object.merge(
-        //     // Object.clone(DefaultConn),
-        //     {
-        //       id: 'input.logs.web.periodical',
-        //       module: InputIO
-        //
-        //     }
-        //   )
-        //
-        // ],
         connect_retry_count: -1,
         connect_retry_periodical: 1000,
         requests: {
-          periodical: 5000
+          periodical: 1000
         }
       }
     }
@@ -65,7 +53,7 @@ export default {
       next(doc, opts, next, pipeline)
     },
     // function (doc, opts, next, pipeline) {
-    //   debug('MERGE %o %o', doc, buffer, pipeline.get_input_by_id('input.logs.web.periodical').conn_pollers)
+    //   debug('MERGE %o %o', doc, buffer, pipeline.get_input_by_id('input.default').conn_pollers)
     //
     //   let timeout
     //
@@ -114,7 +102,7 @@ export default {
     //
     //   // if (buffer.length === 0) { buffer_expire = Date.now() + expire_buffer_timeout } // start counting expire time on first doc
     //
-    //   if (buffer.length === pipeline.get_input_by_id('input.logs.web.periodical').conn_pollers) { // || buffer_expire < Date.now()
+    //   if (buffer.length === pipeline.get_input_by_id('input.default').conn_pollers) { // || buffer_expire < Date.now()
     //     _merge()
     //   } else {
     //     buffer.push(doc)
@@ -123,34 +111,18 @@ export default {
     // }
   ],
   output: [
-    // function (payload) {
-    //   debug('OUTPUT', payload)
-    //
-    //   if (!payload.err) { EventBus.$emit('input.logs.web.periodical.' + payload.metadata.input, payload) }
-    //
-    //   // if (!payload.err) { EventBus.$emit('log', payload) }
-    // }
-    function (payload) {
-      // if (!payload.err && /^input\.hosts\.periodical\[.*\]$/.test(payload.id)) {
-      //   debug('OUTPUT', payload, this)
-      //   // payload.id = payload.id.replace('input.logs.web.periodical[', '').slice(0, -1)
-      //   // debug('OUTPUT', payload)
-      //   // EventBus.$emit('input.logs.web.periodical.' + payload.metadata.input, payload)
-      //   let event_id = payload.id
-      //   payload.id = payload.id.replace('input.logs.web.periodical[', '').slice(0, -1)
-      //   EventBus.$emit(event_id, payload)
-      // }
 
+    function (payload) {
       debug('OUTPUT', payload, this)
       if (!payload.err) {
         Array.each(this.inputs, function (input) {
           let id = (input.options && input.options.id) ? input.options.id : undefined
           if (id !== undefined) {
-            debug('OUTPUT ID', payload, id)
+            // debug('OUTPUT ID', payload, id)
             // let _id = id.replace('.', '\\.')
             let _id = id.split('.').join('\\.')
             let id_regexp = new RegExp('^' + _id + '\\[.*\\]$')
-            debug('OUTPUT RexExp', id_regexp)
+            // debug('OUTPUT RexExp', id_regexp)
             if (id_regexp.test(payload.id)) {
               let event_id = payload.id
               payload.id = payload.id.replace(id + '[', '').slice(0, -1)

@@ -2,7 +2,7 @@ import * as Debug from 'debug'
 const debug = Debug('apps:logs:web:sources:historical:requests')
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
-import {roundMilliseconds, roundSeconds, roundMinutes, roundHours} from '@libs/time/round'
+// import {roundMilliseconds, roundSeconds, roundMinutes, roundHours} from '@libs/time/round'
 import {SECOND, MINUTE, HOUR, DAY, WEEK, MONTH} from '@libs/time/const'
 
 let init = false
@@ -11,20 +11,20 @@ let init = false
 //
 // import os_callback from '@apps/system/libs/periodical'
 //
-// import web_callback from '@apps/logs/web/libs/periodical'
+import web_callback from '@apps/logs/web/libs/historical'
 
 const generic_callback = function (data, metadata, key, vm) {
-  debug('PERIODICAL GENERIC CALLBACK data %s %o', key, data, metadata)
+  debug('HISTORICAL GENERIC CALLBACK data %s %o', key, data, metadata)
   // if (key === 'hosts.periodical') { hosts_callback(data, metadata, key, vm) }
   //
   // if (key === 'os.periodical') { os_callback(data, metadata, key, vm) }
   //
-  // if (key === 'logs.periodical') { web_callback(data, metadata, key, vm) }
+  if (/^logs\.web\.historical\..*$/.test(key)) { web_callback(data, metadata, key, vm) }
 }
 
 const logs_web_summary_periodical = {
   params: function (_key, vm) {
-    // debug('PERIODICAL logs_web_summary_periodical %o %o', _key, vm)
+    // debug('HISTORICAL logs_web_summary_periodical %o %o', _key, vm)
 
     // const MINUTE = 60000
 
@@ -33,14 +33,14 @@ const logs_web_summary_periodical = {
 
     if (!_key) {
       // key = ['host.periodical', 'config.range', 'minute.range']
-      key = ['logs_historical_' + vm.type]
+      key = ['logs.web.historical.' + vm.period]
     }
 
     if (
       _key
     ) {
       const END = vm.end()
-      let START
+      const START = vm.start()
 
       let filter = [
         // "this.r.row('metadata')('path').eq('os.memory').or(this.r.row('metadata')('path').eq('os.cpus'))"
@@ -68,16 +68,19 @@ const logs_web_summary_periodical = {
       let logs_filter = Array.clone(filter)
       logs_filter.push({ 'metadata': { 'path': 'logs.nginx' } })
 
-      if (vm.type === 'minute') {
-        START = (END - (5 * MINUTE) >= 0) ? END - (5 * MINUTE) : 0
-      } else if (vm.type === 'hour') {
-        START = (END - (2 * HOUR) >= 0) ? END - (2 * HOUR) : 0
-      } else {
-        START = (END - DAY >= 0) ? END - DAY : 0
-      }
+      // END = Date.now() - (2 * DAY)
 
-      logs_filter.push("r.row('metadata')('type').eq('" + vm.type + "')")
+      // if (vm.period === 'minute') {
+      //   START = (END - (5 * MINUTE) >= 0) ? END - (5 * MINUTE) : 0
+      // } else if (vm.period === 'hour') {
+      //   START = (END - (2 * HOUR) >= 0) ? END - (2 * HOUR) : 0
+      // } else {
+      //   START = (END - DAY >= 0) ? END - DAY : 0
+      // }
+
+      logs_filter.push("r.row('metadata')('type').eq('" + vm.period + "')")
       logs_filter.push("r.row('metadata')('tag').contains('host')")
+      logs_filter.push("r.row('data')('user_agent').hasFields('os.detailed')")
 
       debug('logs_web_summary_periodical FILTER ', logs_filter)
 
@@ -86,14 +89,14 @@ const logs_web_summary_periodical = {
         path: 'all',
         range: 'posix ' + START + '-' + END + '/*',
         query: {
-          'from': 'logs_historical_' + vm.type,
+          'from': 'logs_historical_' + vm.period,
           'index': false,
           /**
           * right now needed to match OUTPUT 'id' with this query (need to @fix)
           **/
           'q': [
             // 'id',
-            'data',
+            {'data': 'user_agent'},
             'metadata'
           ],
           'transformation': [
@@ -107,7 +110,7 @@ const logs_web_summary_periodical = {
       }]
     }
 
-    debug('PERIODICAL logs_web_summary_periodical %s %o', _key, source)
+    debug('HISTORICAL logs_web_summary_periodical %s %o', _key, source)
 
     return { key, source }
   },
@@ -126,7 +129,7 @@ const periodical = [
 ]
 
 const requests = {
-  // periodical: periodical,
+  periodical: periodical,
   once: once
 }
 

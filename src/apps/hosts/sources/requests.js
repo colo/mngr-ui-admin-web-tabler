@@ -135,7 +135,8 @@ const hosts_summary_periodical = {
           source = [{
             params: { id: _key },
             path: 'all',
-            range: 'posix ' + roundMilliseconds(Date.now() - (6 * SECOND)) + '-' + roundMilliseconds(Date.now() - SECOND) + '/*',
+            // range: 'posix ' + roundMilliseconds(Date.now() - (6 * SECOND)) + '-' + roundMilliseconds(Date.now() - SECOND) + '/*',
+            range: 'posix ' + vm.round(vm.end() - vm.refresh) + '-' + vm.round(vm.end()) + '/*',
             query: {
               'from': 'os',
               // 'register': 'changes',
@@ -170,7 +171,8 @@ const hosts_summary_periodical = {
           source = [{
             params: { id: _key },
             path: 'all',
-            range: 'posix ' + roundMilliseconds(Date.now() - (6 * SECOND)) + '-' + roundMilliseconds(Date.now() - SECOND) + '/*',
+            // range: 'posix ' + roundMilliseconds(Date.now() - (6 * SECOND)) + '-' + roundMilliseconds(Date.now() - SECOND) + '/*',
+            range: 'posix ' + vm.round(vm.end() - vm.refresh) + '-' + vm.round(vm.end()) + '/*',
             query: {
               'from': 'logs',
               // 'register': 'changes',

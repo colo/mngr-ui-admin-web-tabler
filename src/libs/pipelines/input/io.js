@@ -5,20 +5,21 @@
 const App = require ( 'node-app-socket.io-client/index' )
 
 import * as Debug from "debug"
-const debug = Debug("apps:start:pipelines:input:io")
+const debug = Debug("libs:pipelines:input:io")
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
 
-import IO from '@etc/start.io'
+// import IO from '@etc/default.io'
+import IO from '../default.io'
 
 export default new Class({
   Extends: App,
 
-  // types: ['count', 'start', 'paths'],
+  // types: ['count', 'default', 'paths'],
   // recived: [],
 
   options: {
-    // path: '/start',
+    // path: '/default',
 
     scheme: undefined,
     log: undefined,
@@ -47,7 +48,7 @@ export default new Class({
 
     io: {
 			middlewares: [], //namespace.use(fn)
-			// rooms: ['start'], //atomatically join connected sockets to this rooms
+			// rooms: ['default'], //atomatically join connected sockets to this rooms
 			routes: {
 				// 'app.doc': [{
 				// 	// path: ':param',
@@ -58,7 +59,7 @@ export default new Class({
         'all': [{
 					// path: ':param',
 					// once: true, //socket.once
-					callbacks: ['start'],
+					callbacks: ['default'],
 					// middlewares: [], //socket.use(fn)
 				}],
         // 'on': [{
@@ -81,12 +82,12 @@ export default new Class({
   //   debug('register %o', result)
   //
   // },
-  start: function(socket, next, doc){
+  default: function(socket, next, doc){
     // let {type} = doc
-    debug('start %o', doc)
+    debug('default %o', doc)
 
     if(doc.status){
-      debug('ERROR start %o', doc)
+      debug('ERROR default %o', doc)
     }
     else if (doc.metadata && Array.isArray(doc.metadata.from)) {
 
@@ -94,8 +95,8 @@ export default new Class({
     // else if(
     //   doc.data
     //   && (!doc.metadata.opts || !doc.metadata.opts.params || Object.getLength(doc.metadata.opts.params) === 0)){
-    //   debug('start %o', doc)
-    //   // Array.each(doc.start.tags, function(tag){
+    //   debug('default %o', doc)
+    //   // Array.each(doc.default.tags, function(tag){
     //   //   debug('TAG %s', tag)
     //   //   // this.io.emit('/tags/'+tag)
     //   //   this.io.emit('/', {
@@ -111,11 +112,11 @@ export default new Class({
     //   //
     //   // }.bind(this))
     //   //
-    //   // Array.each(doc.start.hosts, function(host){
+    //   // Array.each(doc.default.default, function(host){
     //   //   debug('HOST %s', host)
     //   //   // this.io.emit('/tags/'+tag)
     //   //   this.io.emit('/', {
-    //   //     params: { prop: 'hosts' },
+    //   //     params: { prop: 'default' },
     //   //     range: "posix 1557135759000-1557136059000/*",
     //   //     body: {
     //   //       // "transformation" : "limit:30000",
@@ -128,13 +129,13 @@ export default new Class({
     //   // }.bind(this))
     // }
     // else{
-    //   debug('OTHERS start %o', doc)
+    //   debug('OTHERS default %o', doc)
     // }
 
     this.fireEvent('onDoc', [doc, { input_type: this, app: null }])
 
-    // store.commit('start/clear')
-    // store.commit('start/set', doc[type])
+    // store.commit('default/clear')
+    // store.commit('default/set', doc[type])
   },
   // app_doc: function(socket, next){
   //   if(this.recived.length < this.types.length){
@@ -160,7 +161,7 @@ export default new Class({
   //   //   this.io.close()
   //
 	// 	// arguments[1]()
-	// 	// this.io.to('start').emit('response', 'a new user has joined the room saying '+arguments[2]);
+	// 	// this.io.to('default').emit('response', 'a new user has joined the room saying '+arguments[2]);
 	// 	// next(socket)
 	// },
 
@@ -170,10 +171,10 @@ export default new Class({
 		this.parent(options);//override default options
 
     // let _io = new App(DefaultConn)
-    // this.add_io(startIO)
+    // this.add_io(defaultIO)
     this.add_io(IO()[options.index])
 
-		this.profile('start_init');//start profiling
+		this.profile('default_init');//default profiling
 
 
     this.addEvent('onConnect', function(){
@@ -195,7 +196,7 @@ export default new Class({
       //
       // }.bind(this), 1000)
 
-      // this.io.emit('on', 'start')
+      // this.io.emit('on', 'default')
       // this.io.emit('on', 'changes', {
       //   params: { prop: undefined },
       //   // query: {
@@ -275,7 +276,7 @@ export default new Class({
       // })
 
       /**
-      * test queries
+      * default queries
       **/
 
       // this.io.emit('/', {
@@ -324,7 +325,7 @@ export default new Class({
       // this.io.emit('/', { query: {}})
 
       /**
-      * test queries
+      * default queries
       **/
 
 
@@ -355,9 +356,9 @@ export default new Class({
         // this.io.close()
     }.bind(this))
 
-		this.profile('start_init');//end profiling
+		this.profile('default_init');//end profiling
 
-		this.log('start', 'info', 'start started');
+		this.log('default', 'info', 'default initialize');
   },
 
 });

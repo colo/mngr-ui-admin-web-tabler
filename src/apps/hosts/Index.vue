@@ -916,10 +916,12 @@ const debug = Debug('apps:hosts')
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
 import JSPipeline from 'js-pipeline'
-import Pipeline from '@apps/hosts/pipelines/periodical'
+// import Pipeline from '@apps/hosts/pipelines/periodical'
+import Pipeline from '@libs/pipelines'
 import { requests, store } from './sources/index'
-
+import {SECOND, MINUTE, HOUR, DAY, WEEK, MONTH} from '@libs/time/const'
 import DataSourcesMixin from '@mixins/dataSources'
+import DashboardMixin from '@mixins/dashboard'
 
 /**
 * System components
@@ -978,7 +980,7 @@ import chart from 'components/chart'
 // import vuePeityWrapper from 'components/wrappers/vuePeity'
 
 export default {
-  mixins: [DataSourcesMixin],
+  mixins: [DataSourcesMixin, DashboardMixin],
   name: 'AppHosts',
 
   components: {
@@ -1088,6 +1090,8 @@ export default {
 
       top: 5,
 
+      refresh: SECOND * 5,
+      period: 'second',
       // // chart: Object.merge(chartConfig, {skip: 5}),
       // /**
       // * vGauge
@@ -1157,6 +1161,8 @@ export default {
 
       let template = Object.clone(Pipeline)
       template.input[0].poll.id = this.id
+      template.input[0].poll.requests.periodical = this.refresh
+
       // let pipeline_id = template.input[0].poll.id
       // let pipeline_id = this.id
 

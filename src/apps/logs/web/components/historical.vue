@@ -12,10 +12,14 @@ const debug = Debug('apps:logs:web:components:historical')
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
 import JSPipeline from 'js-pipeline'
-import Pipeline from '@apps/logs/web/pipelines/day'
+import Pipeline from '@libs/pipelines'
 import { requests, store } from '@apps/logs/web/sources/historical/index'
 
 import DataSourcesMixin from '@mixins/dataSources'
+import DashboardMixin from '@mixins/dashboard'
+
+// import {roundMilliseconds, roundSeconds, roundMinutes, roundHours} from '@libs/time/round'
+import {SECOND, MINUTE, HOUR, DAY, WEEK, MONTH} from '@libs/time/const'
 
 /**
 * Web components
@@ -30,7 +34,7 @@ import DataSourcesMixin from '@mixins/dataSources'
 // import chart from 'components/chart'
 
 export default {
-  mixins: [DataSourcesMixin],
+  mixins: [DataSourcesMixin, DashboardMixin],
   name: 'AppLogsWebHistorical',
 
   components: {
@@ -53,7 +57,7 @@ export default {
   },
 
   props: {
-    type: {
+    period: {
       type: String,
       default: 'minute'
     },
@@ -87,14 +91,15 @@ export default {
       // ],
       //
       // selected_hosts: [],
-      /**
-      * dataSources
-      **/
-      store: false,
-      pipeline_id: ['input.logs.web.historical'],
 
       id: 'input.logs.web.historical',
       path: 'all',
+
+      /**
+      * DataSourcesMixin
+      **/
+      store: false,
+      pipeline_id: ['input.logs.web.historical'],
 
       // // host: 'perseus',
       components: {
@@ -109,7 +114,8 @@ export default {
         ]
       },
 
-      current_time: undefined,
+      refresh: MINUTE,
+      // current_time: undefined,
       // EventBus: EventBus,
       // stat_memory: [],
       // stat_cpus: [],
@@ -176,16 +182,6 @@ export default {
   //   },
   // },
   methods: {
-    end: function () {
-      if (this.current_time === undefined) {
-        return Date.now()
-      } else {
-        return this.current_time
-      }
-    },
-    // setHost: function (val) {
-    //   this.$router.replace({query: { ...this.$route.query, selected_hosts: this.selected_hosts}}).catch(err => { debug('setHost', err) })
-    // },
 
     /**
     * @start pipelines
@@ -195,6 +191,8 @@ export default {
 
       let template = Object.clone(Pipeline)
       template.input[0].poll.id = this.id
+      template.input[0].poll.requests.periodical = this.refresh
+
       // let pipeline_id = template.input[0].poll.id
       // let pipeline_id = this.id
 

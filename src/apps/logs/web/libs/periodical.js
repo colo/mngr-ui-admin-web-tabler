@@ -3,13 +3,13 @@ import * as Debug from 'debug'
 const debug = Debug('apps:web:libs:periodical')
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
-import {SECOND, MINUTE, HOUR, DAY, WEEK, MONTH} from '@libs/time/const'
-import {roundMilliseconds, roundSeconds, roundMinutes, roundHours} from '@libs/time/round'
+// import {SECOND, MINUTE, HOUR, DAY, WEEK, MONTH} from '@libs/time/const'
+// import {roundMilliseconds, roundSeconds, roundMinutes, roundHours} from '@libs/time/round'
 
 import static_types from '@libs/web/static_extentions'
 
 export default function (data, metadata, key, vm) {
-  debug('PERIODICAL WEB CALLBACK data %s %o', key, data, metadata, vm)
+  // debug('PERIODICAL WEB CALLBACK data %s %o', key, data, metadata, vm)
 
   if (data.logs) {
     let _data
@@ -20,7 +20,8 @@ export default function (data, metadata, key, vm) {
     const TOP = vm.top
     let range = {start: undefined, end: undefined}
     let timestamp = _data[0].metadata.timestamp // comes sorted by timestamp in desc order, so first item has the biggest timestamp
-    let smallest_start = roundMilliseconds(timestamp - (5 * SECOND))
+    // let smallest_start = roundMilliseconds(timestamp - (5 * SECOND))
+    // let smallest_start = vm.round(timestamp - vm.refresh)
 
     /**
     * Traffic
@@ -67,7 +68,7 @@ export default function (data, metadata, key, vm) {
       let start = row.metadata.timestamp
       let end = row.metadata.timestamp
 
-      if (/nginx|apache/.test(path) && start >= smallest_start) { // discard any document that is previous to our smallest_start timestamp
+      if (/nginx|apache/.test(path)) { //  && start >= smallest_start discard any document that is previous to our smallest_start timestamp
         if (range.start === undefined || range.start > start) { range.start = start }
         if (range.end === undefined || range.end < end) { range.end = end }
 
@@ -227,7 +228,7 @@ export default function (data, metadata, key, vm) {
           let continent = (row.data.geoip.continent) ? (row.data.geoip.continent.names) ? (row.data.geoip.continent.names.en) ? row.data.geoip.continent.names.en : row.data.geoip.continent.names.es : undefined : undefined
           let city = (row.data.geoip.city && country) ? (row.data.geoip.city.names) ? (row.data.geoip.city.names.en) ? row.data.geoip.city.names.en + ' - ' + country : row.data.geoip.city.names.es + ' - ' + country : undefined : undefined
 
-          let world_map_city = (row.data.geoip.location && row.data.geoip.location.latitude && row.data.geoip.location.longitude) ? row.data.geoip.location + ':' + row.data.geoip.location.latitude : undefined
+          let world_map_city = (row.data.geoip.location && row.data.geoip.location.latitude && row.data.geoip.location.longitude) ? row.data.geoip.location.latitude + ':' + row.data.geoip.location.longitude : undefined
           let world_map_city_name = (row.data.geoip.city) ? (row.data.geoip.city.names) ? (row.data.geoip.city.names.en) ? row.data.geoip.city.names.en + ' - ' + country : row.data.geoip.city.names.es + ' - ' + country : undefined : undefined
 
           let world_map_country = (row.data.geoip.country && row.data.geoip.country.isoCode) ? row.data.geoip.country.isoCode : undefined
@@ -252,13 +253,16 @@ export default function (data, metadata, key, vm) {
           if (country) country_counter[row.metadata.timestamp][country] += 1
           if (continent) continent_counter[row.metadata.timestamp][continent] += 1
 
+          debug('PERIODICAL WEB CALLBACK CITY %o', row, world_map_city_counter, world_map_city)
           if (world_map_city && world_map_city_name) world_map_city_counter[row.metadata.timestamp][world_map_city].count += 1
 
+          debug('PERIODICAL WEB CALLBACK COUNTRY %o', row, world_map_country_counter, world_map_country, country_counter)
           if (world_map_country && country) world_map_country_counter[row.metadata.timestamp][world_map_country].count = country_counter[row.metadata.timestamp][country]
         }
       }
     })
 
+    debug('PERIODICAL WEB CALLBACK data %s %o', key, data, metadata, vm)
     /**
     * Traffic
     **/
@@ -288,15 +292,15 @@ export default function (data, metadata, key, vm) {
     let _top_hosts_counter_tmp = {}
     let periodical_hosts_counter_props = {}
     Object.each(hosts_counter_ts, function (val, ts) {
-      if (ts < smallest_start) {
-        delete hosts_counter_ts[ts]
-      } else {
-        Object.each(val, function (data, hosts) {
-          // _top_hosts_counter.push({hosts: hosts, count: data})
-          if (!_top_hosts_counter_tmp[hosts]) _top_hosts_counter_tmp[hosts] = 0
-          _top_hosts_counter_tmp[hosts] += data
-        })
-      }
+      // if (ts < smallest_start) {
+      //   delete hosts_counter_ts[ts]
+      // } else {
+      Object.each(val, function (data, hosts) {
+        // _top_hosts_counter.push({hosts: hosts, count: data})
+        if (!_top_hosts_counter_tmp[hosts]) _top_hosts_counter_tmp[hosts] = 0
+        _top_hosts_counter_tmp[hosts] += data
+      })
+      // }
     })
     Object.each(_top_hosts_counter_tmp, function (val, pathname) {
       _top_hosts_counter.push({hosts: pathname, count: val})
@@ -360,15 +364,15 @@ export default function (data, metadata, key, vm) {
     let _top_domains_counter_tmp = {}
     let periodical_domains_counter_props = {}
     Object.each(domains_counter_ts, function (val, ts) {
-      if (ts < smallest_start) {
-        delete domains_counter_ts[ts]
-      } else {
-        Object.each(val, function (data, domains) {
-          // _top_domains_counter.push({domains: domains, count: data})
-          if (!_top_domains_counter_tmp[domains]) _top_domains_counter_tmp[domains] = 0
-          _top_domains_counter_tmp[domains] += data
-        })
-      }
+      // if (ts < smallest_start) {
+      //   delete domains_counter_ts[ts]
+      // } else {
+      Object.each(val, function (data, domains) {
+        // _top_domains_counter.push({domains: domains, count: data})
+        if (!_top_domains_counter_tmp[domains]) _top_domains_counter_tmp[domains] = 0
+        _top_domains_counter_tmp[domains] += data
+      })
+      // }
     })
     Object.each(_top_domains_counter_tmp, function (val, pathname) {
       _top_domains_counter.push({domains: pathname, count: val})
@@ -411,17 +415,17 @@ export default function (data, metadata, key, vm) {
     let periodical_status_counter = []
     let periodical_status_counter_props = {}
     Object.each(status_counter, function (val, ts) {
-      if (ts < smallest_start) {
-        delete status_counter[ts]
-      } else {
-        // Object.each(val, function (data, status) {
-        //   if (!periodical_status_counter[status]) periodical_status_counter[status] = 0
-        //   periodical_status_counter[status] += data
-        // })
-        periodical_status_counter_props = Object.merge(periodical_status_counter_props, val)
+      // if (ts < smallest_start) {
+      //   delete status_counter[ts]
+      // } else {
+      // Object.each(val, function (data, status) {
+      //   if (!periodical_status_counter[status]) periodical_status_counter[status] = 0
+      //   periodical_status_counter[status] += data
+      // })
+      periodical_status_counter_props = Object.merge(periodical_status_counter_props, val)
 
-        periodical_status_counter.push({timestamp: ts, value: val})
-      }
+      periodical_status_counter.push({timestamp: ts, value: val})
+      // }
     })
 
     /**
@@ -439,17 +443,17 @@ export default function (data, metadata, key, vm) {
     let periodical_methods_counter = []
     let periodical_methods_counter_props = {}
     Object.each(methods_counter, function (val, ts) {
-      if (ts < smallest_start) {
-        delete methods_counter[ts]
-      } else {
-        // Object.each(val, function (data, method) {
-        //   if (!periodical_methods_counter[method]) periodical_methods_counter[method] = 0
-        //   periodical_methods_counter[method] += data
-        // })
-        periodical_methods_counter_props = Object.merge(periodical_methods_counter_props, val)
+      // if (ts < smallest_start) {
+      //   delete methods_counter[ts]
+      // } else {
+      // Object.each(val, function (data, method) {
+      //   if (!periodical_methods_counter[method]) periodical_methods_counter[method] = 0
+      //   periodical_methods_counter[method] += data
+      // })
+      periodical_methods_counter_props = Object.merge(periodical_methods_counter_props, val)
 
-        periodical_methods_counter.push({timestamp: ts, value: val})
-      }
+      periodical_methods_counter.push({timestamp: ts, value: val})
+      // }
     })
 
     /**
@@ -493,15 +497,15 @@ export default function (data, metadata, key, vm) {
     let _top_pathnames_counter_tmp = {}
     let periodical_pathnames_counter_props = {}
     Object.each(pathnames_counter, function (val, ts) {
-      if (ts < smallest_start) {
-        delete pathnames_counter[ts]
-      } else {
-        Object.each(val, function (data, pathnames) {
-          // _top_pathnames_counter.push({pathnames: pathnames, count: data})
-          if (!_top_pathnames_counter_tmp[pathnames]) _top_pathnames_counter_tmp[pathnames] = 0
-          _top_pathnames_counter_tmp[pathnames] += data
-        })
-      }
+      // if (ts < smallest_start) {
+      //   delete pathnames_counter[ts]
+      // } else {
+      Object.each(val, function (data, pathnames) {
+        // _top_pathnames_counter.push({pathnames: pathnames, count: data})
+        if (!_top_pathnames_counter_tmp[pathnames]) _top_pathnames_counter_tmp[pathnames] = 0
+        _top_pathnames_counter_tmp[pathnames] += data
+      })
+      // }
     })
     Object.each(_top_pathnames_counter_tmp, function (val, pathname) {
       _top_pathnames_counter.push({pathnames: pathname, count: val})
@@ -544,16 +548,16 @@ export default function (data, metadata, key, vm) {
     let periodical_bytes_counter = []
     let periodical_requests_counter = []
     Object.each(total_bytes_sent, function (val, ts) {
-      if (ts < smallest_start) {
-        delete total_bytes_sent[ts]
-        delete total_requests[ts]
-      } else {
-        let hit = total_requests[ts]
-        // periodical_bytes_counter += val
-        // periodical_requests_counter += hit
-        periodical_bytes_counter.push({timestamp: ts, value: { bytes: val} })
-        periodical_requests_counter.push({timestamp: ts, value: { hits: hit } })
-      }
+      // if (ts < smallest_start) {
+      //   delete total_bytes_sent[ts]
+      //   delete total_requests[ts]
+      // } else {
+      let hit = total_requests[ts]
+      // periodical_bytes_counter += val
+      // periodical_requests_counter += hit
+      periodical_bytes_counter.push({timestamp: ts, value: { bytes: val} })
+      periodical_requests_counter.push({timestamp: ts, value: { hits: hit } })
+      // }
     })
 
     /**
@@ -562,16 +566,16 @@ export default function (data, metadata, key, vm) {
     let periodical_type_counter = []
     let periodical_type_counter_props = {}
     Object.each(type_counter, function (val, ts) {
-      if (ts < smallest_start) {
-        delete type_counter[ts]
-      } else {
-        // Object.each(val, function (data, type) {
-        //   if (!periodical_type_counter[type]) periodical_type_counter[type] = 0
-        //   periodical_type_counter[type] += data
-        // })
-        periodical_type_counter_props = Object.merge(periodical_type_counter_props, val)
-        periodical_type_counter.push({timestamp: ts, value: val})
-      }
+      // if (ts < smallest_start) {
+      //   delete type_counter[ts]
+      // } else {
+      // Object.each(val, function (data, type) {
+      //   if (!periodical_type_counter[type]) periodical_type_counter[type] = 0
+      //   periodical_type_counter[type] += data
+      // })
+      periodical_type_counter_props = Object.merge(periodical_type_counter_props, val)
+      periodical_type_counter.push({timestamp: ts, value: val})
+      // }
     })
 
     /**
@@ -605,13 +609,13 @@ export default function (data, metadata, key, vm) {
     let top_addr_counter_by_ts = {}
     let _top_addr_counter = []
     Object.each(addr_counter, function (val, ts) {
-      if (ts < smallest_start) {
-        delete addr_counter[ts]
-      } else {
-        Object.each(val, function (data, addr) {
-          _top_addr_counter.push({addr: addr, count: data})
-        })
-      }
+      // if (ts < smallest_start) {
+      //   delete addr_counter[ts]
+      // } else {
+      Object.each(val, function (data, addr) {
+        _top_addr_counter.push({addr: addr, count: data})
+      })
+      // }
     })
 
     _top_addr_counter = _top_addr_counter.sort(function (a, b) { return (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0) })
@@ -640,17 +644,17 @@ export default function (data, metadata, key, vm) {
     let periodical_user_counter = []
     let periodical_user_counter_props = {}
     Object.each(user_counter, function (val, ts) {
-      if (ts < smallest_start) {
-        delete user_counter[ts]
-      } else {
-        // Object.each(val, function (data, user) {
-        //   if (!periodical_user_counter[user]) periodical_user_counter[user] = 0
-        //   periodical_user_counter[user] += data
-        //
-        // })
-        periodical_user_counter_props = Object.merge(periodical_user_counter_props, val)
-        periodical_user_counter.push({timestamp: ts, value: val})
-      }
+      // if (ts < smallest_start) {
+      //   delete user_counter[ts]
+      // } else {
+      // Object.each(val, function (data, user) {
+      //   if (!periodical_user_counter[user]) periodical_user_counter[user] = 0
+      //   periodical_user_counter[user] += data
+      //
+      // })
+      periodical_user_counter_props = Object.merge(periodical_user_counter_props, val)
+      periodical_user_counter.push({timestamp: ts, value: val})
+      // }
     })
 
     /**
@@ -668,17 +672,17 @@ export default function (data, metadata, key, vm) {
     let periodical_referer_counter = []
     let periodical_referer_counter_props = {}
     Object.each(referer_counter, function (val, ts) {
-      if (ts < smallest_start) {
-        delete referer_counter[ts]
-      } else {
-        periodical_referer_counter_props = Object.merge(periodical_referer_counter_props, val)
-        // Object.each(val, function (data, referer) {
-        //   if (!periodical_referer_counter[referer]) periodical_referer_counter[referer] = 0
-        //   periodical_referer_counter[referer] += data
-        //
-        // })
-        periodical_referer_counter.push({timestamp: ts, value: val})
-      }
+      // if (ts < smallest_start) {
+      //   delete referer_counter[ts]
+      // } else {
+      periodical_referer_counter_props = Object.merge(periodical_referer_counter_props, val)
+      // Object.each(val, function (data, referer) {
+      //   if (!periodical_referer_counter[referer]) periodical_referer_counter[referer] = 0
+      //   periodical_referer_counter[referer] += data
+      //
+      // })
+      periodical_referer_counter.push({timestamp: ts, value: val})
+      // }
     })
 
     /**
@@ -696,17 +700,17 @@ export default function (data, metadata, key, vm) {
     let periodical_user_agent_os_counter = []
     let periodical_user_agent_os_counter_props = {}
     Object.each(user_agent_os_counter, function (val, ts) {
-      if (ts < smallest_start) {
-        delete user_agent_os_counter[ts]
-      } else {
-        // Object.each(val, function (data, os) {
-        //   if (!periodical_user_agent_os_counter[os]) periodical_user_agent_os_counter[os] = 0
-        //   periodical_user_agent_os_counter[os] += data
-        //
-        // })
-        periodical_user_agent_os_counter_props = Object.merge(periodical_user_agent_os_counter_props, val)
-        periodical_user_agent_os_counter.push({timestamp: ts, value: val})
-      }
+      // if (ts < smallest_start) {
+      //   delete user_agent_os_counter[ts]
+      // } else {
+      // Object.each(val, function (data, os) {
+      //   if (!periodical_user_agent_os_counter[os]) periodical_user_agent_os_counter[os] = 0
+      //   periodical_user_agent_os_counter[os] += data
+      //
+      // })
+      periodical_user_agent_os_counter_props = Object.merge(periodical_user_agent_os_counter_props, val)
+      periodical_user_agent_os_counter.push({timestamp: ts, value: val})
+      // }
     })
 
     /**
@@ -723,18 +727,18 @@ export default function (data, metadata, key, vm) {
     let periodical_user_agent_engine_counter = []
     let periodical_user_agent_engine_counter_props = {}
     Object.each(user_agent_engine_counter, function (val, ts) {
-      if (ts < smallest_start) {
-        delete user_agent_engine_counter[ts]
-      } else {
-        // Object.each(val, function (data, engine) {
-        //   if (!periodical_user_agent_engine_counter[engine]) periodical_user_agent_engine_counter[engine] = 0
-        //   periodical_user_agent_engine_counter[engine] += data
-        //
-        // })
+      // if (ts < smallest_start) {
+      //   delete user_agent_engine_counter[ts]
+      // } else {
+      // Object.each(val, function (data, engine) {
+      //   if (!periodical_user_agent_engine_counter[engine]) periodical_user_agent_engine_counter[engine] = 0
+      //   periodical_user_agent_engine_counter[engine] += data
+      //
+      // })
 
-        periodical_user_agent_engine_counter_props = Object.merge(periodical_user_agent_engine_counter_props, val)
-        periodical_user_agent_engine_counter.push({timestamp: ts, value: val})
-      }
+      periodical_user_agent_engine_counter_props = Object.merge(periodical_user_agent_engine_counter_props, val)
+      periodical_user_agent_engine_counter.push({timestamp: ts, value: val})
+      // }
     })
 
     /**
@@ -749,17 +753,17 @@ export default function (data, metadata, key, vm) {
     let periodical_user_agent_device_counter = []
     let periodical_user_agent_device_counter_props = {}
     Object.each(user_agent_device_counter, function (val, ts) {
-      if (ts < smallest_start) {
-        delete user_agent_device_counter[ts]
-      } else {
-        // Object.each(val, function (data, device) {
-        //   if (!periodical_user_agent_device_counter[device]) periodical_user_agent_device_counter[device] = 0
-        //   periodical_user_agent_device_counter[device] += data
-        // })
+      // if (ts < smallest_start) {
+      //   delete user_agent_device_counter[ts]
+      // } else {
+      // Object.each(val, function (data, device) {
+      //   if (!periodical_user_agent_device_counter[device]) periodical_user_agent_device_counter[device] = 0
+      //   periodical_user_agent_device_counter[device] += data
+      // })
 
-        periodical_user_agent_device_counter_props = Object.merge(periodical_user_agent_device_counter_props, val)
-        periodical_user_agent_device_counter.push({timestamp: ts, value: val})
-      }
+      periodical_user_agent_device_counter_props = Object.merge(periodical_user_agent_device_counter_props, val)
+      periodical_user_agent_device_counter.push({timestamp: ts, value: val})
+      // }
     })
 
     /**
@@ -774,18 +778,18 @@ export default function (data, metadata, key, vm) {
     let periodical_user_agent_browser_counter = []
     let periodical_user_agent_browser_counter_props = {}
     Object.each(user_agent_browser_counter, function (val, ts) {
-      if (ts < smallest_start) {
-        delete user_agent_browser_counter[ts]
-      } else {
-        // Object.each(val, function (data, browser) {
-        //   if (!periodical_user_agent_browser_counter[browser]) periodical_user_agent_browser_counter[browser] = 0
-        //   periodical_user_agent_browser_counter[browser] += data
-        //
-        // })
+      // if (ts < smallest_start) {
+      //   delete user_agent_browser_counter[ts]
+      // } else {
+      // Object.each(val, function (data, browser) {
+      //   if (!periodical_user_agent_browser_counter[browser]) periodical_user_agent_browser_counter[browser] = 0
+      //   periodical_user_agent_browser_counter[browser] += data
+      //
+      // })
 
-        periodical_user_agent_browser_counter_props = Object.merge(periodical_user_agent_browser_counter_props, val)
-        periodical_user_agent_browser_counter.push({timestamp: ts, value: val})
-      }
+      periodical_user_agent_browser_counter_props = Object.merge(periodical_user_agent_browser_counter_props, val)
+      periodical_user_agent_browser_counter.push({timestamp: ts, value: val})
+      // }
     })
 
     /**
@@ -808,55 +812,55 @@ export default function (data, metadata, key, vm) {
     let periodical_continent_counter = {}
 
     Object.each(city_counter, function (val, ts) {
-      if (ts < smallest_start) {
-        delete city_counter[ts]
-        delete country_counter[ts]
-        delete continent_counter[ts]
-        delete world_map_city_counter[ts]
-        delete world_map_country_counter[ts]
-      } else {
-        let country_val = country_counter[ts]
-        let continent_val = continent_counter[ts]
-        let world_map_city_val = world_map_city_counter[ts]
-        let world_map_country_val = world_map_country_counter[ts]
+      // if (ts < smallest_start) {
+      //   delete city_counter[ts]
+      //   delete country_counter[ts]
+      //   delete continent_counter[ts]
+      //   delete world_map_city_counter[ts]
+      //   delete world_map_country_counter[ts]
+      // } else {
+      let country_val = country_counter[ts]
+      let continent_val = continent_counter[ts]
+      let world_map_city_val = world_map_city_counter[ts]
+      let world_map_country_val = world_map_country_counter[ts]
 
-        Object.each(val, function (data, city) {
-          if (!periodical_city_counter[city]) periodical_city_counter[city] = 0
-          periodical_city_counter[city] += data
-        })
+      Object.each(val, function (data, city) {
+        if (!periodical_city_counter[city]) periodical_city_counter[city] = 0
+        periodical_city_counter[city] += data
+      })
 
-        Object.each(country_val, function (data, country) {
-          if (!periodical_country_counter[country]) periodical_country_counter[country] = 0
-          periodical_country_counter[country] += data
-        })
+      Object.each(country_val, function (data, country) {
+        if (!periodical_country_counter[country]) periodical_country_counter[country] = 0
+        periodical_country_counter[country] += data
+      })
 
-        Object.each(continent_val, function (data, continent) {
-          if (!periodical_continent_counter[continent]) periodical_continent_counter[continent] = 0
-          periodical_continent_counter[continent] += data
-        })
+      Object.each(continent_val, function (data, continent) {
+        if (!periodical_continent_counter[continent]) periodical_continent_counter[continent] = 0
+        periodical_continent_counter[continent] += data
+      })
 
-        Object.each(world_map_city_val, function (data, world_map_city) {
-          // if (!periodical_continent_counter[continent]) periodical_continent_counter[continent] = 0
-          // periodical_continent_counter[continent] += data
+      Object.each(world_map_city_val, function (data, world_map_city) {
+        // if (!periodical_continent_counter[continent]) periodical_continent_counter[continent] = 0
+        // periodical_continent_counter[continent] += data
 
-          if (!_tmp_periodical_world_map_city_counter[world_map_city]) {
-            _tmp_periodical_world_map_city_counter[world_map_city] = data
-          } else {
-            _tmp_periodical_world_map_city_counter[world_map_city].count += data.count
-          }
-        })
+        if (!_tmp_periodical_world_map_city_counter[world_map_city]) {
+          _tmp_periodical_world_map_city_counter[world_map_city] = data
+        } else {
+          _tmp_periodical_world_map_city_counter[world_map_city].count += data.count
+        }
+      })
 
-        Object.each(world_map_country_val, function (data, world_map_country) {
-          // if (!periodical_continent_counter[continent]) periodical_continent_counter[continent] = 0
-          // periodical_continent_counter[continent] += data
+      Object.each(world_map_country_val, function (data, world_map_country) {
+        // if (!periodical_continent_counter[continent]) periodical_continent_counter[continent] = 0
+        // periodical_continent_counter[continent] += data
 
-          if (!_tmp_periodical_world_map_country_counter[world_map_country]) {
-            _tmp_periodical_world_map_country_counter[world_map_country] = data
-          } else {
-            _tmp_periodical_world_map_country_counter[world_map_country].count += data.count
-          }
-        })
-      }
+        if (!_tmp_periodical_world_map_country_counter[world_map_country]) {
+          _tmp_periodical_world_map_country_counter[world_map_country] = data
+        } else {
+          _tmp_periodical_world_map_country_counter[world_map_country].count += data.count
+        }
+      })
+      // }
     })
 
     let periodical_world_map_city_counter = []
