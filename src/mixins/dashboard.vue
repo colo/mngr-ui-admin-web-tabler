@@ -59,13 +59,13 @@ export default {
       //   START = (END - DAY >= 0) ? END - DAY : 0
       // }
       if (this.period === 'second' || this.period === 'periodical') {
-        return (this.end() - SECOND >= 0) ? this.end() - (SECOND * 2) : 0
+        return (this.end() - SECOND >= 0) ? this.end() - SECOND : 0
       } else if (this.period === 'minute') {
-        return (this.end() - MINUTE >= 0) ? this.end() - (MINUTE * 2) : 0
+        return (this.end() - MINUTE >= 0) ? this.end() - MINUTE : 0
       } else if (this.period === 'hour') {
-        return (this.end() - HOUR >= 0) ? this.end() - (HOUR * 2) : 0
+        return (this.end() - HOUR >= 0) ? this.end() - HOUR : 0
       } else {
-        return (this.end() - DAY >= 0) ? this.end() - (DAY * 2) : 0
+        return (this.end() - DAY >= 0) ? this.end() - DAY : 0
       }
     },
     end: function () {

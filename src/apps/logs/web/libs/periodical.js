@@ -297,145 +297,145 @@ export default function (data, metadata, key, vm) {
     /**
     * Traffic - host
     **/
-    // let top_hosts_counter = {}
+    // // let top_hosts_counter = {}
+    // // let _top_hosts_counter = []
+    // // Object.each(hosts_counter, function (data, host) {
+    // //   _top_hosts_counter.push(data)
+    // // })
+    // //
+    // // _top_hosts_counter = _top_hosts_counter.sort((a, b) => b - a)
+    // //
+    // // for (let i = 0; i < TOP; i++) {
+    // //   let value = _top_hosts_counter[i]
+    // //
+    // //   Object.each(hosts_counter, function (data, host) {
+    // //     if (data === value) {
+    // //       top_hosts_counter[host] = data
+    // //     }
+    // //   })
+    // // }
+    // let top_hosts_counter_by_ts = {}
     // let _top_hosts_counter = []
-    // Object.each(hosts_counter, function (data, host) {
-    //   _top_hosts_counter.push(data)
+    // let _top_hosts_counter_tmp = {}
+    // let periodical_hosts_counter_props = {}
+    // Object.each(hosts_counter_ts, function (val, ts) {
+    //   // if (ts < smallest_start) {
+    //   //   delete hosts_counter_ts[ts]
+    //   // } else {
+    //   Object.each(val, function (data, hosts) {
+    //     // _top_hosts_counter.push({hosts: hosts, count: data})
+    //     if (!_top_hosts_counter_tmp[hosts]) _top_hosts_counter_tmp[hosts] = 0
+    //     _top_hosts_counter_tmp[hosts] += data
+    //   })
+    //   // }
+    // })
+    // Object.each(_top_hosts_counter_tmp, function (val, pathname) {
+    //   _top_hosts_counter.push({hosts: pathname, count: val})
     // })
     //
-    // _top_hosts_counter = _top_hosts_counter.sort((a, b) => b - a)
+    // _top_hosts_counter = _top_hosts_counter.sort(function (a, b) { return (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0) })
     //
-    // for (let i = 0; i < TOP; i++) {
+    // let _top_host = (_top_hosts_counter.length > TOP) ? TOP : _top_hosts_counter.length
+    //
+    // for (let i = 0; i < _top_host; i++) {
     //   let value = _top_hosts_counter[i]
     //
-    //   Object.each(hosts_counter, function (data, host) {
-    //     if (data === value) {
-    //       top_hosts_counter[host] = data
-    //     }
+    //   Object.each(hosts_counter_ts, function (data, ts) {
+    //     // if (data[value.hosts]) {
+    //     if (!top_hosts_counter_by_ts[ts]) top_hosts_counter_by_ts[ts] = {}
+    //     top_hosts_counter_by_ts[ts][value.hosts] = data[value.hosts] || 0
+    //     // }
     //   })
     // }
-    let top_hosts_counter_by_ts = {}
-    let _top_hosts_counter = []
-    let _top_hosts_counter_tmp = {}
-    let periodical_hosts_counter_props = {}
-    Object.each(hosts_counter_ts, function (val, ts) {
-      // if (ts < smallest_start) {
-      //   delete hosts_counter_ts[ts]
-      // } else {
-      Object.each(val, function (data, hosts) {
-        // _top_hosts_counter.push({hosts: hosts, count: data})
-        if (!_top_hosts_counter_tmp[hosts]) _top_hosts_counter_tmp[hosts] = 0
-        _top_hosts_counter_tmp[hosts] += data
-      })
-      // }
-    })
-    Object.each(_top_hosts_counter_tmp, function (val, pathname) {
-      _top_hosts_counter.push({hosts: pathname, count: val})
-    })
-
-    _top_hosts_counter = _top_hosts_counter.sort(function (a, b) { return (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0) })
-
-    let _top_host = (_top_hosts_counter.length > TOP) ? TOP : _top_hosts_counter.length
-
-    for (let i = 0; i < _top_host; i++) {
-      let value = _top_hosts_counter[i]
-
-      Object.each(hosts_counter_ts, function (data, ts) {
-        // if (data[value.hosts]) {
-        if (!top_hosts_counter_by_ts[ts]) top_hosts_counter_by_ts[ts] = {}
-        top_hosts_counter_by_ts[ts][value.hosts] = data[value.hosts] || 0
-        // }
-      })
-    }
-
-    let top_hosts_counter = []
-    Object.each(top_hosts_counter_by_ts, function (value, ts) {
-      periodical_hosts_counter_props = Object.merge(periodical_hosts_counter_props, value)
-      top_hosts_counter.push({timestamp: ts, value: value})
-    })
-
-    debug('PERIODICAL WEB HOSTS', hosts_counter_ts, _top_hosts_counter)
-
-    /**
-    * add missing properties with 0 value
-    **/
-    Object.each(periodical_hosts_counter_props, function (val, prop) {
-      Array.each(top_hosts_counter, function (row) {
-        if (!row.value[prop]) row.value[prop] = 0
-      })
-    })
+    //
+    // let top_hosts_counter = []
+    // Object.each(top_hosts_counter_by_ts, function (value, ts) {
+    //   periodical_hosts_counter_props = Object.merge(periodical_hosts_counter_props, value)
+    //   top_hosts_counter.push({timestamp: ts, value: value})
+    // })
+    //
+    // debug('PERIODICAL WEB HOSTS', hosts_counter_ts, _top_hosts_counter)
+    //
+    // /**
+    // * add missing properties with 0 value
+    // **/
+    // Object.each(periodical_hosts_counter_props, function (val, prop) {
+    //   Array.each(top_hosts_counter, function (row) {
+    //     if (!row.value[prop]) row.value[prop] = 0
+    //   })
+    // })
 
     /**
     * Traffic - domain
     **/
-    // let top_domains_counter = {}
+    // // let top_domains_counter = {}
+    // // let _top_domains_counter = []
+    // // Object.each(domains_counter, function (data, domain) {
+    // //   _top_domains_counter.push(data)
+    // // })
+    // //
+    // // _top_domains_counter = _top_domains_counter.sort((a, b) => b - a)
+    // //
+    // // for (let i = 0; i < TOP; i++) {
+    // //   let value = _top_domains_counter[i]
+    // //
+    // //   Object.each(domains_counter, function (data, domain) {
+    // //     if (data === value) {
+    // //       top_domains_counter[domain] = data
+    // //     }
+    // //   })
+    // // }
+    //
+    // let top_domains_counter_by_ts = {}
     // let _top_domains_counter = []
-    // Object.each(domains_counter, function (data, domain) {
-    //   _top_domains_counter.push(data)
+    // let _top_domains_counter_tmp = {}
+    // let periodical_domains_counter_props = {}
+    // Object.each(domains_counter_ts, function (val, ts) {
+    //   // if (ts < smallest_start) {
+    //   //   delete domains_counter_ts[ts]
+    //   // } else {
+    //   Object.each(val, function (data, domains) {
+    //     // _top_domains_counter.push({domains: domains, count: data})
+    //     if (!_top_domains_counter_tmp[domains]) _top_domains_counter_tmp[domains] = 0
+    //     _top_domains_counter_tmp[domains] += data
+    //   })
+    //   // }
+    // })
+    // Object.each(_top_domains_counter_tmp, function (val, pathname) {
+    //   _top_domains_counter.push({domains: pathname, count: val})
     // })
     //
-    // _top_domains_counter = _top_domains_counter.sort((a, b) => b - a)
+    // _top_domains_counter = _top_domains_counter.sort(function (a, b) { return (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0) })
     //
-    // for (let i = 0; i < TOP; i++) {
+    // let _top_domains = (_top_domains_counter.length > TOP) ? TOP : _top_domains_counter.length
+    //
+    // for (let i = 0; i < _top_domains; i++) {
     //   let value = _top_domains_counter[i]
     //
-    //   Object.each(domains_counter, function (data, domain) {
-    //     if (data === value) {
-    //       top_domains_counter[domain] = data
-    //     }
+    //   Object.each(domains_counter_ts, function (data, ts) {
+    //     // if (data[value.domains]) {
+    //     if (!top_domains_counter_by_ts[ts]) top_domains_counter_by_ts[ts] = {}
+    //     top_domains_counter_by_ts[ts][value.domains] = data[value.domains] || 0
+    //     // }
     //   })
     // }
-
-    let top_domains_counter_by_ts = {}
-    let _top_domains_counter = []
-    let _top_domains_counter_tmp = {}
-    let periodical_domains_counter_props = {}
-    Object.each(domains_counter_ts, function (val, ts) {
-      // if (ts < smallest_start) {
-      //   delete domains_counter_ts[ts]
-      // } else {
-      Object.each(val, function (data, domains) {
-        // _top_domains_counter.push({domains: domains, count: data})
-        if (!_top_domains_counter_tmp[domains]) _top_domains_counter_tmp[domains] = 0
-        _top_domains_counter_tmp[domains] += data
-      })
-      // }
-    })
-    Object.each(_top_domains_counter_tmp, function (val, pathname) {
-      _top_domains_counter.push({domains: pathname, count: val})
-    })
-
-    _top_domains_counter = _top_domains_counter.sort(function (a, b) { return (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0) })
-
-    let _top_domains = (_top_domains_counter.length > TOP) ? TOP : _top_domains_counter.length
-
-    for (let i = 0; i < _top_domains; i++) {
-      let value = _top_domains_counter[i]
-
-      Object.each(domains_counter_ts, function (data, ts) {
-        // if (data[value.domains]) {
-        if (!top_domains_counter_by_ts[ts]) top_domains_counter_by_ts[ts] = {}
-        top_domains_counter_by_ts[ts][value.domains] = data[value.domains] || 0
-        // }
-      })
-    }
-
-    let top_domains_counter = []
-    Object.each(top_domains_counter_by_ts, function (value, ts) {
-      periodical_domains_counter_props = Object.merge(periodical_domains_counter_props, value)
-      top_domains_counter.push({timestamp: ts, value: value})
-    })
-
-    /**
-    * add missing properties with 0 value
-    **/
-    Object.each(periodical_domains_counter_props, function (val, prop) {
-      Array.each(top_domains_counter, function (row) {
-        if (!row.value[prop]) row.value[prop] = 0
-      })
-    })
-
-    debug('PERIODICAL WEB DOMAINS', domains_counter_ts, top_domains_counter)
+    //
+    // let top_domains_counter = []
+    // Object.each(top_domains_counter_by_ts, function (value, ts) {
+    //   periodical_domains_counter_props = Object.merge(periodical_domains_counter_props, value)
+    //   top_domains_counter.push({timestamp: ts, value: value})
+    // })
+    //
+    // /**
+    // * add missing properties with 0 value
+    // **/
+    // Object.each(periodical_domains_counter_props, function (val, prop) {
+    //   Array.each(top_domains_counter, function (row) {
+    //     if (!row.value[prop]) row.value[prop] = 0
+    //   })
+    // })
+    //
+    // debug('PERIODICAL WEB DOMAINS', domains_counter_ts, top_domains_counter)
     /**
     * Traffic - status
     **/
@@ -498,31 +498,44 @@ export default function (data, metadata, key, vm) {
     // let periodical_pathnames_counter = []
     // let periodical_pathnames_counter_props = {}
     // Object.each(pathnames_counter, function (val, ts) {
-    //   if (ts < smallest_start) {
-    //     delete pathnames_counter[ts]
-    //   } else {
-    //     // Object.each(val, function (data, pathname) {
-    //     //   if (!periodical_pathnames_counter[pathname]) periodical_pathnames_counter[pathname] = 0
-    //     //   periodical_pathnames_counter[pathname] += data
-    //     // })
-    //     periodical_pathnames_counter_props = Object.merge(periodical_pathnames_counter_props, val)
+    //   // if (ts < smallest_start) {
+    //   //   delete pathnames_counter[ts]
+    //   // } else {
+    //   // Object.each(val, function (data, pathname) {
+    //   //   if (!periodical_pathnames_counter[pathname]) periodical_pathnames_counter[pathname] = 0
+    //   //   periodical_pathnames_counter[pathname] += data
+    //   // })
+    //   periodical_pathnames_counter_props = Object.merge(periodical_pathnames_counter_props, val)
     //
-    //     periodical_pathnames_counter.push({timestamp: ts, value: val})
-    //   }
+    //   periodical_pathnames_counter.push({timestamp: ts, value: val})
+    //   // }
     // })
-    /**
-    * add missing properties with 0 value
-    **/
+    // /**
+    // * add missing properties with 0 value
+    // **/
     // Object.each(periodical_pathnames_counter_props, function (val, prop) {
     //   Array.each(periodical_pathnames_counter, function (row) {
     //     if (!row.value[prop]) row.value[prop] = 0
     //   })
     // })
+    // let periodical_pathnames_counter = {}
+    // // let periodical_pathnames_counter_props = {}
+    // Object.each(pathnames_counter, function (val, ts) {
+    //   Object.each(val, function (data, path) {
+    //     if (!periodical_pathnames_counter[path]) periodical_pathnames_counter[path] = 0
+    //     periodical_pathnames_counter[path] += data
+    //   })
     //
+    //   // }
+    // })
+
+    /**
+    * Traffic - TOP pathname
+    **/
     let top_pathnames_counter_by_ts = {}
     let _top_pathnames_counter = []
     let _top_pathnames_counter_tmp = {}
-    let periodical_pathnames_counter_props = {}
+    let top_periodical_pathnames_counter_props = {}
     Object.each(pathnames_counter, function (val, ts) {
       // if (ts < smallest_start) {
       //   delete pathnames_counter[ts]
@@ -553,21 +566,30 @@ export default function (data, metadata, key, vm) {
       })
     }
 
-    let top_pathnames_counter = []
-    Object.each(top_pathnames_counter_by_ts, function (value, ts) {
-      periodical_pathnames_counter_props = Object.merge(periodical_pathnames_counter_props, value)
-      top_pathnames_counter.push({timestamp: ts, value: value})
-    })
+    // let top_pathnames_counter = []
+    // Object.each(top_pathnames_counter_by_ts, function (value, ts) {
+    //   top_periodical_pathnames_counter_props = Object.merge(top_periodical_pathnames_counter_props, value)
+    //   top_pathnames_counter.push({timestamp: ts, value: value})
+    // })
+    //
+    // /**
+    // * add missing properties with 0 value
+    // **/
+    // Object.each(top_periodical_pathnames_counter_props, function (val, prop) {
+    //   Array.each(top_pathnames_counter, function (row) {
+    //     if (!row.value[prop]) row.value[prop] = 0
+    //   })
+    // })
 
-    /**
-    * add missing properties with 0 value
-    **/
-    Object.each(periodical_pathnames_counter_props, function (val, prop) {
-      Array.each(top_pathnames_counter, function (row) {
-        if (!row.value[prop]) row.value[prop] = 0
+    let top_pathnames_counter = {}
+    Object.each(top_pathnames_counter_by_ts, function (value, ts) {
+      Object.each(value, function (data, path) {
+        if (!top_pathnames_counter[path]) top_pathnames_counter[path] = 0
+        top_pathnames_counter[path] += data
       })
     })
 
+    // })
     // debug('PERIODICAL WEB PATHNAMES', pathnames_counter, _top_pathnames_counter, top_pathnames_counter_by_ts, top_pathnames_counter)
     /**
     * Traffic - bytes & requests
@@ -633,38 +655,46 @@ export default function (data, metadata, key, vm) {
     //     periodical_addr_counter.push({timestamp: ts, value: val })
     //   }
     // })
-    let top_addr_counter_by_ts = {}
-    let _top_addr_counter = []
-    Object.each(addr_counter, function (val, ts) {
-      // if (ts < smallest_start) {
-      //   delete addr_counter[ts]
-      // } else {
-      Object.each(val, function (data, addr) {
-        _top_addr_counter.push({addr: addr, count: data})
-      })
-      // }
-    })
-
-    _top_addr_counter = _top_addr_counter.sort(function (a, b) { return (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0) })
-
-    let _top_addr = (_top_addr_counter.length > TOP) ? TOP : _top_addr_counter.length
-
-    for (let i = 0; i < _top_addr; i++) {
-      let value = _top_addr_counter[i]
-
-      Object.each(addr_counter, function (data, ts) {
-        // if (data[value.addr]) {
-        if (!top_addr_counter_by_ts[ts]) top_addr_counter_by_ts[ts] = {}
-        top_addr_counter_by_ts[ts][value.addr] = data[value.addr] || 0
-        // }
-      })
-    }
-
-    debug('PERIODICAL WEB ADDR', addr_counter, _top_addr_counter, top_addr_counter_by_ts)
-    let top_addr_counter = []
-    Object.each(top_addr_counter_by_ts, function (value, ts) {
-      top_addr_counter.push({timestamp: ts, value: value})
-    })
+    // let top_addr_counter_by_ts = {}
+    // let _top_addr_counter = []
+    // Object.each(addr_counter, function (val, ts) {
+    //   // if (ts < smallest_start) {
+    //   //   delete addr_counter[ts]
+    //   // } else {
+    //   Object.each(val, function (data, addr) {
+    //     _top_addr_counter.push({addr: addr, count: data})
+    //   })
+    //   // }
+    // })
+    //
+    // _top_addr_counter = _top_addr_counter.sort(function (a, b) { return (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0) })
+    //
+    // let _top_addr = (_top_addr_counter.length > TOP) ? TOP : _top_addr_counter.length
+    //
+    // for (let i = 0; i < _top_addr; i++) {
+    //   let value = _top_addr_counter[i]
+    //
+    //   Object.each(addr_counter, function (data, ts) {
+    //     // if (data[value.addr]) {
+    //     if (!top_addr_counter_by_ts[ts]) top_addr_counter_by_ts[ts] = {}
+    //     top_addr_counter_by_ts[ts][value.addr] = data[value.addr] || 0
+    //     // }
+    //   })
+    // }
+    //
+    // debug('PERIODICAL WEB ADDR', addr_counter, _top_addr_counter, top_addr_counter_by_ts)
+    // // let top_addr_counter = []
+    // // Object.each(top_addr_counter_by_ts, function (value, ts) {
+    // //   top_addr_counter.push({timestamp: ts, value: value})
+    // // })
+    //
+    // let top_addr_counter = {}
+    // Object.each(top_addr_counter_by_ts, function (value, ts) {
+    //   Object.each(value, function (data, addr) {
+    //     if (!top_addr_counter[addr]) top_addr_counter[addr] = 0
+    //     top_addr_counter[addr] += data
+    //   })
+    // })
     /**
     * Traffic - user
     **/
@@ -1014,7 +1044,7 @@ export default function (data, metadata, key, vm) {
       bytes_counter: periodical_bytes_counter,
       requests_counter: periodical_requests_counter,
       // addr_counter: periodical_addr_counter,
-      top_addr_counter: top_addr_counter,
+      // top_addr_counter: top_addr_counter,
       user_counter: periodical_user_counter,
       referer_counter: periodical_referer_counter,
       user_agent_os_counter: periodical_user_agent_os_counter,
@@ -1023,8 +1053,8 @@ export default function (data, metadata, key, vm) {
       user_agent_browser_counter: periodical_user_agent_browser_counter,
       hosts_counter: hosts_counter,
       domains_counter: domains_counter,
-      top_hosts_counter: top_hosts_counter,
-      top_domains_counter: top_domains_counter
+      // top_hosts_counter: top_hosts_counter,
+      // top_domains_counter: top_domains_counter
     }
   }
 }

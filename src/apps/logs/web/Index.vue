@@ -67,7 +67,7 @@
           </b-dropdown>
 
         </div>
-        <historical :selected_hosts="selected_hosts" period="day"/>
+        <historical :selected_hosts="selected_hosts" :selected_domains="selected_domains" period="hour"/>
       </div>
     </div>
 
@@ -154,7 +154,12 @@ export default {
       hosts: [
       ],
 
+      /**
+      * search
+      **/
+      selected_domains: [],
       selected_hosts: [],
+
       /**
       * DataSourcesMixin
       **/
@@ -228,6 +233,16 @@ export default {
     } else {
       this.selected_hosts = []
     }
+
+    let selected_domains = this.$route.query.selected_domains
+    debug('created selected_domains', selected_domains)
+    if (selected_domains) {
+      if (!Array.isArray(selected_domains)) selected_domains = [selected_domains]
+
+      this.selected_domains = selected_domains
+    } else {
+      this.selected_domains = []
+    }
   },
 
   computed: {
@@ -245,12 +260,28 @@ export default {
         }
       }
     },
+    // allDomainsSelected: {
+    //   get: function () {
+    //     if (this.selected_domains.length === 0) { return true }
+    //
+    //     return false
+    //   },
+    //   set: function (val) {
+    //     debug('allDomainsSelected', val)
+    //     if (val === true) {
+    //       this.$router.replace({ query: { ...this.$route.query, selected_domains: []}}).catch(err => { debug('allDomainsSelected set', err) })
+    //       this.selected_domains = []
+    //     }
+    //   }
+    // },
   },
   methods: {
     setHost: function (val) {
       this.$router.replace({query: { ...this.$route.query, selected_hosts: this.selected_hosts}}).catch(err => { debug('setHost', err) })
     },
-
+    setDomain: function (val) {
+      this.$router.replace({query: { ...this.$route.query, selected_domains: this.selected_domains}}).catch(err => { debug('setDomain', err) })
+    },
     /**
     * @start pipelines
     **/

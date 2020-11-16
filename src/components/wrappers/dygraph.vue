@@ -502,7 +502,7 @@ export default {
         // );
         let selection = (this.config.skip && this.config.skip > 0) ? this.config.skip : 1
 
-        debug('updateOptions selection', this.id, data.length, selection)
+        debug('updateOptions selection', this.id, data, selection)
 
         this.$options.charts[this.id].graph.setSelection(this.$options.charts[this.id].graph.numRows() - selection, {}, false)
       }

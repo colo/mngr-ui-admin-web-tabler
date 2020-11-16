@@ -29,16 +29,17 @@
               v-if="barChartRegEx.test(traffic_view)"
               :wrapper="{
                 type: barWrapper,
-                props: barConfigStatus.props
+                props: barConfig.props
               }"
               :always_update="false"
               :ref="'hosts.traffic.'+traffic_view"
               :id="'hosts.traffic.'+traffic_view"
-              :config="barConfigStatus"
+              :config="barConfig"
               :stat="{
                 data: [trafficdata],
                 length: 30,
-                numeric: false
+                numeric: true,
+                /* interval: 1 */
               }"
               :reactive="false"
               :no_buffer="barChartNoBufferRegEx.test(traffic_view) ? true: false"
@@ -73,16 +74,17 @@
             </chart-tabular> -->
 
             <chart-tabular
-              v-else-if="traffic_view === 'domains_counter' || traffic_view === 'hosts_counter'"
+              v-else
               :wrapper="{
                 type: barRaceWrapper,
-                props: (/domain/.test(traffic_view)) ? Object.merge(barRaceConfigDomains.props, {sum:traffic_sum}) : Object.merge(barRaceConfigHosts.props, {sum:traffic_sum})
+                /* props: (/domain/.test(traffic_view)) ? Object.merge(barRaceConfigDomains.props, {sum:traffic_sum}) : Object.merge(barRaceConfigHosts.props, {sum:traffic_sum}) */
+                props : Object.merge(barRaceConfig.props, {sum:traffic_sum})
               }"
               :always_update="false"
               :ref="'hosts.traffic.'+traffic_view + ((traffic_sum === true) ? '_sum' : '')"
               :id="'hosts.traffic.'+traffic_view + ((traffic_sum === true) ? '_sum' : '')"
               :key="'hosts.traffic.'+traffic_view + ((traffic_sum === true) ? '_sum' : '')"
-              :config="(/domain/.test(traffic_view)) ? barRaceConfigDomains : barRaceConfigHosts"
+              :config="barRaceConfig"
               :stat="{
                 data: [
                   trafficdata
@@ -91,9 +93,11 @@
                 numeric: false
               }"
               :reactive="false"
-              :no_buffer="false"
+              :no_buffer="barChartNoBufferRegEx.test(traffic_view) ? true: false"
             >
             </chart-tabular>
+            <!-- v-else-if="traffic_view === 'domains_counter' || traffic_view === 'hosts_counter'" -->
+            <!-- :config="(/domain/.test(traffic_view)) ? barRaceConfigDomains : barRaceConfigHosts" -->
 
           <!-- </div> -->
         </div>
@@ -102,7 +106,7 @@
         <!-- Use quasar's invisible class to hide element but keep it using the same space  -->
         <div class="ml-auto lh-1">
           <b-form-checkbox
-            :class="(traffic_view !== 'domains_counter' && traffic_view !== 'hosts_counter') ? 'invisible' : ''"
+            :class="barChartRegEx.test(traffic_view) ? 'invisible' : ''"
             class="form-switch"
             v-model="traffic_sum"
             plain
@@ -127,15 +131,17 @@ import { BDropdown, BDropdownItem, BFormCheckbox, BLink } from 'bootstrap-vue'
 * Chart configs
 **/
 import amcharts4ConfigBarRace from 'mngr-ui-admin-charts/defaults/amcharts4.barRace'
-import barConfigStatus from './config/traffic.status.apexchart'
+import barConfigApexchart from './config/traffic.bar.apexchart'
+import barConfigDygraph from 'mngr-ui-admin-charts/defaults/dygraph.line'
 
 /**
 * Chart Wrappers
 **/
-import amchartsWorldCountryMapWrapper from 'components/wrappers/amchartsWorldCountryMap'
-import amchartsWorldCityMapWrapper from 'components/wrappers/amchartsWorldCityMap'
+// import amchartsWorldCountryMapWrapper from 'components/wrappers/amchartsWorldCountryMap'
+// import amchartsWorldCityMapWrapper from 'components/wrappers/amchartsWorldCityMap'
 import amchartsBarRaceWrapper from 'components/wrappers/amchartsBarRace'
 import vueApexChartsWrapper from 'components/wrappers/vueApexCharts'
+import dygraphBarWrapper from 'components/wrappers/dygraphBar'
 
 import chart from 'components/chart'
 import chartTabular from 'components/chart.tabular'
@@ -191,12 +197,108 @@ export default {
       type: Object,
       default: function () {
         return {
-          hosts_counter: [],
-          domains_counter: [],
-          top_hosts_counter: [],
-          top_domains_counter: [],
+          // hosts_counter: [],
+          // domains_counter: [],
+          // top_hosts_counter: [],
+          // top_domains_counter: [],
         }
       }
+    }
+  },
+  data () {
+    return {
+      barType: 'dygraph',
+
+      trafficdata: [],
+      // baseColor: window.getComputedStyle(document.documentElement).getPropertyValue('--bs-primary'),
+      labels: {
+        requests_counter: 'Requests',
+        status_counter: 'Status',
+        methods_counter: 'Methods',
+        // pathnames_counter: 'Pathnames',
+        top_pathnames_counter: 'TOP Pathnames',
+        type_counter: 'Type (static | dynamic)',
+        bytes_counter: 'Data transferred (Mbs)',
+        /* addr_counter: 'IP Addr', */
+        // top_addr_counter: 'TOP IP Addresses',
+        // top_hosts_counter: 'TOP Hosts',
+        // top_domains_counter: 'TOP Domains',
+        user_counter: 'Users',
+        referer_counter: 'Referers',
+        user_agent_os_counter: 'User agent - OS',
+        user_agent_engine_counter: 'User agent - Engines',
+        user_agent_device_counter: 'User agent - Devices',
+        user_agent_browser_counter: 'User agent - Browsers',
+        hosts_counter: 'Hosts',
+        domains_counter: 'Domains',
+      },
+
+      // atlasCountriesWrapper: amchartsWorldCountryMapWrapper,
+      // atlasCitiesWrapper: amchartsWorldCityMapWrapper,
+      barRaceWrapper: amchartsBarRaceWrapper,
+
+      barConfigDefaults: {
+        style: (this.fluid !== true) ? {height: '250px'} : (this.mode === 'VerticalLayout') ? {height: '350px'} : {height: '400px'},
+        props: {
+          /* colorScheme: colorScheme, */
+          dark: this.dark,
+          followColorScheme: false
+        },
+        options: {
+          // chart: {
+          //   height: (this.fluid !== true) ? 250 : (this.mode === 'VerticalLayout') ? 350 : 400,
+          // },
+          // legend: {
+          //   height: (this.fluid !== true) ? 250 : (this.mode === 'VerticalLayout') ? 350 : 400,
+          // }
+        }
+      },
+
+      barChartRegEx: /^(?!(hosts_counter|domains_counter|top_pathnames_counter)).*$/, /// ^(?!.*(hosts_counter|domains_counter)).*$/,
+      barChartNoBufferRegEx: /addr|agent_os/,
+
+      barRaceConfig: Object.merge(Object.clone(amcharts4ConfigBarRace), {
+        style: (this.fluid !== true) ? {height: '250px'} : (this.mode === 'VerticalLayout') ? {height: '350px'} : {height: '400px'},
+        props: {
+          categoryY: 'trafficdata',
+          valueX: undefined,
+          /* label: (sum === true) ? 'Per COUNTRY count (sum)' : 'Per COUNTRY count', */
+          // zoom: apply_zoom,
+          /* colorScheme: colorScheme, */
+          dark: this.dark,
+          // sum: this.sum
+        }
+      }),
+      // barRaceConfigDomains: Object.merge(Object.clone(amcharts4ConfigBarRace), {
+      //   style: (this.fluid !== true) ? {height: '250px'} : (this.mode === 'VerticalLayout') ? {height: '350px'} : {height: '400px'},
+      //   props: {
+      //     categoryY: 'trafficdata',
+      //     valueX: undefined,
+      //     /* label: (sum === true) ? 'Per COUNTRY count (sum)' : 'Per COUNTRY count', */
+      //     // zoom: apply_zoom,
+      //     /* colorScheme: colorScheme, */
+      //     dark: this.dark,
+      //     // sum: this.sum
+      //   }
+      // }),
+      //
+      // barRaceConfigHosts: Object.merge(Object.clone(amcharts4ConfigBarRace), {
+      //   style: (this.fluid !== true) ? {height: '250px'} : (this.mode === 'VerticalLayout') ? {height: '350px'} : {height: '400px'},
+      //   props: {
+      //     categoryY: 'trafficdata',
+      //     valueX: undefined,
+      //     /* label: (sum === true) ? 'Per COUNTRY count (sum)' : 'Per COUNTRY count', */
+      //     // zoom: apply_zoom,
+      //     /* colorScheme: colorScheme, */
+      //     dark: this.dark,
+      //     // sum: this.sum
+      //   }
+      // }),
+
+      EventBus: EventBus,
+
+      traffic_view: 'requests_counter',
+      traffic_sum: false,
     }
   },
   mounted: function () {
@@ -222,6 +324,9 @@ export default {
     traffic_view: function (val) {
       this.$router.replace({ path: this.$route.path, query: Object.merge(Object.clone(this.$route.query), { traffic_view: val }) }).catch(err => { debug('traffic_view', err) })
       // this.$router.push(`${this.$route.path}?tab=${val}`).catch(err => {})// catch 'NavigationDuplicated' error
+      if (this.barType === 'dygraph') { // dygraph needs to remove labels so it' can update them
+        this.barConfig.options.labels = undefined
+      }
     },
     traffic_sum: function (val) {
       this.$router.replace({ path: this.$route.path, query: Object.merge(Object.clone(this.$route.query), { traffic_sum: val }) }).catch(err => { debug('traffic_sum', err) })
@@ -230,7 +335,11 @@ export default {
     'stat': {
       handler: function (newVal, oldVal) {
         newVal = JSON.parse(JSON.stringify(newVal)) // remove reactivity
-        debug('stat.data', newVal, this.traffic_view, this.barConfigStatus)
+        debug('stat.data', newVal, this.traffic_view, this.barConfig)
+
+        if (this.barChartNoBufferRegEx.test(this.traffic_view) && this.barType === 'dygraph') { // dygraph needs to remove labels so it' can update them
+          this.barConfig.options.labels = undefined
+        }
 
         // // let val = (newVal !== undefined && newVal[0] && newVal[0].value) ? newVal[0] : (oldVal !== undefined && oldVal[0] && oldVal[0].value) ? oldVal[0] : { timestamp: 0, value: { seconds: 0 } }
         if (newVal && newVal[this.traffic_view]) {
@@ -245,7 +354,7 @@ export default {
               delete row.value.bytes
             })
           }
-          if (/^(?!.*(host|domain)).*$/.test(this.traffic_view)) {
+          if (Array.isArray(val) && /^(?!.*(host|domain)).*$/.test(this.traffic_view)) {
             val.sort(function (a, b) { return (a.timestamp > b.timestamp) ? 1 : ((b.timestamp > a.timestamp) ? -1 : 0) })
           }
 
@@ -260,96 +369,32 @@ export default {
       // immediate: true
     }
   },
-  // computed: {
-  //   percentage: function () {
-  //     let percentage = 0
-  //     debug('percentage', this.stat)
-  //     return percentage
-  //   }
-  // },
-  data () {
-    return {
-      trafficdata: [],
-      baseColor: window.getComputedStyle(document.documentElement).getPropertyValue('--bs-primary'),
-      labels: {
-        requests_counter: 'Requests',
-        status_counter: 'Status',
-        methods_counter: 'Methods',
-        // pathnames_counter: 'Pathnames',
-        top_pathnames_counter: 'TOP Pathnames',
-        type_counter: 'Type (static | dynamic)',
-        bytes_counter: 'Data transferred (Mbs)',
-        /* addr_counter: 'IP Addr', */
-        top_addr_counter: 'TOP IP Addresses',
-        top_hosts_counter: 'TOP Hosts',
-        top_domains_counter: 'TOP Domains',
-        user_counter: 'Users',
-        referer_counter: 'Referers',
-        user_agent_os_counter: 'User agent - OS',
-        user_agent_engine_counter: 'User agent - Engines',
-        user_agent_device_counter: 'User agent - Devices',
-        user_agent_browser_counter: 'User agent - Browsers',
-        hosts_counter: 'Hosts bar race',
-        domains_counter: 'Domains bar race',
-      },
-
-      // atlasCountriesWrapper: amchartsWorldCountryMapWrapper,
-      // atlasCitiesWrapper: amchartsWorldCityMapWrapper,
-      barRaceWrapper: amchartsBarRaceWrapper,
-      barWrapper: vueApexChartsWrapper,
-
-      barConfigStatus: Object.merge(Object.clone(barConfigStatus), {
-        style: (this.fluid !== true) ? {height: '250px'} : (this.mode === 'VerticalLayout') ? {height: '350px'} : {height: '400px'},
-        props: {
-          /* colorScheme: colorScheme, */
-          dark: this.dark,
-          followColorScheme: false
-        },
-        options: {
-          chart: {
-            height: (this.fluid !== true) ? 250 : (this.mode === 'VerticalLayout') ? 350 : 400,
-          },
-          legend: {
-            height: (this.fluid !== true) ? 250 : (this.mode === 'VerticalLayout') ? 350 : 400,
+  computed: {
+    barWrapper: function () {
+      return (this.barType === 'dygraph') ? dygraphBarWrapper : vueApexChartsWrapper
+    },
+    barConfig: function () {
+      return (this.barType === 'dygraph')
+        ? Object.merge(Object.clone(barConfigDygraph), this.barConfigDefaults, {
+          style: {
+            height: (this.fluid !== true) ? '250px' : (this.mode === 'VerticalLayout') ? '350px' : '400px',
+            width: '100%'
           }
-        }
-      }),
 
-      barChartRegEx: /^(?!(hosts_counter|domains_counter)).*$/, /// ^(?!.*(hosts_counter|domains_counter)).*$/,
-      barChartNoBufferRegEx: /addr|agent_os/,
-
-      barRaceConfigDomains: Object.merge(Object.clone(amcharts4ConfigBarRace), {
-        style: (this.fluid !== true) ? {height: '250px'} : (this.mode === 'VerticalLayout') ? {height: '350px'} : {height: '400px'},
-        props: {
-          categoryY: 'trafficdata',
-          valueX: undefined,
-          /* label: (sum === true) ? 'Per COUNTRY count (sum)' : 'Per COUNTRY count', */
-          // zoom: apply_zoom,
-          /* colorScheme: colorScheme, */
-          dark: this.dark,
-          // sum: this.sum
-        }
-      }),
-
-      barRaceConfigHosts: Object.merge(Object.clone(amcharts4ConfigBarRace), {
-        style: (this.fluid !== true) ? {height: '250px'} : (this.mode === 'VerticalLayout') ? {height: '350px'} : {height: '400px'},
-        props: {
-          categoryY: 'trafficdata',
-          valueX: undefined,
-          /* label: (sum === true) ? 'Per COUNTRY count (sum)' : 'Per COUNTRY count', */
-          // zoom: apply_zoom,
-          /* colorScheme: colorScheme, */
-          dark: this.dark,
-          // sum: this.sum
-        }
-      }),
-
-      EventBus: EventBus,
-
-      traffic_view: 'requests_counter',
-      traffic_sum: false,
+        })
+        : Object.merge(Object.clone(barConfigApexchart), this.barConfigDefaults, {
+          options: {
+            chart: {
+              height: (this.fluid !== true) ? 250 : (this.mode === 'VerticalLayout') ? 350 : 400,
+            },
+            legend: {
+              height: (this.fluid !== true) ? 250 : (this.mode === 'VerticalLayout') ? 350 : 400,
+            }
+          }
+        })
     }
   },
+
   methods: {
     setView: function (val) {
       this.trafficdata = []

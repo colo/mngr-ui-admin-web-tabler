@@ -4,6 +4,7 @@
     :smoothness="false"
     :id="id+'.base'"
     :ref="id+'.base'"
+    :key="id+'.base'"
     :chart_data="values"
     :chart_data_length="chart_data_length"
     :dark="dark"

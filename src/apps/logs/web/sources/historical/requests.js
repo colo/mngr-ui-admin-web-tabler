@@ -42,17 +42,36 @@ const logs_web_summary_periodical = {
       const END = vm.end()
       const START = vm.start()
 
-      let filter = [
-        // "this.r.row('metadata')('path').eq('os.memory').or(this.r.row('metadata')('path').eq('os.cpus'))"
-      ]
+      let filter = []
+
+      filter.push("r.row('metadata')('type').eq('" + vm.period + "')")
+      filter.push("r.row('data')('user_agent').hasFields('os.detailed')")
+
+      /**
+      * Data
+      **/
+      if (vm.data && Object.getLength(vm.data) > 0) {
+        debug('SEARCH DATA', vm.data)
+      }
+
+      /**
+      * Hosts
+      **/
+      let hosts_op = 'eq'
+      if (vm.by === 'host') {
+        filter.push("this.r.row('metadata')('tag').contains('host')")
+      } else {
+        hosts_op = 'contains'
+        filter.push("this.r.row('metadata')('tag').contains('domain')")
+      }
 
       if (vm.selected_hosts && vm.selected_hosts.length > 0) {
         let hosts_filter
         Array.each(vm.selected_hosts, function (host) {
           if (hosts_filter === undefined) {
-            hosts_filter = "this.r.row('metadata')('host').eq('" + host + "')"
+            hosts_filter = "this.r.row('metadata')('host')." + hosts_op + "('" + host + "')"
           } else {
-            hosts_filter += ".or(this.r.row('metadata')('host').eq('" + host + "')"
+            hosts_filter += ".or(this.r.row('metadata')('host')." + hosts_op + "('" + host + "')"
           }
         })
 
@@ -64,9 +83,35 @@ const logs_web_summary_periodical = {
         filter.push(hosts_filter)
       }
 
+      /**
+      * Domains
+      */
+      let domains_op = 'eq'
+      if (vm.by !== 'domain') {
+        domains_op = 'contains'
+      }
+
+      if (vm.selected_domains && vm.selected_domains.length > 0) {
+        let domains_filter
+        Array.each(vm.selected_domains, function (domain) {
+          if (domains_filter === undefined) {
+            domains_filter = "this.r.row('metadata')('domain')." + domains_op + "('" + domain + "')"
+          } else {
+            domains_filter += ".or(this.r.row('metadata')('domain')." + domains_op + "('" + domain + "')"
+          }
+        })
+
+        if (vm.selected_domains.length > 1) { // close each 'or'
+          Array.each(vm.selected_domains, function (domain, index) {
+            if (index < vm.selected_domains.length - 1) { domains_filter += ')' }
+          })
+        }
+        filter.push(domains_filter)
+      }
+
       // let os_filter = Array.clone(filter)
-      let logs_filter = Array.clone(filter)
-      logs_filter.push({ 'metadata': { 'path': 'logs.nginx' } })
+      // let logs_filter = Array.clone(filter)
+      filter.push({ 'metadata': { 'path': 'logs.nginx' } })
 
       // END = Date.now() - (2 * DAY)
 
@@ -78,11 +123,7 @@ const logs_web_summary_periodical = {
       //   START = (END - DAY >= 0) ? END - DAY : 0
       // }
 
-      logs_filter.push("r.row('metadata')('type').eq('" + vm.period + "')")
-      logs_filter.push("r.row('metadata')('tag').contains('host')")
-      logs_filter.push("r.row('data')('user_agent').hasFields('os.detailed')")
-
-      debug('logs_web_summary_periodical FILTER ', logs_filter)
+      debug('logs_web_summary_periodical FILTER ', filter)
 
       source = [{
         params: { id: _key },
@@ -104,7 +145,7 @@ const logs_web_summary_periodical = {
               'orderBy': { 'index': 'r.desc(timestamp)' }
             }
           ],
-          filter: logs_filter
+          filter: filter
 
         }
       }]

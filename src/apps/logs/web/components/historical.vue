@@ -1,10 +1,15 @@
 <template>
-  <div>historical</div>
+  <div>
+    historical
+    <b-button variant="primary" class="ml-3 d-none d-sm-inline-block" @click="setData">
+      set data
+    </b-button>
+  </div>
 </template>
 
 <script>
 // import Vue from 'vue'
-// import { BButton, BDropdown, BDropdownItem, BDropdownForm, BDropdownDivider, BFormCheckbox, BFormCheckboxGroup, BFormGroup, BModal, VBModal } from 'bootstrap-vue'
+import { BButton } from 'bootstrap-vue'
 // // Vue.directive('b-modal', VBModal)
 
 import * as Debug from 'debug'
@@ -38,7 +43,7 @@ export default {
   name: 'AppLogsWebHistorical',
 
   components: {
-    // BButton,
+    BButton,
     // BDropdown,
     // BDropdownItem,
     // BDropdownForm,
@@ -62,6 +67,10 @@ export default {
       default: 'minute'
     },
     selected_hosts: {
+      type: Array,
+      default: function () { return [] }
+    },
+    selected_domains: {
       type: Array,
       default: function () { return [] }
     },
@@ -90,7 +99,13 @@ export default {
       // hosts: [
       // ],
       //
-      // selected_hosts: [],
+      // selected_domains: [],
+
+      /**
+      * search
+      **/
+      by: 'host', // domain
+      data: { remote_addr: ['132.157.66.154', '132.184.128.213'] }, // 132.184.128.213
 
       id: 'input.logs.web.historical',
       path: 'all',
@@ -151,19 +166,25 @@ export default {
       //
     }
   },
-  // created: function () {
-  //   debug('lifecycle created', this._uid)
-  //
-  //   let selected_hosts = this.$route.query.selected_hosts
-  //   debug('created selected_hosts', selected_hosts)
-  //   if (selected_hosts) {
-  //     if (!Array.isArray(selected_hosts)) selected_hosts = [selected_hosts]
-  //
-  //     this.selected_hosts = selected_hosts
-  //   } else {
-  //     this.selected_hosts = []
-  //   }
-  // },
+  created: function () {
+    debug('lifecycle created', this._uid)
+
+    let by = this.$route.query.by
+    debug('created by', by)
+    if (by && (by === 'host' || by === 'domain')) {
+      this.by = by
+    } else {
+      this.by = 'host'
+    }
+
+    Object.each(this.$route.query, function (value, prop) {
+      if (/^data\..*$/.test(prop)) {
+        debug('PROP', prop, value)
+        prop = prop.replace('data.', '')
+        this.$set(this.data, prop, value)
+      }
+    }.bind(this))
+  },
 
   // computed: {
   //   allHostsSelected: {
@@ -182,7 +203,26 @@ export default {
   //   },
   // },
   methods: {
+    setBy: function (val) {
+      this.$router.replace({query: { ...this.$route.query, by: this.by}}).catch(err => { debug('setBy', err) })
+    },
+    setData: function (val) {
+      let data = {}
+      Object.each(this.data, function (value, prop) {
+        if (!data['data.' + prop]) {
+          data['data.' + prop] = value
+        } else {
+          if (!Array.isArray(data['data.' + prop])) {
+            let tmp = data['data.' + prop]
+            data['data.' + prop] = []
+            data['data.' + prop].push(tmp)
+          }
 
+          data['data.' + prop].push(value)
+        }
+      })
+      this.$router.replace({query: { ...this.$route.query, ...data}}).catch(err => { debug('setData', err) })
+    },
     /**
     * @start pipelines
     **/
