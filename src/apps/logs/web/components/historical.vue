@@ -34,7 +34,7 @@ import {SECOND, MINUTE, HOUR, DAY, WEEK, MONTH} from '@libs/time/const'
 //
 // import { requests, store } from './sources/index'
 //
-// import { EventBus } from '@libs/eventbus'
+import { EventBus } from '@libs/eventbus'
 // import chartTabular from 'components/chart.tabular'
 // import chart from 'components/chart'
 
@@ -105,7 +105,7 @@ export default {
       * search
       **/
       by: 'host', // domain
-      data: { remote_addr: ['132.157.66.154', '132.184.128.213'] }, // 132.184.128.213
+      data: { }, // remote_addr: ['51.79.19.235']
 
       id: 'input.logs.web.historical',
       path: 'all',
@@ -131,7 +131,7 @@ export default {
 
       refresh: MINUTE,
       // current_time: undefined,
-      // EventBus: EventBus,
+      EventBus: EventBus,
       // stat_memory: [],
       // stat_cpus: [],
       // stat_loadavg: [],
@@ -227,7 +227,7 @@ export default {
     * @start pipelines
     **/
     create_pipelines: function (create_id, next) {
-      debug('create_pipelines %o', JSON.parse(JSON.stringify(this.$options.pipelines)), create_id, this.components)
+      debug('create_pipelines %o', JSON.parse(JSON.stringify(this.$options.pipelines)), create_id, this.components, this._uid)
 
       let template = Object.clone(Pipeline)
       template.input[0].poll.id = this.id
@@ -248,7 +248,27 @@ export default {
           components_requests = this.__components_sources_to_requests(this.components, this.id)
         }
 
-        debug('create_pipelines REQUESTS %o', components_requests)
+        let keys = this.components_to_keys(this.components)
+
+        debug('create_pipelines REQUESTS %o', components_requests, keys)
+
+        Array.each(keys, function (key) {
+          if (
+            EventBus &&
+            (
+              !EventBus._events['sent:' + this.id + '[' + key + ']'] ||
+              (EventBus._events['sent:' + this.id + '[' + key + ']'] && EventBus._events['sent:' + this.id + '[' + key + ']'].length === 0)
+              // (EventBus._events[pipeline_id + '.' + this.path] && !EventBus._events[pipeline_id + '.' + this.path].contains(this.__process_input_data))
+            )
+          ) {
+            EventBus.$on('sent:' + this.id + '[' + key + ']', function (emit_query) {
+              debug('start loader for', emit_query.params.id, emit_query)
+            })
+            EventBus.$on('received:' + this.id + '[' + key + ']', function (payload) {
+              debug('stop loader for', payload)
+            })
+          }
+        }.bind(this))
 
         Array.each(template.input[0].poll.conn, function (conn, index) {
           template.input[0].poll.conn[index].requests = components_requests

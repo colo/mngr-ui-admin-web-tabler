@@ -67,7 +67,7 @@
           </b-dropdown>
 
         </div>
-        <historical :selected_hosts="selected_hosts" :selected_domains="selected_domains" period="hour"/>
+        <historical :selected_hosts="selected_hosts" :selected_domains="selected_domains" period="minute"/>
       </div>
     </div>
 
@@ -286,7 +286,7 @@ export default {
     * @start pipelines
     **/
     create_pipelines: function (create_id, next) {
-      debug('create_pipelines %o', JSON.parse(JSON.stringify(this.$options.pipelines)), create_id, this.components)
+      debug('create_pipelines %o', JSON.parse(JSON.stringify(this.$options.pipelines)), create_id, this.components, this._uid)
 
       let template = Object.clone(Pipeline)
       template.input[0].poll.id = this.id

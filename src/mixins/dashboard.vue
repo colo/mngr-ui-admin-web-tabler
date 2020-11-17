@@ -74,7 +74,7 @@ export default {
         if (this.period === 'second' || this.period === 'periodical') {
           return Date.now() - SECOND
         } else if (this.period === 'minute') {
-          return Date.now() - MINUTE
+          return Date.now() - (2 * MINUTE)
         } else if (this.period === 'hour') {
           return Date.now() - HOUR
         } else {

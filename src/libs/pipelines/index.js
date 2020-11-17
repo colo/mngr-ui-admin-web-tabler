@@ -126,6 +126,7 @@ export default {
             if (id_regexp.test(payload.id)) {
               let event_id = payload.id
               payload.id = payload.id.replace(id + '[', '').slice(0, -1)
+              payload.input = id
               EventBus.$emit(event_id, payload)
               debug('OUTPUT EMIT', event_id, payload)
             }

@@ -24,7 +24,7 @@ const generic_callback = function (data, metadata, key, vm) {
 
 const logs_web_summary_periodical = {
   params: function (_key, vm) {
-    // debug('HISTORICAL logs_web_summary_periodical %o %o', _key, vm)
+    debug('HISTORICAL logs_web_summary_periodical %o %o', _key, vm)
 
     // const MINUTE = 60000
 
@@ -52,6 +52,31 @@ const logs_web_summary_periodical = {
       **/
       if (vm.data && Object.getLength(vm.data) > 0) {
         debug('SEARCH DATA', vm.data)
+        Object.each(vm.data, function (value, prop) {
+          let single_value_op = 'hasFields' // usually on historical docs the value you are searching is a field with a counter value
+
+          if (Array.isArray(value)) {
+            let value_filter
+
+            Array.each(value, function (single_value) {
+              if (value_filter === undefined) {
+                value_filter = "this.r.row('data')('" + prop + "')." + single_value_op + "('" + single_value + "')"
+              } else {
+                value_filter += ".or(this.r.row('data')('" + prop + "')." + single_value_op + "('" + single_value + "')"
+              }
+            })
+
+            if (value.length > 1) { // close each 'or'
+              Array.each(value, function (single_value, index) {
+                if (index < value.length - 1) { value_filter += ')' }
+              })
+            }
+
+            filter.push(value_filter)
+          } else {
+            filter.push("this.r.row('data')(" + prop + ').' + single_value_op + "('" + value + "')")
+          }
+        })
       }
 
       /**

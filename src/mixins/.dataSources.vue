@@ -27,6 +27,7 @@ export default {
   unwatch_store: undefined,
 
   _components_req: {},
+  _components_req_events: [],
 
   ON_PIPELINE_READY: 'onPipelineReady',
 
@@ -51,7 +52,7 @@ export default {
     }
   },
   created: function () {
-    // debug('lifecycle created')
+    debug('lifecycle created', this.id, this._uid)
     // let pipeline_id = []
     // if (!Array.isArray(this.pipeline_id)) {
     //   pipeline_id = [this.pipeline_id]
@@ -74,7 +75,7 @@ export default {
 
   mounted: function () {
     // debug('lifecycle mounted %o', EventBus)
-    // debug('lifecycle created')
+    debug('lifecycle mounted', this.id, this._uid)
     // let pipeline_id = []
     // if (!Array.isArray(this.pipeline_id)) {
     //   pipeline_id = [this.pipeline_id]
@@ -104,7 +105,7 @@ export default {
     }.bind(this))
 
     this.create_pipelines()
-    this.resume_pipelines()
+    // this.resume_pipelines()
   },
   // updated: function () {
   // },
@@ -126,12 +127,24 @@ export default {
   // },
 
   beforeRouteLeave (to, from, next) {
-    debug('lifecycle beforeRouteLeave')
+    debug('lifecycle beforeRouteLeave', this.id, this._uid)
     // called when the route that renders this component is about to
     // be navigated away from.
     // has access to `this` component instance.
     this.suspend_pipelines()
+
     // EventBus.$off(this.pipeline_id + '.' + this.path, this.__process_input_data)
+
+    // let pipeline_id = []
+    // if (!Array.isArray(this.pipeline_id)) {
+    //   pipeline_id = [this.pipeline_id]
+    // } else {
+    //   pipeline_id = this.pipeline_id
+    // }
+    // Array.each(pipeline_id, function (id) {
+    //   EventBus.$off(id + '.' + this.path, this.__process_input_data)
+    // }.bind(this))
+
     let pipeline_id = []
     if (!Array.isArray(this.pipeline_id)) {
       pipeline_id = [this.pipeline_id]
@@ -139,14 +152,20 @@ export default {
       pipeline_id = this.pipeline_id
     }
     Array.each(pipeline_id, function (id) {
-      EventBus.$off(id + '.' + this.path, this.__process_input_data)
+      delete this.$options._components_req[pipeline_id]
     }.bind(this))
 
-    // this.__unregister_store_module(this.id)
+    debug('lifecycle beforeRouteLeave $off EventBUS.EVENTS %o', this.$options._components_req_events)
+
+    Array.each(this.$options._components_req_events, function (event) {
+      EventBus.$off(event, this.__process_input_data)
+      debug('lifecycle beforeRouteLeave $off EventBUS.EVENTS %o %s', EventBus._events, event)
+    }.bind(this))
+
     next()
   },
   destroyed () {
-    debug('lifecycle destroyed')
+    debug('lifecycle destroyed', this.id, this._uid)
 
     let pipeline_id = []
     if (!Array.isArray(this.pipeline_id)) {
@@ -155,8 +174,15 @@ export default {
       pipeline_id = this.pipeline_id
     }
     Array.each(pipeline_id, function (id) {
-      EventBus.$off(id + '.' + this.path, this.__process_input_data)
+      // EventBus.$off(id + '.' + this.path, this.__process_input_data)
       delete this.$options._components_req[pipeline_id]
+    }.bind(this))
+
+    debug('lifecycle destroyed $off EventBUS.EVENTS %o', this.$options._components_req_events)
+
+    Array.each(this.$options._components_req_events, function (event) {
+      EventBus.$off(event, this.__process_input_data)
+      debug('lifecycle destroyed $off EventBUS.EVENTS %o %s', EventBus._events, event)
     }.bind(this))
 
     this.destroy_pipelines()
@@ -252,7 +278,7 @@ export default {
     //   }
     // },
     __update_component_data: function (component, key, type, payload) {
-      debug('__update_component_data', this, component, key, type, Object.clone(payload))
+      debug('__update_component_data', this._uid, component, key, type, Object.clone(payload))
 
       let callback = this.__get_source_callback_from_key(component.source, key, type)
 
@@ -332,7 +358,7 @@ export default {
                   // }
                   // else
                   if (_key === key || (Array.isArray(_key) && _key.indexOf(key) > -1)) {
-                    debug('__get_source_callback_from_key', reqs[i])
+                    debug('__get_source_callback_from_key', reqs[i], this._uid)
                     callback = reqs[i].callback
                   }
                 }
@@ -345,7 +371,7 @@ export default {
       return callback
     },
     __source_to_keys: function (source, input) {
-      debug('__source_to_keys -> %o %s', source, input)
+      debug('__source_to_keys -> %o %s', source, input, this._uid)
       input = input || 'requests'
       let keys = []
       for (const type in source) {
@@ -398,7 +424,7 @@ export default {
     __query_to_key: function (query) {
       if (typeof query === 'function') {
         let _result = query.attempt([undefined, this])
-        debug('__query_to_key', _result)
+        debug('__query_to_key', _result, query, this)
         return _result.key
       } else if (typeof query === 'string') {
         return query
@@ -486,29 +512,30 @@ export default {
     __process_data: function (payload, type) {
       type = type || 'requests'
       let key = payload.id
-      debug('__process_data', this.$options._components_req, payload.id)
+      debug('__process_data', this.$options._components_req, payload.id, payload.input)
 
-      Object.each(this.$options._components_req, function (_components_req, pipeline_id) {
-        for (const prop in _components_req) {
-          let components = _components_req[prop]
-          // if (!Array.isArray(components)) components = [components]
+      // Object.each(this.$options._components_req, function (_components_req, pipeline_id) {
+      let _components_req = this.$options._components_req[payload.input]
+      for (const prop in _components_req) {
+        let components = _components_req[prop]
+        // if (!Array.isArray(components)) components = [components]
 
-          if (Array.isArray(components)) {
-            for (let index = 0; index < components.length; index++) {
-              if (
-                components[index].source &&
+        if (Array.isArray(components)) {
+          for (let index = 0; index < components.length; index++) {
+            if (
+              components[index].source &&
                 this.__source_to_keys(components[index].source, type).contains(key)
-              ) {
-                this.__update_component_data(components[index], key, type, payload)
-              }
-            }
-          } else {
-            if (components.source && this.__source_to_keys(components.source, type).contains(key)) {
-              this.__update_component_data(components, key, type, payload)
+            ) {
+              this.__update_component_data(components[index], key, type, payload)
             }
           }
+        } else {
+          if (components.source && this.__source_to_keys(components.source, type).contains(key)) {
+            this.__update_component_data(components, key, type, payload)
+          }
         }
-      }.bind(this))
+      }
+      // }.bind(this))
     },
     __components_sources_to_requests_merge: function (original_components, new_components) {
       debug('__components_sources_to_requests_merge', original_components, new_components)
@@ -531,20 +558,22 @@ export default {
 
       return original_components
     },
-    __components_sources_to_requests: function (_components, pipeline_id, input_id) {
+    __components_sources_to_requests: function (_components, pipeline_id) {
       pipeline_id = pipeline_id || this.pipeline_id
-      input_id = input_id || pipeline_id
       let requests = {}
       let sources = {}
-      if (this.$options._components_req[pipeline_id + '.' + input_id]) {
+
+      debug('__components_sources_to_requests ->', pipeline_id, this.$options._components_req)
+
+      if (this.$options._components_req[pipeline_id]) {
         // debug('__components_sources_to_requests MERGE', this.$options._components_req[pipeline_id], _components)
         // this.$options._components_req[pipeline_id] = Object.merge(this.$options._components_req[pipeline_id], _components)
-        this.$options._components_req[pipeline_id + '/' + input_id] = this.__components_sources_to_requests_merge(this.$options._components_req[pipeline_id + '/' + input_id], _components)
+        this.$options._components_req[pipeline_id] = this.__components_sources_to_requests_merge(this.$options._components_req[pipeline_id], _components)
       } else {
-        this.$options._components_req[pipeline_id + '/' + input_id] = _components
+        this.$options._components_req[pipeline_id] = _components
       }
       // let _components = JSON.parse(JSON.stringify(this.components))
-      debug('__components_sources_to_requests INIT ', _components, pipeline_id, input_id)
+      debug('__components_sources_to_requests', _components)
       for (const prop in _components) {
         let components = _components[prop]
 
@@ -576,7 +605,7 @@ export default {
                     // source = source.bind(components[index])
                     // let _result = source.attempt(undefined, components[index])
                     let _result = source.attempt([undefined, this])
-                    debug('__components_sources_to_requests RESULT', _result, components[index])
+                    debug('__components_sources_to_requests RESULT', _result, components[index], this._uid)
                     key = _result.key
                     // source = { bind: components[index], function: source }
                     // source = _result.source
@@ -615,7 +644,7 @@ export default {
               // if (typeof query === 'function') { _query = query.pass(key)().source }
               if (typeof query === 'function') { _query = query.attempt([key, self]).source }// don't use "this" as is the pipeline.input context
 
-              debug('INIT %s %o', key, _query)
+              debug('INIT %s %o', key, _query, self._uid)
               // if (query.bind && query.function) { _query = query.function.attempt(key, query.bind).source }
 
               if (_query !== undefined) {
@@ -632,12 +661,12 @@ export default {
                   stringified = emit_query.path + '?' + stringified
 
                   if (!emit_query.params) emit_query.params = {}
-                  emit_query.params.id = (emit_query.params.id) ? input_id + '[' + emit_query.params.id + ']' : input_id + '[' + stringified + ']'
+                  emit_query.params.id = (emit_query.params.id) ? pipeline_id + '[' + emit_query.params.id + ']' : pipeline_id + '[' + stringified + ']'
 
                   debug('io EMIT', _query[i], emit_query)
 
                   // Array.each(pipeline_id, function (id) {
-                  // debug('lifecycle mounted %o %s', EventBus, pipeline_id + '.' + this.path)
+                  debug('__components_sources_to_requests EventBUS.EVENTS %o %s', EventBus._events, emit_query.params.id)
                   // if (EventBus && !EventBus._events[pipeline_id + '.' + this.path])
                   if (
                     EventBus &&
@@ -647,16 +676,28 @@ export default {
                       // (EventBus._events[pipeline_id + '.' + this.path] && !EventBus._events[pipeline_id + '.' + this.path].contains(this.__process_input_data))
                     )
                   ) {
-                    EventBus.$on(emit_query.params.id, self.__process_input_data)
+                    EventBus.$on(emit_query.params.id, function (payload) {
+                      EventBus.$emit('received:' + emit_query.params.id, payload)
+                      self.__process_input_data(payload)
+                    })
+
+                    // EventBus.$on(emit_query.params.id, function (payload) {
+                    //   EventBus.$emit('received:' + emit_query.params.id, payload)
+                    // })
+
+                    self.$options._components_req_events = self.$options._components_req_events.combine([emit_query.params.id])
                   }
                   // EventBus.$on(pipeline_id + '.' + this.path, function (data) { debug('EventBus.$on', pipeline_id + '.' + this.path, data) })
                   // }.bind(self))
 
+                  EventBus.$emit('sent:' + emit_query.params.id, emit_query)
                   app.io.emit('/', emit_query)
+
+                  debug('FUNC EMIT', emit_query.params.id)
                 }
               }
 
-              debug('FUNC EMIT', _query)
+              // debug('FUNC EMIT', _query)
 
               // next()
             }

@@ -16,7 +16,7 @@ export default new Class({
   Extends: App,
 
   // types: ['count', 'default', 'paths'],
-  // recived: [],
+  // received: [],
 
   options: {
     // path: '/default',
