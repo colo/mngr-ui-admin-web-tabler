@@ -16,6 +16,7 @@ const navBarList = [
     icon: '<svg data-v-2a169e26="" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-md"><path data-v-2a169e26="" stroke="none" d="M0 0h24v24H0z"></path><path data-v-2a169e26="" d="M16 6h3a1 1 0 0 1 1 1v11a2 2 0 0 1 -4 0v-13a1 1 0 0 0 -1 -1h-10a1 1 0 0 0 -1 1v12a3 3 0 0 0 3 3h11"></path><line data-v-2a169e26="" x1="8" y1="8" x2="12" y2="8"></line><line data-v-2a169e26="" x1="8" y1="12" x2="12" y2="12"></line><line data-v-2a169e26="" x1="8" y1="16" x2="12" y2="16"></line></svg>',
     // columns: 2,
     list: [
+      { label: 'Summary', to: {name: 'logs'}},
       { label: 'Web', to: {name: 'logs_web'}},
       // { label: 'Blank page', to: {name: 'blank'}},
       // { label: 'Buttons', to: {name: 'buttons'}},

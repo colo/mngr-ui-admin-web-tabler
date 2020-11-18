@@ -1178,7 +1178,27 @@ export default {
           components_requests = this.__components_sources_to_requests(this.components, this.id)
         }
 
-        debug('create_pipelines REQUESTS %o', components_requests)
+        let keys = this.components_to_keys(this.components)
+
+        debug('create_pipelines REQUESTS %o', components_requests, keys)
+
+        Array.each(keys, function (key) {
+          if (
+            EventBus &&
+            (
+              !EventBus._events['sent:' + this.id + '[' + key + ']'] ||
+              (EventBus._events['sent:' + this.id + '[' + key + ']'] && EventBus._events['sent:' + this.id + '[' + key + ']'].length === 0)
+              // (EventBus._events[pipeline_id + '.' + this.path] && !EventBus._events[pipeline_id + '.' + this.path].contains(this.__process_input_data))
+            )
+          ) {
+            EventBus.$on('sent:' + this.id + '[' + key + ']', function (emit_query) {
+              debug('start loader for', emit_query.params.id, emit_query)
+            })
+            EventBus.$on('received:' + this.id + '[' + key + ']', function (payload) {
+              debug('stop loader for', payload)
+            })
+          }
+        }.bind(this))
 
         Array.each(template.input[0].poll.conn, function (conn, index) {
           template.input[0].poll.conn[index].requests = components_requests
