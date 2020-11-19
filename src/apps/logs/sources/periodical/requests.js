@@ -20,6 +20,9 @@ const generic_callback = function (data, metadata, key, vm) {
   // if (key === 'os.periodical') { os_callback(data, metadata, key, vm) }
   //
   // if (/^logs\.web\.historical\..*$/.test(key)) { web_callback(data, metadata, key, vm) }
+  Array.each(data, function (row) {
+    if (row && row.data && row.data.log) { vm.logs.push(row.data.log) }
+  })
 }
 
 const logs_summary_periodical = {

@@ -15,6 +15,8 @@ let qs = require('qs')
 
 import VueQuery from 'vuequery'
 
+import { v5 as uuidv5 } from 'uuid'
+
 export default {
   // name: 'data-sources',
 
@@ -28,6 +30,8 @@ export default {
 
   _components_req: {},
   _components_req_events: [],
+
+  _queries_keys: {},
 
   ON_PIPELINE_READY: 'onPipelineReady',
 
@@ -423,8 +427,24 @@ export default {
     },
     __query_to_key: function (query) {
       if (typeof query === 'function') {
-        let _result = query.attempt([undefined, this])
+        let _query_string = ''
+        let _result
+        try {
+          _query_string += query
+          debug('__query_to_key JSON', _query_string)
+        } catch (e) {
+          debug('__query_to_key ERROR', query)
+        }
+
+        if (_query_string !== '' && typeof _query_string === 'string') {
+          let uuid = uuidv5(_query_string, this.id)
+          if()
+        } else {
+          _result = query.attempt([undefined, this])
+        }
+
         debug('__query_to_key', _result, query, this)
+
         return _result.key
       } else if (typeof query === 'string') {
         return query
@@ -499,6 +519,9 @@ export default {
     },
     __process_input_data: function (payload) {
       debug('__process_input_data', payload)
+
+      EventBus.$emit('received:' + payload.input + '[' + payload.id + ']', payload)
+
       // for (const key in payload.data) {
       //   this.$store.commit(this.id + '_sources/append', { id: payload.id, key: key, data: payload.data[key] })
       // }
@@ -557,6 +580,30 @@ export default {
       })
 
       return original_components
+    },
+    components_to_keys: function (components) {
+      let keys = []
+      Object.each(components, function (component, name) {
+        keys.combine(this.component_to_keys(component))
+      }.bind(this))
+      debug('components_to_keys', components, keys)
+      return keys
+    },
+    component_to_keys: function (component) {
+      if (!Array.isArray(component)) component = [component]
+
+      let keys = []
+      Array.each(component, function (row) {
+        if (row.source) {
+          Object.each(row.source, function (source, type) {
+            keys.combine(this.__source_to_keys(row.source, type))
+          }.bind(this))
+        }
+      }.bind(this))
+
+      debug('component_to_keys', component, keys)
+
+      return keys
     },
     __components_sources_to_requests: function (_components, pipeline_id) {
       pipeline_id = pipeline_id || this.pipeline_id
@@ -676,14 +723,15 @@ export default {
                       // (EventBus._events[pipeline_id + '.' + this.path] && !EventBus._events[pipeline_id + '.' + this.path].contains(this.__process_input_data))
                     )
                   ) {
-                    EventBus.$on(emit_query.params.id, function (payload) {
-                      EventBus.$emit('received:' + emit_query.params.id, payload)
-                      self.__process_input_data(payload)
-                    })
-
                     // EventBus.$on(emit_query.params.id, function (payload) {
-                    //   EventBus.$emit('received:' + emit_query.params.id, payload)
+                    //   try {
+                    //     self.__process_input_data(payload)
+                    //     EventBus.$emit('received:' + emit_query.params.id, payload)
+                    //   } catch (e) {
+                    //     debug('EventBus.$on', e)
+                    //   }
                     // })
+                    EventBus.$on(emit_query.params.id, self.__process_input_data)
 
                     self.$options._components_req_events = self.$options._components_req_events.combine([emit_query.params.id])
                   }

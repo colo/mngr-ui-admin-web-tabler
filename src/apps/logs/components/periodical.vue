@@ -4,6 +4,7 @@
     <b-button variant="primary" class="ml-3 d-none d-sm-inline-block" @click="setData">
       set data
     </b-button>
+    {{logs}}
   </div>
 </template>
 
@@ -100,6 +101,7 @@ export default {
       // ],
       //
       // selected_domains: [],
+      logs: [],
 
       /**
       * search
