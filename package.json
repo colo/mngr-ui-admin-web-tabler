@@ -49,7 +49,11 @@
     "vue-peity": "^0.5.0",
     "vuebars": "^0.1.6",
     "vuequery": "^2.1.1",
-    "vuetrend": "^0.3.4"
+    "vuetrend": "^0.3.4",
+    "xterm": "^4.9.0",
+    "xterm-addon-fit": "^0.4.0",
+    "xterm-addon-search": "^0.7.0",
+    "xterm-addon-web-links": "^0.4.0"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",

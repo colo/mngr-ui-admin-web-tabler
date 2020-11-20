@@ -4,14 +4,31 @@
     <b-button variant="primary" class="ml-3 d-none d-sm-inline-block" @click="setData">
       set data
     </b-button>
-    {{logs}}
+    <div class="row row-deck row-cards">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div id="terminal">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
+
 </template>
 
 <script>
 // import Vue from 'vue'
 import { BButton } from 'bootstrap-vue'
 // // Vue.directive('b-modal', VBModal)
+
+import { Terminal } from 'xterm'
+import 'xterm/css/xterm.css'
+import { FitAddon } from 'xterm-addon-fit'
+import { WebLinksAddon } from 'xterm-addon-web-links'
+import { SearchAddon } from 'xterm-addon-search'
 
 import * as Debug from 'debug'
 const debug = Debug('apps:logs:components:periodical')
@@ -88,11 +105,7 @@ export default {
       default: '',
     },
   },
-  // watch: {
-  //   hosts: function (val) {
-  //     debug('watch hosts', val)
-  //   }
-  // },
+
   data () {
     return {
       // // height: '0px',
@@ -102,7 +115,8 @@ export default {
       //
       // selected_domains: [],
       logs: [],
-
+      terminal: undefined,
+      searchXterm: undefined,
       /**
       * search
       **/
@@ -187,7 +201,31 @@ export default {
       }
     }.bind(this))
   },
+  mounted: function () {
+    debug('lifecycle mounted', this._uid)
 
+    this.terminal = new Terminal()
+    this.terminal.loadAddon(new WebLinksAddon())
+    const fitAddon = new FitAddon()
+    this.terminal.loadAddon(fitAddon)
+    this.searchXterm = new SearchAddon()
+    this.terminal.loadAddon(this.searchXterm)
+    this.terminal.open(document.getElementById('terminal'))
+    fitAddon.fit()
+
+    // terminal.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ')
+    // terminal.write('http://localhost:8083')
+  },
+  watch: {
+    logs: function (val) {
+      debug('watch logs', val)
+      if (this.terminal !== undefined && val) {
+        Array.each(val, function (row) {
+          this.terminal.writeln(row)
+        }.bind(this))
+      }
+    }
+  },
   // computed: {
   //   allHostsSelected: {
   //     get: function () {
