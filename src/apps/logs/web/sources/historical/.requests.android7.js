@@ -45,7 +45,7 @@ const logs_web_summary_periodical = {
       let filter = []
 
       filter.push("r.row('metadata')('type').eq('" + vm.period + "')")
-      filter.push("r.row('data')('user_agent').hasFields('os.detailed')")
+      // filter.push("r.row('data')('user_agent').hasFields('os.detailed')")
 
       /**
       * Data

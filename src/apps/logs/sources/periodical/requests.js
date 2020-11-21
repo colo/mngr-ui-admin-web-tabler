@@ -13,6 +13,8 @@ let init = false
 //
 // import web_callback from '@apps/logs/web/libs/historical'
 
+let grouped_logs = {}
+
 const generic_callback = function (data, metadata, key, vm) {
   debug('PERIODICAL LOGS GENERIC CALLBACK data %s %o', key, data, metadata)
   // if (key === 'hosts.periodical') { hosts_callback(data, metadata, key, vm) }
@@ -20,12 +22,78 @@ const generic_callback = function (data, metadata, key, vm) {
   // if (key === 'os.periodical') { os_callback(data, metadata, key, vm) }
   //
   // if (/^logs\.web\.historical\..*$/.test(key)) { web_callback(data, metadata, key, vm) }
-  let logs = []
-  Array.each(data, function (row) {
-    if (row && row.data && row.data.log) { logs.push(row.data.log) }
+
+  let _data
+  if (data.logs) _data = data.logs // comes from 'Range'
+  else _data = data // comes from 'register'
+
+  let all_logs = {all: []}
+  Object.each(grouped_logs, function (data, group) {
+    if (vm.selected_hosts.length > 0) {
+      Array.each(vm.selected_hosts, function (host) {
+        if (group.indexOf(host) > -1) {
+          grouped_logs[group] = []
+        } else {
+          // delete grouped_logs[group]
+        }
+      })
+    } else {
+      grouped_logs[group] = []
+    }
   })
 
-  vm.logs = logs
+  Array.each(_data, function (row) {
+    // let path = row.metadata.path
+    // let host = row.metadata.host
+    if (vm.group_by.length === 0) {
+      all_logs.all.push(row.data.log)
+    } else {
+      // try {
+      // let group = vm.group_by.joing('.')
+      let props_values = []
+      Array.each(vm.group_by, function (prop) {
+        props_values.push(row.metadata[prop])
+      })
+
+      let group = props_values.join('.')
+
+      debug('PERIODICAL GROUP %s', group)
+
+      if (!grouped_logs[group]) grouped_logs[group] = []
+      grouped_logs[group].push(row.data.log)
+      // } catch (e) {
+      //   debug('PERIODICAL GROUP ERR %o', e)
+      // }
+    }
+    // if (row && row.data && row.data.log) { logs.push(row.data.log) }
+  })
+  debug('PERIODICAL LOGS GROUPED data %o %o', all_logs, grouped_logs)
+
+  if (vm.group_by.length === 0) {
+    vm.logs = all_logs
+  } else {
+    // Object.each(grouped_logs, function (data, group) {
+    //   vm.$set(vm.logs, group, data)
+    // })
+    Object.each(grouped_logs, function (data, group) {
+      if (vm.selected_hosts.length > 0) {
+        if (vm.selected_hosts.some(function (host) { return group.indexOf(host) > -1 })) {
+          vm.$set(vm.logs, group, data)
+        } else {
+          vm.$delete(vm.logs, group)
+        }
+        // Array.each(vm.selected_hosts, function (host) {
+        //   if (group.indexOf(host) > -1) {
+        //     vm.$set(vm.logs, group, data)
+        //   } else {
+        //     vm.$delete(vm.logs, group)
+        //   }
+        // })
+      } else {
+        vm.$set(vm.logs, group, data)
+      }
+    })
+  }
 }
 
 const logs_summary_periodical = {
@@ -51,7 +119,11 @@ const logs_summary_periodical = {
       let filter = []
 
       // filter.push("r.row('metadata')('type').eq('" + vm.period + "')")
-      filter.push("r.row('data').hasFields('log')")
+
+      /**
+      * don't use hasFields in this periodicals, it consume too much rethinkdb mem
+      **/
+      // filter.push("r.row('data').hasFields('log')")
 
       /**
       * Data
@@ -159,13 +231,16 @@ const logs_summary_periodical = {
       source = [{
         params: { id: _key },
         path: 'all',
-        // range: 'posix ' + START + '-' + END + '/*',
+        range: 'posix ' + START + '-' + END + '/*',
         query: {
           'from': 'logs',
-          'register': 'changes',
-          // 'format': 'tabular',
+          /**
+          * changesfeed looks like eats too much rethinkdb mem
+          * 'register': 'changes',
+          **/
+          // 'format': 'stat',
           'index': false,
-          'opts': { includeTypes: true, squash: 1 },
+          // 'opts': { includeTypes: true, squash: 1 },
           /**
           * right now needed to match OUTPUT 'id' with this query (need to @fix)
           **/
@@ -200,6 +275,7 @@ const once = [
 ]
 
 const periodical = [
+  logs_summary_periodical
 ]
 
 const requests = {

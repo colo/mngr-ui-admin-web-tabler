@@ -5,14 +5,14 @@
       set data
     </b-button>
     <div class="row row-deck row-cards">
-      <div class="col-lg-12">
-        <div class="card">
-          <div class="card-body">
-            <div id="terminal">
-            </div>
-          </div>
-        </div>
-      </div>
+
+      <logs-terminal v-for="(data, logs_id) in logs"
+        :id="id + '.'+ logs_id + '.terminal'"
+        :key="id + '.'+ logs_id + '.terminal'"
+        :ref="id + '.'+ logs_id + '.terminal'"
+        :logs="data"
+      />
+
     </div>
 
   </div>
@@ -24,11 +24,12 @@
 import { BButton } from 'bootstrap-vue'
 // // Vue.directive('b-modal', VBModal)
 
-import { Terminal } from 'xterm'
-import 'xterm/css/xterm.css'
-import { FitAddon } from 'xterm-addon-fit'
-import { WebLinksAddon } from 'xterm-addon-web-links'
-import { SearchAddon } from 'xterm-addon-search'
+// import { Terminal } from 'xterm'
+// import 'xterm/css/xterm.css'
+// import { FitAddon } from 'xterm-addon-fit'
+// import { WebLinksAddon } from 'xterm-addon-web-links'
+// import { SearchAddon } from 'xterm-addon-search'
+import LogsTerminal from '@apps/logs/components/terminal'
 
 import * as Debug from 'debug'
 const debug = Debug('apps:logs:components:periodical')
@@ -62,6 +63,7 @@ export default {
 
   components: {
     BButton,
+    LogsTerminal,
     // BDropdown,
     // BDropdownItem,
     // BDropdownForm,
@@ -80,10 +82,10 @@ export default {
   },
 
   props: {
-    period: {
-      type: String,
-      default: 'minute'
-    },
+    // period: {
+    //   type: String,
+    //   default: 'minute'
+    // },
     selected_hosts: {
       type: Array,
       default: function () { return [] }
@@ -114,9 +116,11 @@ export default {
       // ],
       //
       // selected_domains: [],
-      logs: [],
-      terminal: undefined,
-      searchXterm: undefined,
+      period: 'second',
+      group_by: ['host', 'path'],
+      logs: {},
+      // terminals: [],
+      // searchXterms: [],
       /**
       * search
       **/
@@ -145,7 +149,7 @@ export default {
         ]
       },
 
-      refresh: MINUTE,
+      refresh: SECOND,
       // current_time: undefined,
       EventBus: EventBus,
       // stat_memory: [],
@@ -204,14 +208,14 @@ export default {
   mounted: function () {
     debug('lifecycle mounted', this._uid)
 
-    this.terminal = new Terminal()
-    this.terminal.loadAddon(new WebLinksAddon())
-    const fitAddon = new FitAddon()
-    this.terminal.loadAddon(fitAddon)
-    this.searchXterm = new SearchAddon()
-    this.terminal.loadAddon(this.searchXterm)
-    this.terminal.open(document.getElementById('terminal'))
-    fitAddon.fit()
+    // this.terminal = new Terminal()
+    // this.terminal.loadAddon(new WebLinksAddon())
+    // const fitAddon = new FitAddon()
+    // this.terminal.loadAddon(fitAddon)
+    // this.searchXterm = new SearchAddon()
+    // this.terminal.loadAddon(this.searchXterm)
+    // this.terminal.open(document.getElementById('terminal'))
+    // fitAddon.fit()
 
     // terminal.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ')
     // terminal.write('http://localhost:8083')
@@ -219,30 +223,75 @@ export default {
   watch: {
     logs: function (val) {
       debug('watch logs', val)
-      if (this.terminal !== undefined && val) {
-        Array.each(val, function (row) {
-          this.terminal.writeln(row)
+      // Object.each(val, function (data, name) {
+      //   if (this.terminals[this.id + '.' + name + '.terminal']) {
+      //     let terminal = this.terminals[this.id + '.' + name + '.terminal']
+      //     Array.each(data, function (row) {
+      //       terminal.writeln(row)
+      //     })
+      //   }
+      // }.bind(this))
+      // // if (this.terminal !== undefined && val) {
+      // //   Array.each(val, function (row) {
+      // //     this.terminal.writeln(row)
+      // //   }.bind(this))
+      // // }
+    },
+    selected_hosts: function (val, other) {
+      debug('WATCH selected_hosts', val, other)
+      if (val && Array.isArray(val) && val.length > 0) {
+        // Array.each(this.val, function (host) {
+        Object.each(this.logs, function (data, group) {
+          if (!val.some(function (host) { return group.indexOf(host) > -1 })) {
+            this.$delete(this.logs, group)
+          }
         }.bind(this))
+        // }.bind(this))
       }
-    }
+
+      this.destroy_pipelines(this.id)
+      this.create_pipelines(this.id)
+      this.resume_pipelines(this.id)
+    },
   },
   // computed: {
-  //   allHostsSelected: {
-  //     get: function () {
-  //       if (this.selected_hosts.length === 0) { return true }
-  //
-  //       return false
-  //     },
-  //     set: function (val) {
-  //       debug('allHostsSelected', val)
-  //       if (val === true) {
-  //         this.$router.replace({ query: { ...this.$route.query, selected_hosts: []}}).catch(err => { debug('allHostsSelected set', err) })
-  //         this.selected_hosts = []
-  //       }
+  //   terminals: function () {
+  //     let terminals = {}
+  //     if (this.group_by.length === 0) {
+  //       terminals[this.id + '.all.terminal'] = this.create_terminal(this.id + '.all.terminal')
   //     }
-  //   },
+  //
+  //     return terminals
+  //   }
+  //
+  //   // allHostsSelected: {
+  //   //   get: function () {
+  //   //     if (this.selected_hosts.length === 0) { return true }
+  //   //
+  //   //     return false
+  //   //   },
+  //   //   set: function (val) {
+  //   //     debug('allHostsSelected', val)
+  //   //     if (val === true) {
+  //   //       this.$router.replace({ query: { ...this.$route.query, selected_hosts: []}}).catch(err => { debug('allHostsSelected set', err) })
+  //   //       this.selected_hosts = []
+  //   //     }
+  //   //   }
+  //   // },
   // },
   methods: {
+    // create_terminal: function (id) {
+    //   const terminal = new Terminal()
+    //   terminal.loadAddon(new WebLinksAddon())
+    //   // const fitAddon = new FitAddon()
+    //   // terminal.loadAddon(fitAddon)
+    //   // // searchXterm = new SearchAddon()
+    //   // // terminal.loadAddon(searchXterm)
+    //   // terminal.open(document.getElementById(id))
+    //   // fitAddon.fit()
+    //
+    //   return terminal
+    // },
     setBy: function (val) {
       this.$router.replace({query: { ...this.$route.query, by: this.by}}).catch(err => { debug('setBy', err) })
     },

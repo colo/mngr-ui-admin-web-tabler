@@ -72,13 +72,17 @@ export default {
       if (this.current_time === undefined) {
         // return Date.now()
         if (this.period === 'second' || this.period === 'periodical') {
-          return Date.now() - SECOND
+          // return Date.now() - SECOND
+          return roundMilliseconds(Date.now())
         } else if (this.period === 'minute') {
-          return Date.now() - (2 * MINUTE)
+          // return Date.now() - (2 * MINUTE)
+          return roundSeconds(Date.now())
         } else if (this.period === 'hour') {
-          return Date.now() - HOUR
+          // return Date.now() - HOUR
+          return roundMinutes(Date.now())
         } else {
-          return Date.now() - DAY
+          // return Date.now() - DAY
+          return roundHours(Date.now())
         }
       } else {
         return this.current_time

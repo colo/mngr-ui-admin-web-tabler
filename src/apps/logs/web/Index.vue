@@ -67,7 +67,7 @@
           </b-dropdown>
 
         </div>
-        <historical :selected_hosts="selected_hosts" :selected_domains="selected_domains" period="minute"/>
+        <historical :selected_hosts="selected_hosts" :selected_domains="selected_domains" period="hour"/>
       </div>
     </div>
 
