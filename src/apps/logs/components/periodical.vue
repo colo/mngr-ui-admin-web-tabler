@@ -11,6 +11,7 @@
         :key="id + '.'+ logs_id + '.terminal'"
         :ref="id + '.'+ logs_id + '.terminal'"
         :logs="data"
+        :groupBy="group_by"
       />
 
     </div>
@@ -117,7 +118,7 @@ export default {
       //
       // selected_domains: [],
       period: 'second',
-      group_by: ['host', 'path'],
+      group_by: ['host', 'path'], // 'host', 'path', 'domain'
       logs: {},
       // terminals: [],
       // searchXterms: [],

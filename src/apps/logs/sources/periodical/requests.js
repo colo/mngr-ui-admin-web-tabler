@@ -43,10 +43,13 @@ const generic_callback = function (data, metadata, key, vm) {
   })
 
   Array.each(_data, function (row) {
-    // let path = row.metadata.path
-    // let host = row.metadata.host
+    let path = row.metadata.path
+    let host = row.metadata.host
+    let domain = row.metadata.domain
+    let timestamp = row.metadata.timestamp
+
     if (vm.group_by.length === 0) {
-      all_logs.all.push(row.data.log)
+      all_logs.all.push({ timestamp: timestamp, domain: domain, host: host, path: path, log: row.data.log})
     } else {
       // try {
       // let group = vm.group_by.joing('.')
@@ -60,7 +63,7 @@ const generic_callback = function (data, metadata, key, vm) {
       debug('PERIODICAL GROUP %s', group)
 
       if (!grouped_logs[group]) grouped_logs[group] = []
-      grouped_logs[group].push(row.data.log)
+      grouped_logs[group].push({ timestamp: timestamp, domain: domain, host: host, path: path, log: row.data.log})
       // } catch (e) {
       //   debug('PERIODICAL GROUP ERR %o', e)
       // }
@@ -76,7 +79,7 @@ const generic_callback = function (data, metadata, key, vm) {
     //   vm.$set(vm.logs, group, data)
     // })
     Object.each(grouped_logs, function (data, group) {
-      if (vm.selected_hosts.length > 0) {
+      if (vm.selected_hosts.length > 0 && vm.group_by.contains('host')) {
         if (vm.selected_hosts.some(function (host) { return group.indexOf(host) > -1 })) {
           vm.$set(vm.logs, group, data)
         } else {
@@ -231,13 +234,14 @@ const logs_summary_periodical = {
       source = [{
         params: { id: _key },
         path: 'all',
-        range: 'posix ' + START + '-' + END + '/*',
+        // range: 'posix ' + START + '-' + END + '/*',
         query: {
           'from': 'logs',
           /**
           * changesfeed looks like eats too much rethinkdb mem
           * 'register': 'changes',
           **/
+          'register': 'changes',
           // 'format': 'stat',
           'index': false,
           // 'opts': { includeTypes: true, squash: 1 },
@@ -246,7 +250,11 @@ const logs_summary_periodical = {
           **/
           'q': [
             // 'id',
-            {'data': ['log']},
+            'data',
+            /**
+            * looks like searching for nested props makes rethinkdb consume too much mem (maybe pluck)??
+            * {'data': ['log']},
+            **/
             // {'data': 'user_agent'},
             'metadata'
           ],
@@ -275,7 +283,7 @@ const once = [
 ]
 
 const periodical = [
-  logs_summary_periodical
+  // logs_summary_periodical
 ]
 
 const requests = {
