@@ -1,9 +1,38 @@
 <template>
   <div>
-    periodical
+    <!-- periodical
     <b-button variant="primary" class="ml-3 d-none d-sm-inline-block" @click="setData">
       set data
-    </b-button>
+    </b-button> -->
+    <div class="row row-deck row-cards">
+      <div class="col-auto ml-auto d-print-none">
+        <b-button-toolbar key-nav aria-label="Toolbar with button groups">
+          <b-button-group >
+            <b-button variant="white btn-icon" to="#">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M7 5h6a3.5 3.5 0 0 1 0 7h-6z" /><path d="M13 12h1a3.5 3.5 0 0 1 0 7h-7v-7" /></svg>
+            </b-button>
+            <b-button variant="white btn-icon" to="#">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="11" y1="5" x2="17" y2="5" /><line x1="7" y1="19" x2="13" y2="19" /><line x1="14" y1="5" x2="10" y2="19" /></svg>
+            </b-button>
+            <b-button variant="white btn-icon" to="#">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="6" y1="20" x2="18" y2="20" /><path d="M8 5v6a4 4 0 0 0 8 0v-6" /></svg>
+            </b-button>
+            <b-button variant="white btn-icon" to="#">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="8" y="8" width="12" height="12" rx="2" /><path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" /></svg>
+            </b-button>
+            <b-button variant="white btn-icon" to="#">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="6" cy="7" r="3" /><circle cx="6" cy="17" r="3" /><line x1="8.6" y1="8.6" x2="19" y2="19" /><line x1="8.6" y1="15.4" x2="19" y2="5" /></svg>
+            </b-button>
+            <b-button variant="white btn-icon" to="#">
+              <svg data-v-2a169e26="" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-md"><path data-v-2a169e26="" stroke="none" d="M0 0h24v24H0z"></path><rect data-v-2a169e26="" x="4" y="4" width="6" height="6" rx="1"></rect><rect data-v-2a169e26="" x="14" y="4" width="6" height="6" rx="1"></rect><rect data-v-2a169e26="" x="4" y="14" width="6" height="6" rx="1"></rect><rect data-v-2a169e26="" x="14" y="14" width="6" height="6" rx="1"></rect></svg>
+            </b-button>
+            <b-button variant="white btn-icon" to="#">
+              <svg data-v-2a169e26="" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-md"><path data-v-2a169e26="" stroke="none" d="M0 0h24v24H0z"></path><rect data-v-2a169e26="" x="4" y="4" width="16" height="16" rx="2"></rect><line data-v-2a169e26="" x1="4" y1="12" x2="20" y2="12"></line></svg>
+            </b-button>
+          </b-button-group>
+        </b-button-toolbar>
+      </div>
+    </div>
     <div class="row row-deck row-cards">
 
       <logs-terminal v-for="(data, logs_id) in logs"
@@ -22,7 +51,7 @@
 
 <script>
 // import Vue from 'vue'
-import { BButton } from 'bootstrap-vue'
+import { BButton, BButtonGroup, BButtonToolbar } from 'bootstrap-vue'
 // // Vue.directive('b-modal', VBModal)
 
 // import { Terminal } from 'xterm'
@@ -64,6 +93,8 @@ export default {
 
   components: {
     BButton,
+    BButtonGroup,
+    BButtonToolbar,
     LogsTerminal,
     // BDropdown,
     // BDropdownItem,

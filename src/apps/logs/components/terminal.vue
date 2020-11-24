@@ -79,6 +79,11 @@ export default {
     debug('lifecycle mounted', this._uid)
 
     this.terminal = new Terminal()
+    this.terminal.setOption('fontSize', 14)
+    this.terminal.setOption('scrollback', 1000000)
+    this.terminal.setOption('disableStdin', true)
+    this.terminal.setOption('convertEol', true)
+
     this.terminal.loadAddon(new WebLinksAddon())
     this.fitAddon = new FitAddon()
     this.terminal.loadAddon(this.fitAddon)
