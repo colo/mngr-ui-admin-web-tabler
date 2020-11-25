@@ -12,24 +12,26 @@
       />
 
     <div class="page">
-      <b-navbar toggleable="md" :type="(darkTopBar === true) ? 'dark' : 'light'" tag="header" v-if="topbar.available === true" class="d-none d-lg-flex" :style="topbarContainerStyle">
-        <top-bar
-          :combined="topbar.combined"
-          :dark="darkTopBar"
-          :fluid="fluid"
-          :vertical="true"
-          :background="topbar.background"
-          :grow="false"
-          :search="search"
-          :user="user"
-          :alerts="alerts"
-          :settings="settings"
-        />
-      </b-navbar>
+      <div :class="(sticky === true) ? 'sticky-top' : ''">
+        <b-navbar toggleable="md" :type="(darkTopBar === true) ? 'dark' : 'light'" tag="header" v-if="topbar.available === true" class="d-none d-lg-flex" :style="topbarContainerStyle">
+          <top-bar
+            :combined="topbar.combined"
+            :dark="darkTopBar"
+            :fluid="fluid"
+            :vertical="true"
+            :background="topbar.background"
+            :grow="false"
+            :search="search"
+            :user="user"
+            :alerts="alerts"
+            :settings="settings"
+          />
+        </b-navbar>
+      </div>
       <div class="content">
         <div :class="containerClass">
           <q-page-container>
-            <router-view :dark="dark" :fluid="fluid" :mode="mode"/>
+            <router-view :dark="dark" :fluid="fluid" :mode="mode" />
           </q-page-container>
         </div>
 

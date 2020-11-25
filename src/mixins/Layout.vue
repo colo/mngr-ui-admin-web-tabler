@@ -60,6 +60,7 @@ export default Vue.extend({
       // menuAutoExpand: state => state.layout.menuAutoExpand
       dark: state => state.layout.dark,
       fluid: state => state.layout.fluid,
+      sticky: state => state.layout.sticky,
       mode: state => state.layout.mode,
     }),
     topbarContainerStyle: function () {

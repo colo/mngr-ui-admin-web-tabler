@@ -1,16 +1,16 @@
 <template>
   <q-page>
     <!-- Page title -->
-    <div class="page-header">
+    <div class="page-header d-print-none">
       <div class="row align-items-center">
-        <div class="col-auto">
+        <div class="col">
           <h2 class="page-title">
             Typography
           </h2>
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row row-cards">
       <div class="col-12 col-md-6">
         <div class="card">
           <div class="card-header">
@@ -22,6 +22,8 @@
             voluptatibus?
           </div>
         </div>
+      </div>
+      <div class="col-12 col-md-6">
         <div class="card">
           <div class="card-header">
             <div class="card-title">Headings</div>
@@ -268,7 +270,7 @@
               <abbr title="Phone">P: </abbr>(123) 456 7890
             </address>
             <address><strong>Full name <br>
-            </strong><a href="mailto:#">first.last@example.com</a></address>
+              </strong><a href="mailto:#">first.last@example.com</a></address>
           </div>
         </div>
       </div>

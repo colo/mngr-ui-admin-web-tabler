@@ -1,16 +1,16 @@
 <template>
   <q-page>
     <!-- Page title -->
-<div class="page-header">
+<div class="page-header d-print-none">
   <div class="row align-items-center">
-    <div class="col-auto">
+    <div class="col">
       <h2 class="page-title">
         Form elements
       </h2>
     </div>
   </div>
 </div>
-<div class="row">
+<div class="row row-cards">
   <div class="col-12">
     <form action="https://httpbin.org/post" method="post" class="card">
       <div class="card-header">
@@ -71,10 +71,10 @@ value="Well, how'd you become king, then?" readonly>
                   <label class="form-label">Input group</label>
                   <div class="input-group mb-2">
                     <input type="text" class="form-control" placeholder="Search for…">
-                    <button class="btn btn-white" type="button">Go!</button>
+                    <button class="btn" type="button">Go!</button>
                   </div>
                   <div class="input-group">
-                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       Action
                     </button>
                     <div class="dropdown-menu">
@@ -92,8 +92,8 @@ value="Well, how'd you become king, then?" readonly>
                   <label class="form-label">Input group buttons</label>
                   <div class="input-group">
                     <input type="text" class="form-control">
-                    <button type="button" class="btn btn-white">Action</button>
-                    <button data-toggle="dropdown" type="button" class="btn btn-white dropdown-toggle dropdown-toggle-split"></button>
+                    <button type="button" class="btn">Action</button>
+                    <button data-toggle="dropdown" type="button" class="btn dropdown-toggle dropdown-toggle-split"></button>
                     <div class="dropdown-menu dropdown-menu-right">
                       <a class="dropdown-item" href="#">
                         Action
@@ -109,12 +109,12 @@ value="Well, how'd you become king, then?" readonly>
                   <div class="input-icon mb-3">
                     <input type="text" class="form-control" placeholder="Search…">
                     <span class="input-icon-addon">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7" /><line x1="21" y1="21" x2="15" y2="15" /></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="10" cy="10" r="7" /><line x1="21" y1="21" x2="15" y2="15" /></svg>
                     </span>
                   </div>
                   <div class="input-icon mb-3">
                     <span class="input-icon-addon">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4" /><path d="M5.5 21v-2a4 4 0 0 1 4 -4h5a4 4 0 0 1 4 4v2" /></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="7" r="4" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg>
                     </span>
                     <input type="text" class="form-control" placeholder="Username">
                   </div>
@@ -136,20 +136,20 @@ value="Well, how'd you become king, then?" readonly>
                 </div>
                 <div class="mb-3">
                   <label class="form-label">Separated inputs</label>
-                  <div class="row row-sm">
+                  <div class="row g-2">
                     <div class="col">
                       <input type="text" class="form-control" placeholder="Search for…">
                     </div>
                     <div class="col-auto">
                       <a href="#" class="btn btn-white btn-icon" aria-label="Button">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7" /><line x1="21" y1="21" x2="15" y2="15" /></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="10" cy="10" r="7" /><line x1="21" y1="21" x2="15" y2="15" /></svg>
                       </a>
                     </div>
                   </div>
                 </div>
                 <div class="mb-3">
                   <label class="form-label">Input with help icon</label>
-                  <div class="row row-sm">
+                  <div class="row g-2">
                     <div class="col">
                       <input type="text" class="form-control" placeholder="Search for…">
                     </div>
@@ -170,7 +170,7 @@ value="Well, how'd you become king, then?" readonly>
                 <div class="input-icon">
                   <input type="text" class="form-control form-control-rounded" placeholder="Search…">
                   <span class="input-icon-addon">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7" /><line x1="21" y1="21" x2="15" y2="15" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="10" cy="10" r="7" /><line x1="21" y1="21" x2="15" y2="15" /></svg>
                   </span>
                 </div>
               </div>
@@ -184,10 +184,10 @@ value="Well, how'd you become king, then?" readonly>
                   <span class="input-group-text">
                     @
                   </span>
-                  <input type="text" class="form-control"  placeholder="username" >
+                  <input type="text" class="form-control"  placeholder="username"  autocomplete="off">
                 </div>
                 <div class="input-group mb-2">
-                  <input type="text" class="form-control"  placeholder="subdomain" >
+                  <input type="text" class="form-control"  placeholder="subdomain"  autocomplete="off">
                   <span class="input-group-text">
                     .tabler.io
                   </span>
@@ -196,7 +196,7 @@ value="Well, how'd you become king, then?" readonly>
                   <span class="input-group-text">
                     https://
                   </span>
-                  <input type="text" class="form-control"  placeholder="subdomain" >
+                  <input type="text" class="form-control"  placeholder="subdomain"  autocomplete="off">
                   <span class="input-group-text">
                     .tabler.io
                   </span>
@@ -208,10 +208,10 @@ value="Well, how'd you become king, then?" readonly>
                   <span class="input-group-text">
                     <input class="form-check-input m-0" type="checkbox" checked>
                   </span>
-                  <input type="text" class="form-control" >
+                  <input type="text" class="form-control"  autocomplete="off">
                 </div>
                 <div class="input-group">
-                  <input type="text" class="form-control" >
+                  <input type="text" class="form-control"  autocomplete="off">
                   <span class="input-group-text">
                     <input class="form-check-input m-0" type="radio" checked>
                   </span>
@@ -223,13 +223,13 @@ value="Well, how'd you become king, then?" readonly>
                   <span class="input-group-text">
                     https://tabler.io/users/
                   </span>
-                  <input type="text" class="form-control pl-0"  value="yourfancyusername">
+                  <input type="text" class="form-control pl-0"  value="yourfancyusername" autocomplete="off">
                 </div>
               </div>
               <div class="mb-3">
                 <label class="form-label">Input with appended text</label>
                 <div class="input-group input-group-flat">
-                  <input type="text" class="form-control text-right pr-0"  value="yourfancydomain">
+                  <input type="text" class="form-control text-right pr-0"  value="yourfancydomain" autocomplete="off">
                   <span class="input-group-text">
                     .tabler.io
                   </span>
@@ -238,7 +238,7 @@ value="Well, how'd you become king, then?" readonly>
               <div class="mb-3">
                 <label class="form-label">Input with appended link</label>
                 <div class="input-group input-group-flat">
-                  <input type="password" class="form-control"  value="ultrastrongpassword">
+                  <input type="password" class="form-control"  value="ultrastrongpassword" autocomplete="off">
                   <span class="input-group-text">
                     <a href="#" class="input-group-link">Show password</a>
                   </span>
@@ -247,15 +247,35 @@ value="Well, how'd you become king, then?" readonly>
               <div class="mb-3">
                 <label class="form-label">Input with appended icon links</label>
                 <div class="input-group input-group-flat">
-                  <input type="text" class="form-control" >
+                  <input type="text" class="form-control"  autocomplete="off">
                   <span class="input-group-text">
-                    <a href="#" class="link-secondary" title="Clear search" data-toggle="tooltip"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                    <a href="#" class="link-secondary" title="Clear search" data-toggle="tooltip"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
                     </a>
-                    <a href="#" class="link-secondary ml-2" title="Search settings" data-toggle="tooltip"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="6" cy="10" r="2" /><line x1="6" y1="4" x2="6" y2="8" /><line x1="6" y1="12" x2="6" y2="20" /><circle cx="12" cy="16" r="2" /><line x1="12" y1="4" x2="12" y2="14" /><line x1="12" y1="18" x2="12" y2="20" /><circle cx="18" cy="7" r="2" /><line x1="18" y1="4" x2="18" y2="5" /><line x1="18" y1="9" x2="18" y2="20" /></svg>
+                    <a href="#" class="link-secondary ml-2" title="Search settings" data-toggle="tooltip"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="6" cy="10" r="2" /><line x1="6" y1="4" x2="6" y2="8" /><line x1="6" y1="12" x2="6" y2="20" /><circle cx="12" cy="16" r="2" /><line x1="12" y1="4" x2="12" y2="14" /><line x1="12" y1="18" x2="12" y2="20" /><circle cx="18" cy="7" r="2" /><line x1="18" y1="4" x2="18" y2="5" /><line x1="18" y1="9" x2="18" y2="20" /></svg>
                     </a>
-                    <a href="#" class="link-secondary ml-2 disabled" title="Add notification" data-toggle="tooltip"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /><path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
+                    <a href="#" class="link-secondary ml-2 disabled" title="Add notification" data-toggle="tooltip"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /><path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
                     </a>
                   </span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Floating inputs</label>
+                <div class="form-floating mb">
+                  <input type="email" class="form-control" id="floating-input" value="name@example.com" autocomplete="off">
+                  <label for="floating-input">Email address</label>
+                </div>
+                <div class="form-floating mb">
+                  <input type="password" class="form-control" id="floating-password" value="Password" autocomplete="off">
+                  <label for="floating-password">Password</label>
+                </div>
+                <div class="form-floating">
+                  <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                    <option selected>Open this select menu</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                  <label for="floatingSelect">Select</label>
                 </div>
               </div>
             </div>
@@ -266,7 +286,7 @@ value="Well, how'd you become king, then?" readonly>
             <div class="col-md-6 col-xl-12">
               <div class="mb-3">
                 <label class="form-label">Image Check</label>
-                <div class="row row-sm">
+                <div class="row g-2">
                   <div class="col-6 col-sm-4">
                     <label class="form-imagecheck mb-2">
                       <input name="form-imagecheck" type="checkbox" value="1" class="form-imagecheck-input" />
@@ -343,7 +363,7 @@ value="Well, how'd you become king, then?" readonly>
               </div>
               <div class="mb-3">
                 <label class="form-label">Color Input</label>
-                <div class="row row-sm">
+                <div class="row g-2">
                   <div class="col-auto">
                     <label class="form-colorinput">
                       <input name="color" type="radio" value="dark" class="form-colorinput-input" />
@@ -413,6 +433,77 @@ value="Well, how'd you become king, then?" readonly>
                 </div>
               </div>
               <div class="mb-3">
+                <label class="form-label">Color Input</label>
+                <div class="row g-2">
+                  <div class="col-auto">
+                    <label class="form-colorinput">
+                      <input name="color-rounded" type="radio" value="dark" class="form-colorinput-input" />
+                      <span class="form-colorinput-color bg-dark rounded-circle"></span>
+                    </label>
+                  </div>
+                  <div class="col-auto">
+                    <label class="form-colorinput form-colorinput-light">
+                      <input name="color-rounded" type="radio" value="white" class="form-colorinput-input"  checked/>
+                      <span class="form-colorinput-color bg-white rounded-circle"></span>
+                    </label>
+                  </div>
+                  <div class="col-auto">
+                    <label class="form-colorinput">
+                      <input name="color-rounded" type="radio" value="blue" class="form-colorinput-input" />
+                      <span class="form-colorinput-color bg-blue rounded-circle"></span>
+                    </label>
+                  </div>
+                  <div class="col-auto">
+                    <label class="form-colorinput">
+                      <input name="color-rounded" type="radio" value="azure" class="form-colorinput-input" />
+                      <span class="form-colorinput-color bg-azure rounded-circle"></span>
+                    </label>
+                  </div>
+                  <div class="col-auto">
+                    <label class="form-colorinput">
+                      <input name="color-rounded" type="radio" value="indigo" class="form-colorinput-input" />
+                      <span class="form-colorinput-color bg-indigo rounded-circle"></span>
+                    </label>
+                  </div>
+                  <div class="col-auto">
+                    <label class="form-colorinput">
+                      <input name="color-rounded" type="radio" value="purple" class="form-colorinput-input" />
+                      <span class="form-colorinput-color bg-purple rounded-circle"></span>
+                    </label>
+                  </div>
+                  <div class="col-auto">
+                    <label class="form-colorinput">
+                      <input name="color-rounded" type="radio" value="pink" class="form-colorinput-input" />
+                      <span class="form-colorinput-color bg-pink rounded-circle"></span>
+                    </label>
+                  </div>
+                  <div class="col-auto">
+                    <label class="form-colorinput">
+                      <input name="color-rounded" type="radio" value="red" class="form-colorinput-input" />
+                      <span class="form-colorinput-color bg-red rounded-circle"></span>
+                    </label>
+                  </div>
+                  <div class="col-auto">
+                    <label class="form-colorinput">
+                      <input name="color-rounded" type="radio" value="orange" class="form-colorinput-input" />
+                      <span class="form-colorinput-color bg-orange rounded-circle"></span>
+                    </label>
+                  </div>
+                  <div class="col-auto">
+                    <label class="form-colorinput">
+                      <input name="color-rounded" type="radio" value="yellow" class="form-colorinput-input" />
+                      <span class="form-colorinput-color bg-yellow rounded-circle"></span>
+                    </label>
+                  </div>
+                  <div class="col-auto">
+                    <label class="form-colorinput">
+                      <input name="color-rounded" type="radio" value="lime" class="form-colorinput-input" />
+                      <span class="form-colorinput-color bg-lime rounded-circle"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
                 <label class="form-label">Color picker</label>
                 <input type="color" class="form-control form-control-color" value="#206bc4" title="Choose your color">
               </div>
@@ -474,22 +565,22 @@ value="Well, how'd you become king, then?" readonly>
                 <div class="form-selectgroup">
                   <label class="form-selectgroup-item">
                     <input type="checkbox" name="name" value="sun" class="form-selectgroup-input" checked>
-                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="4" /><path d="M3 12h1M12 3v1M20 12h1M12 20v1M5.6 5.6l.7 .7M18.4 5.6l-.7 .7M17.7 17.7l.7 .7M6.3 17.7l-.7 .7" /></svg>
+                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="4" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg>
                     </span>
                   </label>
                   <label class="form-selectgroup-item">
                     <input type="checkbox" name="name" value="moon" class="form-selectgroup-input">
-                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M16.2 4a9.03 9.03 0 1 0 3.9 12a6.5 6.5 0 1 1 -3.9 -12" /></svg>
+                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3c0.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg>
                     </span>
                   </label>
                   <label class="form-selectgroup-item">
                     <input type="checkbox" name="name" value="cloud-rain" class="form-selectgroup-input">
-                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M7 18a4.6 4.4 0 0 1 0 -9h0a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7" /><path d="M11 13v2m0 3v2m4 -5v2m0 3v2" /></svg>
+                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 18a4.6 4.4 0 0 1 0 -9a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7" /><path d="M11 13v2m0 3v2m4 -5v2m0 3v2" /></svg>
                     </span>
                   </label>
                   <label class="form-selectgroup-item">
                     <input type="checkbox" name="name" value="cloud" class="form-selectgroup-input">
-                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M7 18a4.6 4.4 0 0 1 0 -9h0a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7h-12" /></svg>
+                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 18a4.6 4.4 0 0 1 0 -9a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7h-12" /></svg>
                     </span>
                   </label>
                   <label class="form-selectgroup-item">
@@ -503,22 +594,22 @@ value="Well, how'd you become king, then?" readonly>
                 <div class="form-selectgroup">
                   <label class="form-selectgroup-item">
                     <input type="radio" name="icons" value="home" class="form-selectgroup-input" checked>
-                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon mr-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
+                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon mr-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="5 12 3 12 12 3 21 12 19 12" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
                       Home</span>
                   </label>
                   <label class="form-selectgroup-item">
                     <input type="radio" name="icons" value="user" class="form-selectgroup-input">
-                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon mr-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4" /><path d="M5.5 21v-2a4 4 0 0 1 4 -4h5a4 4 0 0 1 4 4v2" /></svg>
+                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon mr-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="7" r="4" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg>
                       User</span>
                   </label>
                   <label class="form-selectgroup-item">
                     <input type="radio" name="icons" value="circle" class="form-selectgroup-input">
-                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon mr-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9" /></svg>
+                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon mr-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="9" /></svg>
                       Circle</span>
                   </label>
                   <label class="form-selectgroup-item">
                     <input type="radio" name="icons" value="square" class="form-selectgroup-input">
-                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon mr-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="4" y="4" width="16" height="16" rx="2" /></svg>
+                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon mr-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><rect x="4" y="4" width="16" height="16" rx="2" /></svg>
                       Square</span>
                   </label>
                 </div>
@@ -554,7 +645,7 @@ value="Well, how'd you become king, then?" readonly>
                         <span class="form-selectgroup-check"></span>
                       </div>
                       <div>
-                        <span class="payment payment-provider-visa payment-sm mr-2"></span>
+                        <span class="payment payment-provider-visa payment-xs mr-2"></span>
                         ending in <strong>7998</strong>
                       </div>
                     </div>
@@ -566,7 +657,7 @@ value="Well, how'd you become king, then?" readonly>
                         <span class="form-selectgroup-check"></span>
                       </div>
                       <div>
-                        <span class="payment payment-provider-mastercard payment-sm mr-2"></span>
+                        <span class="payment payment-provider-mastercard payment-xs mr-2"></span>
                         ending in <strong>2807</strong>
                       </div>
                     </div>
@@ -578,7 +669,7 @@ value="Well, how'd you become king, then?" readonly>
                         <span class="form-selectgroup-check"></span>
                       </div>
                       <div>
-                        <span class="payment payment-provider-paypal payment-sm mr-2"></span>
+                        <span class="payment payment-provider-paypal payment-xs mr-2"></span>
                       </div>
                     </div>
                   </label>
@@ -595,8 +686,8 @@ value="Well, how'd you become king, then?" readonly>
                       </div>
                       <div class="form-selectgroup-label-content d-flex align-items-center">
                         <span class="avatar mr-3" style="background-image: url(../static/avatars/000m.jpg)"></span>
-                        <div class="lh-sm">
-                          <div class="strong">Paweł Kuna</div>
+                        <div>
+                          <div class="font-weight-medium">Paweł Kuna</div>
                           <div class="text-muted">UI Designer</div>
                         </div>
                       </div>
@@ -610,8 +701,8 @@ value="Well, how'd you become king, then?" readonly>
                       </div>
                       <div class="form-selectgroup-label-content d-flex align-items-center">
                         <span class="avatar mr-3">JL</span>
-                        <div class="lh-sm">
-                          <div class="strong">Jeffie Lewzey</div>
+                        <div>
+                          <div class="font-weight-medium">Jeffie Lewzey</div>
                           <div class="text-muted">Chemical Engineer</div>
                         </div>
                       </div>
@@ -625,8 +716,8 @@ value="Well, how'd you become king, then?" readonly>
                       </div>
                       <div class="form-selectgroup-label-content d-flex align-items-center">
                         <span class="avatar mr-3" style="background-image: url(../static/avatars/002m.jpg)"></span>
-                        <div class="lh-sm">
-                          <div class="strong">Mallory Hulme</div>
+                        <div>
+                          <div class="font-weight-medium">Mallory Hulme</div>
                           <div class="text-muted">Geologist IV</div>
                         </div>
                       </div>
@@ -640,8 +731,8 @@ value="Well, how'd you become king, then?" readonly>
                       </div>
                       <div class="form-selectgroup-label-content d-flex align-items-center">
                         <span class="avatar mr-3" style="background-image: url(../static/avatars/003m.jpg)"></span>
-                        <div class="lh-sm">
-                          <div class="strong">Dunn Slane</div>
+                        <div>
+                          <div class="font-weight-medium">Dunn Slane</div>
                           <div class="text-muted">Research Nurse</div>
                         </div>
                       </div>
@@ -655,8 +746,8 @@ value="Well, how'd you become king, then?" readonly>
                       </div>
                       <div class="form-selectgroup-label-content d-flex align-items-center">
                         <span class="avatar mr-3" style="background-image: url(../static/avatars/000f.jpg)"></span>
-                        <div class="lh-sm">
-                          <div class="strong">Emmy Levet</div>
+                        <div>
+                          <div class="font-weight-medium">Emmy Levet</div>
                           <div class="text-muted">VP Product Management</div>
                         </div>
                       </div>
@@ -667,20 +758,20 @@ value="Well, how'd you become king, then?" readonly>
               <div class="mb-3">
                 <label class="form-label">Buttons group</label>
                 <div class="btn-group w-100">
-                  <button type="button" class="btn btn-white">1 min</button>
-                  <button type="button" class="btn btn-white active">5 min</button>
-                  <button type="button" class="btn btn-white">10 min</button>
-                  <button type="button" class="btn btn-white">30 min</button>
+                  <button type="button" class="btn">1 min</button>
+                  <button type="button" class="btn btn-primary">5 min</button>
+                  <button type="button" class="btn">10 min</button>
+                  <button type="button" class="btn">30 min</button>
                 </div>
               </div>
               <div class="mb-3">
                 <label class="form-label">Buttons group with dropdown</label>
                 <div class="btn-group w-100">
-                  <button type="button" class="btn btn-white">Option 1</button>
-                  <button type="button" class="btn btn-white">Option 2</button>
-                  <button type="button" class="btn btn-white active">Option 3</button>
+                  <button type="button" class="btn">Option 1</button>
+                  <button type="button" class="btn">Option 2</button>
+                  <button type="button" class="btn btn-primary">Option 3</button>
                   <div class="btn-group" role="group">
-                    <button id="btnGroupDrop1" type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       Other
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
@@ -699,30 +790,56 @@ value="Well, how'd you become king, then?" readonly>
               </div>
               <div class="mb-3">
                 <label class="form-label">Toolbar</label>
-                <div class="btn-group w-100">
+                <b-button-toolbar key-nav aria-label="Toolbar with button groups">
+                  <b-button-group class="w-100">
+                    <b-button variant="white btn-icon" to="#">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M7 5h6a3.5 3.5 0 0 1 0 7h-6z" /><path d="M13 12h1a3.5 3.5 0 0 1 0 7h-7v-7" /></svg>
+                    </b-button>
+                    <b-button variant="white btn-icon" to="#">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="11" y1="5" x2="17" y2="5" /><line x1="7" y1="19" x2="13" y2="19" /><line x1="14" y1="5" x2="10" y2="19" /></svg>
+                    </b-button>
+                    <b-button variant="white btn-icon" to="#">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="6" y1="20" x2="18" y2="20" /><path d="M8 5v6a4 4 0 0 0 8 0v-6" /></svg>
+                    </b-button>
+                    <b-button variant="white btn-icon" to="#">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="8" y="8" width="12" height="12" rx="2" /><path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" /></svg>
+                    </b-button>
+                    <b-button variant="white btn-icon" to="#">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="6" cy="7" r="3" /><circle cx="6" cy="17" r="3" /><line x1="8.6" y1="8.6" x2="19" y2="19" /><line x1="8.6" y1="15.4" x2="19" y2="5" /></svg>
+                    </b-button>
+                    <b-button variant="white btn-icon" to="#">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="14 3 14 8 19 8" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><line x1="12" y1="11" x2="12" y2="17" /><line x1="9" y1="14" x2="15" y2="14" /></svg>
+                    </b-button>
+                    <b-button variant="white btn-icon" to="#">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="14 3 14 8 19 8" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><line x1="9" y1="14" x2="15" y2="14" /></svg>
+                    </b-button>
+                  </b-button-group>
+                </b-button-toolbar>
+                <!-- <div class="btn-group w-100">
                   <a href="#" class="btn btn-white btn-icon" aria-label="Button">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M7 5h6a3.5 3.5 0 0 1 0 7h-6z" /><path d="M13 12h1a3.5 3.5 0 0 1 0 7h-7v-7" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 5h6a3.5 3.5 0 0 1 0 7h-6z" /><path d="M13 12h1a3.5 3.5 0 0 1 0 7h-7v-7" /></svg>
                   </a>
                   <a href="#" class="btn btn-white btn-icon" aria-label="Button">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="11" y1="5" x2="17" y2="5" /><line x1="7" y1="19" x2="13" y2="19" /><line x1="14" y1="5" x2="10" y2="19" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="11" y1="5" x2="17" y2="5" /><line x1="7" y1="19" x2="13" y2="19" /><line x1="14" y1="5" x2="10" y2="19" /></svg>
                   </a>
                   <a href="#" class="btn btn-white btn-icon" aria-label="Button">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="6" y1="20" x2="18" y2="20" /><path d="M8 5v6a4 4 0 0 0 8 0v-6" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="6" y1="20" x2="18" y2="20" /><path d="M8 5v6a4 4 0 0 0 8 0v-6" /></svg>
                   </a>
                   <a href="#" class="btn btn-white btn-icon" aria-label="Button">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="8" y="8" width="12" height="12" rx="2" /><path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><rect x="8" y="8" width="12" height="12" rx="2" /><path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" /></svg>
                   </a>
                   <a href="#" class="btn btn-white btn-icon" aria-label="Button">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="6" cy="7" r="3" /><circle cx="6" cy="17" r="3" /><line x1="8.6" y1="8.6" x2="19" y2="19" /><line x1="8.6" y1="15.4" x2="19" y2="5" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="6" cy="7" r="3" /><circle cx="6" cy="17" r="3" /><line x1="8.6" y1="8.6" x2="19" y2="19" /><line x1="8.6" y1="15.4" x2="19" y2="5" /></svg>
                   </a>
                   <a href="#" class="btn btn-white btn-icon" aria-label="Button">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="14 3 14 8 19 8" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><line x1="12" y1="11" x2="12" y2="17" /><line x1="9" y1="14" x2="15" y2="14" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><line x1="12" y1="11" x2="12" y2="17" /><line x1="9" y1="14" x2="15" y2="14" /></svg>
                   </a>
                   <a href="#" class="btn btn-white btn-icon" aria-label="Button">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="14 3 14 8 19 8" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><line x1="9" y1="14" x2="15" y2="14" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><line x1="9" y1="14" x2="15" y2="14" /></svg>
                   </a>
-                </div>
+                </div> -->
               </div>
+
             </div>
           </div>
         </div>
@@ -803,29 +920,29 @@ value="Well, how'd you become king, then?" readonly>
               </div>
               <div class="mb-3">
                 <label class="form-label">Checkboxes with description</label>
-                <label class="form-check form-check-highlight mb-2">
+                <label class="form-check mb-2">
                   <input class="form-check-input" type="checkbox">
-                  <div class="form-check-label">
+                  <span class="form-check-label">
                     Default checkbox
-                  </div>
-                  <div class="form-check-description">
+                  </span>
+                  <span class="form-check-description">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  </div>
+                  </span>
                 </label>
-                <label class="form-check form-check-highlight mb-2">
+                <label class="form-check mb-2">
                   <input class="form-check-input" type="checkbox">
-                  <div class="form-check-label">
+                  <span class="form-check-label">
                     Longer checkbox item that wraps on to two separate lines
-                  </div>
-                  <div class="form-check-description">
+                  </span>
+                  <span class="form-check-description">
                     Ab alias aut, consequuntur cumque esse eveniet incidunt laborum minus molestiae.
-                  </div>
+                  </span>
                 </label>
-                <label class="form-check form-check-highlight">
+                <label class="form-check">
                   <input class="form-check-input" type="checkbox">
-                  <div class="form-check-label">
+                  <span class="form-check-label">
                     Default checkbox without description
-                  </div>
+                  </span>
                 </label>
               </div>
               <div class="mb-3">
@@ -851,18 +968,47 @@ value="Well, how'd you become king, then?" readonly>
                 </label>
               </div>
               <div class="mb-3">
-                <div class="form-label">Custom File Input</div>
-                <div class="form-file">
-                  <input type="file" class="form-file-input" id="customFile">
-                  <label class="form-file-label" for="customFile">
-                    <span class="form-file-text">Choose file...</span>
-                    <span class="form-file-button">Browse</span>
-                  </label>
+                <label class="form-label">Notification</label>
+                <div class="divide-y">
+                  <div>
+                    <label class="row">
+                      <span class="col">Push Notifications</span>
+                      <span class="col-auto">
+                        <label class="form-check form-check-single form-switch">
+                          <input class="form-check-input" type="checkbox" checked>
+                        </label>
+                      </span>
+                    </label>
+                  </div>
+                  <div>
+                    <label class="row">
+                      <span class="col">SMS Notifications</span>
+                      <span class="col-auto">
+                        <label class="form-check form-check-single form-switch">
+                          <input class="form-check-input" type="checkbox">
+                        </label>
+                      </span>
+                    </label>
+                  </div>
+                  <div>
+                    <label class="row">
+                      <span class="col">Email Notifications</span>
+                      <span class="col-auto">
+                        <label class="form-check form-check-single form-switch">
+                          <input class="form-check-input" type="checkbox" checked>
+                        </label>
+                      </span>
+                    </label>
+                  </div>
                 </div>
               </div>
               <div class="mb-3">
+                <div class="form-label">Custom File Input</div>
+                <input type="file" class="form-control" />
+              </div>
+              <div class="mb-3">
                 <label class="form-label">Date of birth</label>
-                <div class="row row-sm">
+                <div class="row g-2">
                   <div class="col-5">
                     <select name="user[month]" class="form-select">
                       <option value="">Month</option>
@@ -883,160 +1029,160 @@ value="Well, how'd you become king, then?" readonly>
                   <div class="col-3">
                     <select name="user[day]" class="form-select">
                       <option value="">Day</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12</option>
-                      <option value="13">13</option>
-                      <option value="14">14</option>
-                      <option value="15">15</option>
-                      <option value="16">16</option>
-                      <option value="17">17</option>
-                      <option value="18">18</option>
-                      <option value="19">19</option>
-                      <option value="20" selected>20</option>
-                      <option value="21">21</option>
-                      <option value="22">22</option>
-                      <option value="23">23</option>
-                      <option value="24">24</option>
-                      <option value="25">25</option>
-                      <option value="26">26</option>
-                      <option value="27">27</option>
-                      <option value="28">28</option>
-                      <option value="29">29</option>
-                      <option value="30">30</option>
-                      <option value="31">31</option>
+                      <option value="1" >1</option>
+                      <option value="2" >2</option>
+                      <option value="3" >3</option>
+                      <option value="4" >4</option>
+                      <option value="5" >5</option>
+                      <option value="6" >6</option>
+                      <option value="7" >7</option>
+                      <option value="8" >8</option>
+                      <option value="9" >9</option>
+                      <option value="10" >10</option>
+                      <option value="11" >11</option>
+                      <option value="12" >12</option>
+                      <option value="13" >13</option>
+                      <option value="14" >14</option>
+                      <option value="15" >15</option>
+                      <option value="16" >16</option>
+                      <option value="17" >17</option>
+                      <option value="18" >18</option>
+                      <option value="19" >19</option>
+                      <option value="20"  selected>20</option>
+                      <option value="21" >21</option>
+                      <option value="22" >22</option>
+                      <option value="23" >23</option>
+                      <option value="24" >24</option>
+                      <option value="25" >25</option>
+                      <option value="26" >26</option>
+                      <option value="27" >27</option>
+                      <option value="28" >28</option>
+                      <option value="29" >29</option>
+                      <option value="30" >30</option>
+                      <option value="31" >31</option>
                     </select>
                   </div>
                   <div class="col-4">
                     <select name="user[year]" class="form-select">
                       <option value="">Year</option>
-                      <option value="2014">2014</option>
-                      <option value="2013">2013</option>
-                      <option value="2012">2012</option>
-                      <option value="2011">2011</option>
-                      <option value="2010">2010</option>
-                      <option value="2009">2009</option>
-                      <option value="2008">2008</option>
-                      <option value="2007">2007</option>
-                      <option value="2006">2006</option>
-                      <option value="2005">2005</option>
-                      <option value="2004">2004</option>
-                      <option value="2003">2003</option>
-                      <option value="2002">2002</option>
-                      <option value="2001">2001</option>
-                      <option value="2000">2000</option>
-                      <option value="1999">1999</option>
-                      <option value="1998">1998</option>
-                      <option value="1997">1997</option>
-                      <option value="1996">1996</option>
-                      <option value="1995">1995</option>
-                      <option value="1994">1994</option>
-                      <option value="1993">1993</option>
-                      <option value="1992">1992</option>
-                      <option value="1991">1991</option>
-                      <option value="1990">1990</option>
-                      <option value="1989" selected>1989</option>
-                      <option value="1988">1988</option>
-                      <option value="1987">1987</option>
-                      <option value="1986">1986</option>
-                      <option value="1985">1985</option>
-                      <option value="1984">1984</option>
-                      <option value="1983">1983</option>
-                      <option value="1982">1982</option>
-                      <option value="1981">1981</option>
-                      <option value="1980">1980</option>
-                      <option value="1979">1979</option>
-                      <option value="1978">1978</option>
-                      <option value="1977">1977</option>
-                      <option value="1976">1976</option>
-                      <option value="1975">1975</option>
-                      <option value="1974">1974</option>
-                      <option value="1973">1973</option>
-                      <option value="1972">1972</option>
-                      <option value="1971">1971</option>
-                      <option value="1970">1970</option>
-                      <option value="1969">1969</option>
-                      <option value="1968">1968</option>
-                      <option value="1967">1967</option>
-                      <option value="1966">1966</option>
-                      <option value="1965">1965</option>
-                      <option value="1964">1964</option>
-                      <option value="1963">1963</option>
-                      <option value="1962">1962</option>
-                      <option value="1961">1961</option>
-                      <option value="1960">1960</option>
-                      <option value="1959">1959</option>
-                      <option value="1958">1958</option>
-                      <option value="1957">1957</option>
-                      <option value="1956">1956</option>
-                      <option value="1955">1955</option>
-                      <option value="1954">1954</option>
-                      <option value="1953">1953</option>
-                      <option value="1952">1952</option>
-                      <option value="1951">1951</option>
-                      <option value="1950">1950</option>
-                      <option value="1949">1949</option>
-                      <option value="1948">1948</option>
-                      <option value="1947">1947</option>
-                      <option value="1946">1946</option>
-                      <option value="1945">1945</option>
-                      <option value="1944">1944</option>
-                      <option value="1943">1943</option>
-                      <option value="1942">1942</option>
-                      <option value="1941">1941</option>
-                      <option value="1940">1940</option>
-                      <option value="1939">1939</option>
-                      <option value="1938">1938</option>
-                      <option value="1937">1937</option>
-                      <option value="1936">1936</option>
-                      <option value="1935">1935</option>
-                      <option value="1934">1934</option>
-                      <option value="1933">1933</option>
-                      <option value="1932">1932</option>
-                      <option value="1931">1931</option>
-                      <option value="1930">1930</option>
-                      <option value="1929">1929</option>
-                      <option value="1928">1928</option>
-                      <option value="1927">1927</option>
-                      <option value="1926">1926</option>
-                      <option value="1925">1925</option>
-                      <option value="1924">1924</option>
-                      <option value="1923">1923</option>
-                      <option value="1922">1922</option>
-                      <option value="1921">1921</option>
-                      <option value="1920">1920</option>
-                      <option value="1919">1919</option>
-                      <option value="1918">1918</option>
-                      <option value="1917">1917</option>
-                      <option value="1916">1916</option>
-                      <option value="1915">1915</option>
-                      <option value="1914">1914</option>
-                      <option value="1913">1913</option>
-                      <option value="1912">1912</option>
-                      <option value="1911">1911</option>
-                      <option value="1910">1910</option>
-                      <option value="1909">1909</option>
-                      <option value="1908">1908</option>
-                      <option value="1907">1907</option>
-                      <option value="1906">1906</option>
-                      <option value="1905">1905</option>
-                      <option value="1904">1904</option>
-                      <option value="1903">1903</option>
-                      <option value="1902">1902</option>
-                      <option value="1901">1901</option>
-                      <option value="1900">1900</option>
-                      <option value="1899">1899</option>
-                      <option value="1898">1898</option>
-                      <option value="1897">1897</option>
+                      <option value="2014" >2014</option>
+                      <option value="2013" >2013</option>
+                      <option value="2012" >2012</option>
+                      <option value="2011" >2011</option>
+                      <option value="2010" >2010</option>
+                      <option value="2009" >2009</option>
+                      <option value="2008" >2008</option>
+                      <option value="2007" >2007</option>
+                      <option value="2006" >2006</option>
+                      <option value="2005" >2005</option>
+                      <option value="2004" >2004</option>
+                      <option value="2003" >2003</option>
+                      <option value="2002" >2002</option>
+                      <option value="2001" >2001</option>
+                      <option value="2000" >2000</option>
+                      <option value="1999" >1999</option>
+                      <option value="1998" >1998</option>
+                      <option value="1997" >1997</option>
+                      <option value="1996" >1996</option>
+                      <option value="1995" >1995</option>
+                      <option value="1994" >1994</option>
+                      <option value="1993" >1993</option>
+                      <option value="1992" >1992</option>
+                      <option value="1991" >1991</option>
+                      <option value="1990" >1990</option>
+                      <option value="1989"  selected>1989</option>
+                      <option value="1988" >1988</option>
+                      <option value="1987" >1987</option>
+                      <option value="1986" >1986</option>
+                      <option value="1985" >1985</option>
+                      <option value="1984" >1984</option>
+                      <option value="1983" >1983</option>
+                      <option value="1982" >1982</option>
+                      <option value="1981" >1981</option>
+                      <option value="1980" >1980</option>
+                      <option value="1979" >1979</option>
+                      <option value="1978" >1978</option>
+                      <option value="1977" >1977</option>
+                      <option value="1976" >1976</option>
+                      <option value="1975" >1975</option>
+                      <option value="1974" >1974</option>
+                      <option value="1973" >1973</option>
+                      <option value="1972" >1972</option>
+                      <option value="1971" >1971</option>
+                      <option value="1970" >1970</option>
+                      <option value="1969" >1969</option>
+                      <option value="1968" >1968</option>
+                      <option value="1967" >1967</option>
+                      <option value="1966" >1966</option>
+                      <option value="1965" >1965</option>
+                      <option value="1964" >1964</option>
+                      <option value="1963" >1963</option>
+                      <option value="1962" >1962</option>
+                      <option value="1961" >1961</option>
+                      <option value="1960" >1960</option>
+                      <option value="1959" >1959</option>
+                      <option value="1958" >1958</option>
+                      <option value="1957" >1957</option>
+                      <option value="1956" >1956</option>
+                      <option value="1955" >1955</option>
+                      <option value="1954" >1954</option>
+                      <option value="1953" >1953</option>
+                      <option value="1952" >1952</option>
+                      <option value="1951" >1951</option>
+                      <option value="1950" >1950</option>
+                      <option value="1949" >1949</option>
+                      <option value="1948" >1948</option>
+                      <option value="1947" >1947</option>
+                      <option value="1946" >1946</option>
+                      <option value="1945" >1945</option>
+                      <option value="1944" >1944</option>
+                      <option value="1943" >1943</option>
+                      <option value="1942" >1942</option>
+                      <option value="1941" >1941</option>
+                      <option value="1940" >1940</option>
+                      <option value="1939" >1939</option>
+                      <option value="1938" >1938</option>
+                      <option value="1937" >1937</option>
+                      <option value="1936" >1936</option>
+                      <option value="1935" >1935</option>
+                      <option value="1934" >1934</option>
+                      <option value="1933" >1933</option>
+                      <option value="1932" >1932</option>
+                      <option value="1931" >1931</option>
+                      <option value="1930" >1930</option>
+                      <option value="1929" >1929</option>
+                      <option value="1928" >1928</option>
+                      <option value="1927" >1927</option>
+                      <option value="1926" >1926</option>
+                      <option value="1925" >1925</option>
+                      <option value="1924" >1924</option>
+                      <option value="1923" >1923</option>
+                      <option value="1922" >1922</option>
+                      <option value="1921" >1921</option>
+                      <option value="1920" >1920</option>
+                      <option value="1919" >1919</option>
+                      <option value="1918" >1918</option>
+                      <option value="1917" >1917</option>
+                      <option value="1916" >1916</option>
+                      <option value="1915" >1915</option>
+                      <option value="1914" >1914</option>
+                      <option value="1913" >1913</option>
+                      <option value="1912" >1912</option>
+                      <option value="1911" >1911</option>
+                      <option value="1910" >1910</option>
+                      <option value="1909" >1909</option>
+                      <option value="1908" >1908</option>
+                      <option value="1907" >1907</option>
+                      <option value="1906" >1906</option>
+                      <option value="1905" >1905</option>
+                      <option value="1904" >1904</option>
+                      <option value="1903" >1903</option>
+                      <option value="1902" >1902</option>
+                      <option value="1901" >1901</option>
+                      <option value="1900" >1900</option>
+                      <option value="1899" >1899</option>
+                      <option value="1898" >1898</option>
+                      <option value="1897" >1897</option>
                     </select>
                   </div>
                 </div>
@@ -1051,7 +1197,7 @@ value="Well, how'd you become king, then?" readonly>
               </div>
               <div class="mb-3">
                 <label class="form-label">Autosize textarea</label>
-                <textarea class="form-control" data-toggle="autosize" placeholder="Typing something…"></textarea>
+                <textarea class="form-control" data-toggle="autosize" placeholder="Type something…"></textarea>
               </div>
             </div>
             <div class="col-md-6 col-xl-12">
@@ -1083,7 +1229,7 @@ value="Well, how'd you become king, then?" readonly>
                 <input id="calendar-simple" type="date" value="2020-06-20" class="form-control mb-2" placeholder="Select a date" />
                 <div class="input-icon">
                   <input id="calendar-time" type="date" value="2020-06-20" class="form-control" placeholder="Select a date" />
-                  <span class="input-icon-addon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="4" y="5" width="16" height="16" rx="2" /><line x1="16" y1="3" x2="16" y2="7" /><line x1="8" y1="3" x2="8" y2="7" /><line x1="4" y1="11" x2="20" y2="11" /><line x1="11" y1="15" x2="12" y2="15" /><line x1="12" y1="15" x2="12" y2="18" /></svg>
+                  <span class="input-icon-addon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><rect x="4" y="5" width="16" height="16" rx="2" /><line x1="16" y1="3" x2="16" y2="7" /><line x1="8" y1="3" x2="8" y2="7" /><line x1="4" y1="11" x2="20" y2="11" /><line x1="11" y1="15" x2="12" y2="15" /><line x1="12" y1="15" x2="12" y2="18" /></svg>
                   </span>
                 </div>
               </div>
@@ -1095,7 +1241,7 @@ value="Well, how'd you become king, then?" readonly>
                 <label class="form-label">Progress</label>
                 <div class="progress mb-2">
                   <div class="progress-bar" style="width: 38%" role="progressbar" aria-valuenow="38" aria-valuemin="0" aria-valuemax="100">
-                    <span class="sr-only">38% Complete</span>
+                    <span class="visually-hidden">38% Complete</span>
                   </div>
                 </div>
                 <div class="progress">
@@ -1104,15 +1250,19 @@ value="Well, how'd you become king, then?" readonly>
               </div>
               <div class="mb-3">
                 <label class="form-label">Form buttons</label>
-                <div class="btn-list">
-                  <a href="#" class="btn btn-white btn-block">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="icon text-github" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-                    Login with Github
-                  </a>
-                  <a href="#" class="btn btn-white btn-block">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="icon text-twitter" fill="currentColor"><path d="M23.954 4.569a10 10 0 0 1-2.825.775 4.958 4.958 0 0 0 2.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 0 0-8.384 4.482C7.691 8.094 4.066 6.13 1.64 3.161a4.822 4.822 0 0 0-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 0 1-2.228-.616v.061a4.923 4.923 0 0 0 3.946 4.827 4.996 4.996 0 0 1-2.212.085 4.937 4.937 0 0 0 4.604 3.417 9.868 9.868 0 0 1-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 0 0 7.557 2.209c9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63a9.936 9.936 0 0 0 2.46-2.548l-.047-.02z"/></svg>
-                    Login with Twitter
-                  </a>
+                <div class="row">
+                  <div class="col">
+                    <a href="#" class="btn btn-white w-100">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon text-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg>
+                      Login with Github
+                    </a>
+                  </div>
+                  <div class="col">
+                    <a href="#" class="btn btn-white w-100">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon text-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" /></svg>
+                      Login with Twitter
+                    </a>
+                  </div>
                 </div>
               </div>
               <div class="mb-3">
@@ -1151,26 +1301,26 @@ value="Well, how'd you become king, then?" readonly>
               <div class="mb-3">
                 <label class="form-label">Select with avatars</label>
                 <select name="people" id="select-people" class="form-select">
-                  <option value="1" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\" style=\"background-image: url(../static/avatars/000m.jpg)\"></span>"}'>Paweł Kuna</option>
-                <option value="2" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\">JL</span>"}'>Jeffie Lewzey</option>
-              <option value="3" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\" style=\"background-image: url(../static/avatars/002m.jpg)\"></span>"}'>Mallory Hulme</option>
-            <option value="4" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\" style=\"background-image: url(../static/avatars/003m.jpg)\"></span>"}' selected>Dunn Slane</option>
-          <option value="5" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\" style=\"background-image: url(../static/avatars/000f.jpg)\"></span>"}'>Emmy Levet</option>
-        <option value="6" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\" style=\"background-image: url(../static/avatars/001f.jpg)\"></span>"}'>Maryjo Lebarree</option>
-      <option value="7" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\">EP</span>"}'>Egan Poetz</option>
-    <option value="8" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\" style=\"background-image: url(../static/avatars/002f.jpg)\"></span>"}'>Kellie Skingley</option>
-  <option value="9" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\" style=\"background-image: url(../static/avatars/003f.jpg)\"></span>"}'>Christabel Charlwood</option>
-<option value="10" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\">HS</span>"}'>Haskel Shelper</option>
-<option value="11" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\" style=\"background-image: url(../static/avatars/006m.jpg)\"></span>"}'>Lorry Mion</option>
-<option value="12" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\" style=\"background-image: url(../static/avatars/004f.jpg)\"></span>"}'>Leesa Beaty</option>
-<option value="13" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\" style=\"background-image: url(../static/avatars/007m.jpg)\"></span>"}'>Perren Keemar</option>
-<option value="14" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\">SA</span>"}'>Sunny Airey</option>
-<option value="15" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\" style=\"background-image: url(../static/avatars/009m.jpg)\"></span>"}'>Geoffry Flaunders</option>
-<option value="16" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\" style=\"background-image: url(../static/avatars/010m.jpg)\"></span>"}'>Thatcher Keel</option>
-<option value="17" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\" style=\"background-image: url(../static/avatars/005f.jpg)\"></span>"}'>Dyann Escala</option>
-<option value="18" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\" style=\"background-image: url(../static/avatars/006f.jpg)\"></span>"}'>Avivah Mugleston</option>
-<option value="19" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\">AA</span>"}'>Arlie Armstead</option>
-<option value="20" data-data='{"avatar": "<span class=\"avatar avatar-sm rounded mr-2 ml-n1\" style=\"background-image: url(../static/avatars/008f.jpg)\"></span>"}'>Tessie Curzon</option>
+                  <option value="1" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\" style=\"background-image: url(../static/avatars/000m.jpg)\"></span>"}'>Paweł Kuna</option>
+                <option value="2" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\">JL</span>"}'>Jeffie Lewzey</option>
+              <option value="3" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\" style=\"background-image: url(../static/avatars/002m.jpg)\"></span>"}'>Mallory Hulme</option>
+            <option value="4" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\" style=\"background-image: url(../static/avatars/003m.jpg)\"></span>"}' selected>Dunn Slane</option>
+          <option value="5" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\" style=\"background-image: url(../static/avatars/000f.jpg)\"></span>"}'>Emmy Levet</option>
+        <option value="6" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\" style=\"background-image: url(../static/avatars/001f.jpg)\"></span>"}'>Maryjo Lebarree</option>
+      <option value="7" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\">EP</span>"}'>Egan Poetz</option>
+    <option value="8" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\" style=\"background-image: url(../static/avatars/002f.jpg)\"></span>"}'>Kellie Skingley</option>
+  <option value="9" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\" style=\"background-image: url(../static/avatars/003f.jpg)\"></span>"}'>Christabel Charlwood</option>
+<option value="10" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\">HS</span>"}'>Haskel Shelper</option>
+<option value="11" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\" style=\"background-image: url(../static/avatars/006m.jpg)\"></span>"}'>Lorry Mion</option>
+<option value="12" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\" style=\"background-image: url(../static/avatars/004f.jpg)\"></span>"}'>Leesa Beaty</option>
+<option value="13" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\" style=\"background-image: url(../static/avatars/007m.jpg)\"></span>"}'>Perren Keemar</option>
+<option value="14" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\">SA</span>"}'>Sunny Airey</option>
+<option value="15" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\" style=\"background-image: url(../static/avatars/009m.jpg)\"></span>"}'>Geoffry Flaunders</option>
+<option value="16" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\" style=\"background-image: url(../static/avatars/010m.jpg)\"></span>"}'>Thatcher Keel</option>
+<option value="17" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\" style=\"background-image: url(../static/avatars/005f.jpg)\"></span>"}'>Dyann Escala</option>
+<option value="18" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\" style=\"background-image: url(../static/avatars/006f.jpg)\"></span>"}'>Avivah Mugleston</option>
+<option value="19" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\">AA</span>"}'>Arlie Armstead</option>
+<option value="20" data-data='{"avatar": "<span class=\"avatar avatar-xs rounded mr-2\" style=\"background-image: url(../static/avatars/008f.jpg)\"></span>"}'>Tessie Curzon</option>
 </select>
 </div>
 <div class="mb-3">
@@ -1321,7 +1471,119 @@ value="Well, how'd you become king, then?" readonly>
 </template>
 
 <script>
+
+import { BButton, BButtonGroup, BButtonToolbar } from 'bootstrap-vue'
+
+import jQuery from 'jquery'
+window.jQuery = window.$ = jQuery
+
+require('selectize/dist/js/standalone/selectize.min.js')
+require('selectize/dist/css/selectize.default.css')
+
+import flatpickr from 'flatpickr'
+require('flatpickr/dist/plugins/rangePlugin.js')
+require('flatpickr/dist/flatpickr.min.css')
+
+import noUiSlider from 'nouislider'
+require('nouislider/distribute/nouislider.min.css')
+
 export default {
-  name: 'PageEmpty'
+  name: 'PageEmpty',
+
+  components: { BButton, BButtonGroup, BButtonToolbar },
+
+  mounted: function () {
+    noUiSlider.create(document.getElementById('range-simple'), {
+      start: 20,
+      connect: [true, false],
+      step: 10,
+      range: {
+        min: 0,
+        max: 100
+      }
+    })
+
+    noUiSlider.create(document.getElementById('range-connect'), {
+      start: [60, 90],
+      connect: [false, true, false],
+      step: 10,
+      range: {
+        min: 0,
+        max: 100
+      }
+    })
+
+    noUiSlider.create(document.getElementById('range-color'), {
+      start: 40,
+      connect: [true, false],
+      step: 10,
+      range: {
+        min: 0,
+        max: 100
+      }
+    })
+
+    flatpickr(document.getElementById('calendar-simple'), {})
+
+    flatpickr(document.getElementById('calendar-time'), {})
+
+    flatpickr(document.getElementById('calendar-inline'), {
+      inline: true,
+    })
+
+    window.$('#select-tags').selectize({
+      maxItems: 15,
+    })
+
+    window.$('#select-tags-advanced').selectize({
+      maxItems: 15,
+      plugins: ['remove_button'],
+    })
+
+    window.$('#select-people').selectize({
+      render: {
+        option: function (data, escape) {
+          return '<div class="option">' + data.avatar + '' + escape(data.text) + '</div>'
+        },
+        item: function (data, escape) {
+          return '<div class="d-flex align-items-center">' + data.avatar + '' + escape(data.text) + '</div>'
+        }
+      }
+    })
+
+    window.$('#select-countries').selectize({
+      render: {
+        option: function (data, escape) {
+          return '<div class="option"><span class="flag flag-country-' + data.flag + ' mr-2"></span>' + escape(data.text) + '</div>'
+        },
+        item: function (data, escape) {
+          return '<div class="d-flex align-items-center"><span class="flag flag-country-' + data.flag + ' mr-2"></span>' + escape(data.text) + '</div>'
+        }
+      }
+    })
+
+    window.$('#select-states').selectize({
+      render: {
+        option: function (data, escape) {
+          return '<div class="option"><span class="flag flag-country-' + data.flag + ' mr-2"></span>' + escape(data.text) + '</div>'
+        },
+        item: function (data, escape) {
+          return '<div class="d-flex align-items-center"><span class="flag flag-country-' + data.flag + ' mr-2"></span>' + escape(data.text) + '</div>'
+        }
+      }
+    })
+
+    let sliderTriggerList = [].slice.call(document.querySelectorAll('[data-slider]'))
+    sliderTriggerList.map(function (sliderTriggerEl) {
+      let options = {}
+      if (sliderTriggerEl.getAttribute('data-slider')) {
+        options = JSON.parse(sliderTriggerEl.getAttribute('data-slider'))
+      }
+      let slider = noUiSlider.create(sliderTriggerEl, options)
+      if (options['js-name']) {
+        window[options['js-name']] = slider
+      }
+    })
+  }
 }
 </script>

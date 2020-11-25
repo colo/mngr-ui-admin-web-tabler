@@ -18,6 +18,12 @@ export function SET_FLUID (state, { fluid }) {
   state.fluid = fluid
 }
 
+export function SET_STICKY (state, { sticky }) {
+  // localStorage['tabler-fluid'] = fluid
+  LocalStorage.set('tabler-sticky', sticky)
+  state.sticky = sticky
+}
+
 export function SET_VERTICAL_LAYOUT (state, { VerticalLayout }) {
   // localStorage['tabler-vertical'] = VerticalLayout
   LocalStorage.set('tabler-vertical', VerticalLayout)

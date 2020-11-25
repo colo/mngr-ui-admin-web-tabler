@@ -41,9 +41,10 @@
       </div>
     </div>
 
-    <b-modal centered modal-class="modal-blur" id="modal-simple" tabindex="-1" role="dialog" aria-hidden="true">
-      <template v-slot:modal-title>
+    <b-modal centered modal-class="modal-blur" id="modal-simple" tabindex="-1" role="dialog" aria-hidden="true" hide-header-close>
+      <template v-slot:modal-title="{ close }">
         Modal title
+        <b-button variant="white" class="btn-close" data-dismiss="modal" aria-label="Close" @click="close()"></b-button>
       </template>
       <template v-slot:default>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci animi beatae delectus deleniti dolorem eveniet facere fuga iste nemo nesciunt nihil odio perspiciatis, quia quis reprehenderit sit tempora totam unde.
@@ -55,7 +56,11 @@
 
     </b-modal>
 
-    <b-modal centered  size="lg" title="Modal title" modal-class="modal-blur" id="modal-large" tabindex="-1" role="dialog" aria-hidden="true">
+    <b-modal centered  size="lg" modal-class="modal-blur" id="modal-large" tabindex="-1" role="dialog" aria-hidden="true" hide-header-close>
+      <template v-slot:modal-title="{ close }">
+        Large modal
+        <b-button variant="white" class="btn-close" data-dismiss="modal" aria-label="Close" @click="close()"></b-button>
+      </template>
       <template v-slot:default>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci animi beatae delectus deleniti dolorem eveniet facere fuga iste nemo nesciunt nihil odio perspiciatis, quia quis reprehenderit sit tempora totam unde.
       </template>
@@ -66,19 +71,23 @@
 
     </b-modal>
 
-    <b-modal centered  size="sm" title="Modal title" modal-class="modal-blur" id="modal-small" tabindex="-1" role="dialog" aria-hidden="true">
+    <b-modal centered  size="sm" title="Modal title" modal-class="modal-blur" id="modal-small" tabindex="-1" role="dialog" aria-hidden="true" hide-header>
       <template v-slot:default>
         <div class="modal-title">Are you sure?</div>
         <div>If you proceed, you will lose all your personal data.</div>
       </template>
       <template v-slot:modal-footer="{ close }">
-        <b-button variant="link-secondary" class="mr-auto" @click="close()">Cancel</b-button>
+        <b-button variant="link secondary" class="mr-auto" @click="close()">Cancel</b-button>
         <b-button variant="danger" @click="close()">Yes, delete all my data</b-button>
       </template>
 
     </b-modal>
 
-    <b-modal centered  title="Full width modal" modal-class="modal-blur" id="modal-full-width" tabindex="-1" role="dialog" aria-hidden="true" dialog-class="modal-full-width">
+    <b-modal centered  modal-class="modal-blur" id="modal-full-width" tabindex="-1" role="dialog" aria-hidden="true" dialog-class="modal-full-width" hide-header-close>
+      <template v-slot:modal-title="{ close }">
+        Full width modal
+        <b-button variant="white" class="btn-close" data-dismiss="modal" aria-label="Close" @click="close()"></b-button>
+      </template>
       <template v-slot:default>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci animi beatae delectus deleniti dolorem eveniet facere fuga iste nemo nesciunt nihil odio perspiciatis, quia quis reprehenderit sit tempora totam unde.
       </template>
@@ -89,7 +98,11 @@
 
     </b-modal>
 
-    <b-modal centered  title="Scrollable modal" modal-class="modal-blur" id="modal-scrollable" tabindex="-1" role="dialog" aria-hidden="true" dialog-class="modal-dialog-scrollable">
+    <b-modal centered  modal-class="modal-blur" id="modal-scrollable" tabindex="-1" role="dialog" aria-hidden="true" dialog-class="modal-dialog-scrollable" hide-header-close>
+      <template v-slot:modal-title="{ close }">
+        Scrollable modal
+        <b-button variant="white" class="btn-close" data-dismiss="modal" aria-label="Close" @click="close()"></b-button>
+      </template>
       <template v-slot:default>
         <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas
           eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
@@ -135,7 +148,11 @@
 
     </b-modal>
 
-    <b-modal centered  size="lg" title="New report" modal-class="modal-blur" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
+    <b-modal centered  size="lg" modal-class="modal-blur" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true" hide-header-close>
+      <template v-slot:modal-title="{ close }">
+        New report
+        <b-button variant="white" class="btn-close" data-dismiss="modal" aria-label="Close" @click="close()"></b-button>
+      </template>
       <template v-slot:default>
         <!-- <div class="modal-body"> -->
           <div class="mb-3">
@@ -221,7 +238,7 @@
         <!-- </div> -->
       </template>
       <template v-slot:modal-footer="{ close }">
-        <b-button variant="link-secondary" @click="close()">Cancel</b-button>
+        <b-button variant="link secondary" @click="close()">Cancel</b-button>
         <b-button variant="primary" class="ml-auto" @click="close()">
           <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
           Create new report
@@ -237,10 +254,10 @@
         <div class="text-muted">Your payment of $290 has been successfully submitted. Your invoice has been sent to support@tabler.io.</div>
       </template>
       <template v-slot:modal-footer="{ close }">
-        <b-button block variant="primary" @click="close()">
+        <b-button block variant="primary w-100" @click="close()">
           View invoice
         </b-button>
-        <b-button block variant="white" @click="close()">
+        <b-button block variant="white w-100" @click="close()">
           Go to dashboard
         </b-button>
 
@@ -248,7 +265,11 @@
 
     </b-modal>
 
-    <b-modal title="Add a new team" centered  modal-class="modal-blur" id="modal-team" tabindex="-1" role="dialog" aria-hidden="true">
+    <b-modal centered  modal-class="modal-blur" id="modal-team" tabindex="-1" role="dialog" aria-hidden="true" hide-header-close>
+      <template v-slot:modal-title="{ close }">
+        Add a new team
+        <b-button variant="white" class="btn-close" data-dismiss="modal" aria-label="Close" @click="close()"></b-button>
+      </template>
       <template v-slot:default>
         <div class="row mb-3 align-items-end">
           <div class="col-auto">

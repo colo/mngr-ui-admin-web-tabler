@@ -9,6 +9,10 @@ export function setFluid ({ commit }, { fluid }) {
   commit('SET_FLUID', { fluid: fluid })
 }
 
+export function setSticky ({ commit }, { sticky }) {
+  commit('SET_STICKY', { sticky: sticky })
+}
+
 export function setVerticalLayout ({ commit }, { VerticalLayout }) {
   commit('SET_VERTICAL_LAYOUT', { VerticalLayout: VerticalLayout })
 }

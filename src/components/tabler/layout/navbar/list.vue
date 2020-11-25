@@ -2,7 +2,7 @@
   <b-navbar-nav >
     <!-- for vertical class="pt-lg-3" -->
     <template v-for="(item, index) in list">
-      <b-nav-item v-if="!item.list || item.list.length === 0" :to="item.to" :key="index" :class="( processActive(item) === true ) ? 'active' : ''">
+      <b-nav-item v-if="(!item.list || item.list.length === 0) && (!item.columns || item.columns.length === 0)" :to="item.to" :key="index" :class="( processActive(item) === true ) ? 'active' : ''">
           <span v-if="item.icon" class="nav-link-icon d-md-none d-lg-inline-block" v-html="item.icon"></span>
           <span class="nav-link-title">
             {{item.label}}
@@ -10,135 +10,88 @@
       </b-nav-item>
 
       <!-- Dropdown -->
-      <b-nav-item-dropdown v-else :menu-class="(item.columns) ? 'dropdown-menu-columns dropdown-menu-columns-'+item.columns : ''" :key="index" :class="( processActive(item) === true ) ? 'active' : ''">
+      <!-- :menu-class="(item.columns) ? 'dropdown-menu-columns dropdown-menu-columns-'+item.columns : ''" -->
+      <b-nav-item-dropdown v-else :key="index" :class="( processActive(item) === true ) ? 'active' : ''">
         <template v-slot:button-content>
           <span v-if="item.icon" class="nav-link-icon d-md-none d-lg-inline-block" v-html="item.icon"></span>
           {{item.label}}
         </template>
-        <b-dropdown-item v-for="(subitem, subindex) in item.list" :to="subitem.to" :key="index+'.'+subindex" exact exact-active-class="active">
+        <slot v-if="item.columns">
+          <div class="dropdown-menu-columns">
+            <div class="dropdown-menu-column" v-for="(column, column_index) in processColumns(item)" :key="index+'.'+column_index">
+              <template v-for="(column_item, column_item_index) in column">
+
+                <div class="dropright" v-if="column_item.list && column_item.list.length > 0" :key="index+'.'+column_index+'.'+column_item_index">
+                  <b-nav-item-dropdown :ref="index+'.'+column_index+'.'+column_item_index+'.nested'" id="dropdown-nested" toggle-class="dropdown-item">
+                    <template v-slot:button-content>
+                      <span v-if="column_item.icon" class="nav-link-icon d-md-none d-lg-inline-block" v-html="column_item.icon"></span>
+                      {{column_item.label}}
+                    </template>
+                    <b-dropdown-item v-for="(column_item_nested, column_item_nested_index) in column_item.list" :to="column_item_nested.to" :key="index+'.'+column_index+'.'+column_item_index + '.' +column_item_nested_index" exact exact-active-class="active">
+                      <span v-if="column_item_nested.icon" class="nav-link-icon d-md-none d-lg-inline-block" v-html="column_item_nested.icon"></span>
+                      {{column_item_nested.label}}
+                    </b-dropdown-item>
+                  </b-nav-item-dropdown>
+                </div>
+
+                <b-dropdown-item v-else :to="column_item.to" exact exact-active-class="active" :key="index+'.'+column_index+'.'+column_item_index">
+                  <span v-if="column_item.icon" class="nav-link-icon d-md-none d-lg-inline-block" v-html="column_item.icon"></span>
+                  {{column_item.label}}
+                </b-dropdown-item>
+
+              </template>
+              <!-- <b-dropdown-item v-for="(column_item, column_item_index) in column" :to="column_item.to" :key="index+'.'+column_index+'.'+column_item_index" exact exact-active-class="active">
+
+                <div class="dropright" v-if="column_item.list && column_item.list.length > 0">
+                  <b-nav-item-dropdown id="dropdown-nested" >
+                    <template v-slot:button-content>
+                      <span v-if="column_item.icon" class="nav-link-icon d-md-none d-lg-inline-block" v-html="column_item.icon"></span>
+                      {{column_item.label}}
+                    </template>
+                    <b-dropdown-item v-for="(column_item_nested, column_item_nested_index) in column_item.list" :to="column_item_nested.to" :key="index+'.'+column_index+'.'+column_item_index + '.' +column_item_nested_index" exact exact-active-class="active">
+                      <span v-if="column_item_nested.icon" class="nav-link-icon d-md-none d-lg-inline-block" v-html="column_item_nested.icon"></span>
+                      {{column_item_nested.label}}
+                    </b-dropdown-item>
+                  </b-nav-item-dropdown>
+                </div>
+
+                <template v-else>
+                  <span v-if="column_item.icon" class="nav-link-icon d-md-none d-lg-inline-block" v-html="column_item.icon"></span>
+                  {{column_item.label}}
+                </template>
+              </b-dropdown-item> -->
+            </div>
+
+          </div>
+        </slot>
+        <!-- No columns -->
+        <b-dropdown-item v-else v-for="(subitem, subindex) in item.list" :to="subitem.to" :key="index+'.'+subindex" exact exact-active-class="active">
           <span v-if="subitem.icon" class="nav-link-icon d-md-none d-lg-inline-block" v-html="subitem.icon"></span>
           {{subitem.label}}
         </b-dropdown-item>
       </b-nav-item-dropdown>
     </template>
-    <!-- <b-nav-item :to="{name: 'index'}">
-        <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
-        </span>
-        <span class="nav-link-title">
-          Home
-        </span>
-    </b-nav-item> -->
-
-    <!-- <b-nav-item-dropdown menu-class="dropdown-menu-columns dropdown-menu-columns-2">
-      <template v-slot:button-content>
-          <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="12 3 20 7.5 20 16.5 12 21 4 16.5 4 7.5 12 3" /><line x1="12" y1="12" x2="20" y2="7.5" /><line x1="12" y1="12" x2="12" y2="21" /><line x1="12" y1="12" x2="4" y2="7.5" /><line x1="16" y1="5.25" x2="8" y2="9.75" /></svg>
-          </span>
-            User Interface
-      </template>
-      <b-dropdown-item :to="{name: 'empty'}">
-          Empty page
-      </b-dropdown-item>
-      <b-dropdown-item :to="{name: 'blank'}">
-          Blank page
-      </b-dropdown-item>
-      <b-dropdown-item :to="{name: 'buttons'}">
-          Buttons
-      </b-dropdown-item>
-      <b-dropdown-item :to="{name: 'cards'}">
-          Cards
-      </b-dropdown-item>
-      <b-dropdown-item :to="{name: 'dropdowns'}">
-          Dropdowns
-      </b-dropdown-item>
-      <b-dropdown-item :to="{name: 'icons'}">
-          Icons
-      </b-dropdown-item>
-      <b-dropdown-item :to="{name: 'modals'}">
-          Modals
-      </b-dropdown-item>
-      <b-dropdown-item :to="{name: 'tables'}">
-          Tables
-      </b-dropdown-item>
-      <b-dropdown-item :to="{name: 'calendar'}">
-          Calendar
-      </b-dropdown-item>
-      <b-dropdown-item :to="{name: 'carousel'}">
-          Carousel
-      </b-dropdown-item>
-      <b-dropdown-item :to="{name: 'lists'}">
-          Lists
-      </b-dropdown-item>
-    </b-nav-item-dropdown> -->
-
-    <!-- <b-nav-item :to="{name: 'form-elements'}">
-      <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="9 11 12 14 20 6" /><path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" /></svg>
-      </span>
-      <span class="nav-link-title">
-        Form elements
-      </span>
-    </b-nav-item> -->
-
-    <!-- <b-nav-item-dropdown>
-      <template v-slot:button-content>
-        <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M12 17.75l-6.172 3.245 1.179-6.873-4.993-4.867 6.9-1.002L12 2l3.086 6.253 6.9 1.002-4.993 4.867 1.179 6.873z" /></svg>
-        </span>
-          Extra
-      </template>
-      <b-dropdown-item :to="{name: 'invoice'}">
-          Invoice
-      </b-dropdown-item>
-
-      <b-dropdown-item :to="{name: 'blog'}">
-          Blog cards
-      </b-dropdown-item>
-
-      <b-dropdown-item :to="{name: 'snippets'}">
-          Snippets
-      </b-dropdown-item>
-
-      <b-dropdown-item :to="{name: 'search'}">
-          Search results
-      </b-dropdown-item>
-
-      <b-dropdown-item :to="{name: 'pricing'}">
-          Pricing cards
-      </b-dropdown-item>
-
-      <b-dropdown-item :to="{name: 'users'}">
-          Users
-      </b-dropdown-item>
-
-      <b-dropdown-item :to="{name: 'gallery'}">
-          Gallery
-      </b-dropdown-item>
-
-      <b-dropdown-item :to="{name: 'profile'}">
-          Profile
-      </b-dropdown-item>
-
-      <b-dropdown-item :to="{name: 'music'}">
-          Music
-      </b-dropdown-item>
-
-      <b-dropdown-item :to="{name: 'welcome'}">
-          Welcome
-      </b-dropdown-item>
-    </b-nav-item-dropdown> -->
 
   </b-navbar-nav>
 
 </template>
 
 <script>
+/**
+* nested menus from:
+* https://stackoverflow.com/questions/63357651/bootstrap-vue-multi-level-drop-down
+* https://jsfiddle.net/kKaczynski/hk0c4my9/24/
+**/
+
 import * as Debug from 'debug'
 const debug = Debug('components:layout:navbar:list')
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
-import { BNavbarNav, BNavItem, BNavItemDropdown, BDropdownItem } from 'bootstrap-vue'
+import { BDropdown, BNavbarNav, BNavItem, BNavItemDropdown, BDropdownItem } from 'bootstrap-vue'
 
 export default {
   name: 'NavBarList',
-  components: { BNavbarNav, BNavItem, BNavItemDropdown, BDropdownItem },
+  components: { BDropdown, BNavbarNav, BNavItem, BNavItemDropdown, BDropdownItem },
   props: {
     list: {
       type: [Array],
@@ -147,15 +100,91 @@ export default {
       }
     }
   },
+  data () {
+    return {
+      isDropdownNestedVisible: false
+    }
+  },
+  // computed: {
+  //
+  // },
+  // updated: function () {
+  //   debug('updated', this.$refs)
+  //
+  //   /**
+  //   * remove 'nav-link' from menus with nested sub-menus
+  //   **/
+  //   for (let key in this.$refs) {
+  //     if (/^.*\.nested$/.test(key)) {
+  //       // let ref = this.$refs[key]
+  //       this.$refs[key][0].$children[0].$el.classList.remove('nav-link')
+  //       debug('updated', key, this.$refs[key][0].$children[0].$el.classList.value)
+  //     }
+  //   }
+  // },
+  mounted: function () {
+    debug('mounted', this.$refs)
+
+    /**
+    * remove 'nav-link' from menus with nested sub-menus
+    **/
+    for (let key in this.$refs) {
+      if (/^.*\.nested$/.test(key)) {
+        // let ref = this.$refs[key]
+        this.$refs[key][0].$children[0].$el.classList.remove('nav-link')
+        debug('mounted', key, this.$refs[key][0].$children[0].$el.classList.value)
+      }
+    }
+
+    this.$root.$on('bv::dropdown::show', bvEvent => {
+      if (bvEvent.componentId === 'dropdown-nested') {
+        this.isDropdownNestedVisible = true
+      }
+    })
+    this.$root.$on('bv::dropdown::hide', bvEvent => {
+      if (bvEvent.componentId === 'dropdown-nested') {
+        this.isDropdownNestedVisible = false
+      }
+      if (this.isDropdownNestedVisible) {
+        bvEvent.preventDefault()
+      }
+    })
+  },
   methods: {
+    processColumns: function (item) {
+      let columns = []
+      if (isNaN(item.columns)) {
+        columns = item.columns
+      } else {
+        let length = Math.ceil(item.list.length / item.columns)
+        debug('processColumns length ', length)
+        let column = 0
+        for (let i = 0; i < item.list.length; i++) {
+          let item_list = item.list[i]
+
+          if (columns[column] && columns[column].length === length) {
+            column++
+          }
+
+          if (!columns[column] || !Array.isArray(columns[column])) columns[column] = []
+
+          columns[column].push(item_list)
+        }
+      }
+
+      debug('processColumns', item, columns)
+      return columns
+    },
     processActive: function (item) {
       debug('processActive', item, this.$route)
-      if (item && item.list && item.list.length > 0) {
+      let list = item.list || (item.columns && item.columns.reduce(function (list, item) { if (!list || !Array.isArray(list)) list = []; list.concat(item); return list }))
+      debug('processActive', list)
+      if (item && list && list.length > 0) {
         let active = false
-        for (let i = 0; i < item.list.length; i++) {
-          let _item = item.list[i]
+        for (let i = 0; i < list.length; i++) {
+          let _item = list[i]
           active = this.processActive(_item)
-          if (active === true) { i = item.list.length }
+          if (active === true) { i = list.length }
         }
 
         return active

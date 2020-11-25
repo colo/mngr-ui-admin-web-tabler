@@ -1,19 +1,8 @@
 <template>
-  <!-- <div class="card">
-    <div class="card-body text-center">
-      <div class="mb-3">
-        <span class="avatar avatar-xl" style="background-image: url(./static/avatars/010m.jpg)"></span>
-      </div>
-      <div class="card-title mb-1">Thatcher Keel</div>
-      <div class="text-muted">VP Sales</div>
-    </div>
-    <a href="#" class="card-btn">View full profile</a>
-  </div> -->
-
   <b-card body-class="text-center" footer-class="text-center card-btn" :footer-border-variant="(dark) ? 'dark' : 'white'">
     <div class="mb-3">
-      <span v-if="processedAvatar" class="avatar avatar-xl" :style="processedAvatar"></span>
-      <span v-else class="avatar avatar-xl">{{processedName}}</span>
+      <span v-if="processedAvatar" class="avatar avatar-xl avatar-rounded" :style="processedAvatar"></span>
+      <span v-else class="avatar avatar-xl avatar-rounded">{{processedName}}</span>
     </div>
     <div class="card-title mb-1">{{name}}</div>
     <div class="text-muted">{{title}}</div>

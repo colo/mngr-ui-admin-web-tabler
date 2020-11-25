@@ -138,11 +138,11 @@
               </div>
             </div>
           </div>
-          <div class="row align-items-center">
+          <div class="row align-items-center mt">
             <div class="col-3">
               <div class="progress">
                 <div class="progress-bar" style="width: 25%" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                  <span class="sr-only">25% Complete</span>
+                  <span class="visually-hidden">25% Complete</span>
                 </div>
               </div>
             </div>

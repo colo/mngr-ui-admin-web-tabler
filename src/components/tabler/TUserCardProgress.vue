@@ -1,11 +1,11 @@
 <template>
   <b-card>
     <!-- <div class="row row-sm align-items-center"> -->
-    <b-row align-h="center">
+    <b-row  align-v="center" class="g-2">
       <!-- <div class="col-auto"> -->
       <b-col class="col-auto">
-        <span v-if="processedAvatar" class="avatar avatar-md" :style="processedAvatar"></span>
-        <span v-else class="avatar avatar-md">{{processedName}}</span>
+        <span v-if="processedAvatar" class="avatar" :style="processedAvatar"></span>
+        <span v-else class="avatar">{{processedName}}</span>
       <!-- </div> -->
       </b-col>
       <b-col>
@@ -22,7 +22,7 @@
     </b-row>
 
     <!-- <div class="row align-items-center mt-4"> -->
-    <b-row align-h="center" align-v="center" class="mt-4">
+    <b-row  align-v="center" class="mt-4">
       <b-col>
         <div>
           <div class="d-flex mb-1 align-items-center lh-1">

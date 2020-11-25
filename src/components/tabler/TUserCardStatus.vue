@@ -58,7 +58,7 @@
         </div>
       </b-col>
       <b-col class="col-auto">
-        <b-button v-if="action" :variant="action.variant || 'white'" size="sm" :to="action.to" class="d-none d-md-inline-block">{{action.label}}</b-button>
+        <b-button v-if="action" :variant="action.variant || 'white'" :to="action.to" class="d-none d-md-inline-block">{{action.label}}</b-button>
       </b-col>
       <b-col class="col-auto">
         <b-dropdown size="sm" variant="link" toggle-class="text-decoration-none btn-options" no-caret right>

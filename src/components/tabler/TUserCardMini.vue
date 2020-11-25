@@ -1,15 +1,16 @@
 <template>
   <b-link :to="to" class="card-link">
     <b-card  tag="a">
-      <div class="float-left mr-3">
-        <span v-if="processedAvatar" class="avatar rounded" :style="processedAvatar"></span>
-        <span v-else class="avatar rounded">{{processedName}}</span>
+      <div class="row">
+        <div class="col-auto">
+          <span v-if="processedAvatar" class="avatar rounded" :style="processedAvatar"></span>
+          <span v-else class="avatar rounded">{{processedName}}</span>
+        </div>
+        <div class="col">
+          <div class="font-weight-medium">{{name}}</div>
+          <div class="text-muted">{{title}}</div>
+        </div>
       </div>
-      <div class="lh-sm">
-        <div class="strong">{{name}}</div>
-        <div class="text-muted">{{title}}</div>
-      </div>
-
     </b-card>
   </b-link>
 </template>

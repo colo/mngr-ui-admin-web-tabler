@@ -9,6 +9,10 @@
 </template>
 
 <script>
+import * as Debug from 'debug'
+const debug = Debug('components:tabler:layout:dropdowns')
+debug.log = console.log.bind(console) // don't forget to bind to console!
+
 import { BNavbarNav } from 'bootstrap-vue'
 
 import BarDropdownsAlerts from 'components/tabler/layout/bar/dropdowns/alerts'
@@ -41,6 +45,9 @@ export default {
   data () {
     return {
     }
+  },
+  mounted: function () {
+    debug('mounted', this.user)
   },
   computed: {
     navClass: function () {

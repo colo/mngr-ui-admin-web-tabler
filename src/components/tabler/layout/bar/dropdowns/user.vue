@@ -5,8 +5,8 @@
     <template v-slot:button-content>
       <!-- <a href="#" class="nav-link d-flex lh-1 text-reset p-0" size="lg"> -->
         <!-- <span class="avatar" style="background-image: url(./static/avatars/000m.jpg)"></span> -->
-        <span v-if="processedAvatar" class="avatar avatar-md" :style="processedAvatar"></span>
-        <span v-else class="avatar avatar-md">{{processedName}}</span>
+        <span v-if="processedAvatar" class="avatar avatar-sm" :style="processedAvatar"></span>
+        <span v-else class="avatar avatar-sm">{{processedName}}</span>
         <div class="d-none d-xl-block pl-2">
           <div>{{name}}</div>
           <div class="mt-1 small text-muted">{{title}}</div>

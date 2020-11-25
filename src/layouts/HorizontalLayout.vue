@@ -1,30 +1,32 @@
 <template>
   <q-layout>
     <div class="page">
-      <b-navbar toggleable="md" :type="(darkTopBar === true) ? 'dark' : 'light'" tag="header" :style="topbarContainerStyle">
-        <top-bar
-          v-if="topbar.available === true"
-          :condensed="condensed"
-          :combined="topbar.combined"
-          :dark="darkTopBar"
-          :fluid="fluid"
-          :background="topbar.background"
-          :grow="topbar.grow"
-          :smallLogo="smallLogo"
-          :logo="logo"
-          :list="navbar.list"
-          :search="search"
-          :alerts="alerts"
-          :user="user"
-          :settings="settings"
-          />
-      </b-navbar>
-      <horizontal-nav-bar v-if="condensed !== true && navbar.available === true" :dark="darkNavBar" :fluid="fluid" :background="navbar.background" :list="navbar.list" :search="search"/>
+      <div :class="(sticky === true) ? 'sticky-top' : ''">
+        <b-navbar toggleable="md" :type="(darkTopBar === true) ? 'dark' : 'light'" tag="header" :style="topbarContainerStyle">
+          <top-bar
+            v-if="topbar.available === true"
+            :condensed="condensed"
+            :combined="topbar.combined"
+            :dark="darkTopBar"
+            :fluid="fluid"
+            :background="topbar.background"
+            :grow="topbar.grow"
+            :smallLogo="smallLogo"
+            :logo="logo"
+            :list="navbar.list"
+            :search="search"
+            :alerts="alerts"
+            :user="user"
+            :settings="settings"
+            />
+        </b-navbar>
+        <horizontal-nav-bar v-if="condensed !== true && navbar.available === true" :dark="darkNavBar" :fluid="fluid" :background="navbar.background" :list="navbar.list" :search="search"/>
+      </div>
 
       <div class="content">
         <div :class="containerClass">
           <q-page-container>
-            <router-view :dark="dark" :fluid="fluid" :mode="mode"/>
+            <router-view :dark="dark" :fluid="fluid" :mode="mode" />
           </q-page-container>
         </div>
 
@@ -110,7 +112,7 @@ export default Vue.extend({
     containerClass: function () {
       let appendClass = ''
 
-      appendClass += (this.fluid === true) ? 'container-fluid ' : 'container-xl '
+      appendClass += (this.fluid === true) ? 'container-fluid ' : 'container-xl' // d-flex flex-column justify-content-center
 
       return appendClass
     },

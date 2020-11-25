@@ -10,7 +10,7 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row row-cards">
       <div class="col-md-4">
         <b-tabs content-class="card-body" :class="'card'">
           <b-tab title="Home" title-link-class="nav-link" >

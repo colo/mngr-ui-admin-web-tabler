@@ -35,6 +35,7 @@
           <b-form-radio v-model="mode" name="VerticalLayout" value="VerticalLayout" plain>Vertical</b-form-radio>
           <b-form-radio v-model="mode" name="HorizontalLayout" value="HorizontalLayout" plain>Horizontal</b-form-radio>
           <b-form-checkbox class="form-switch" v-model="fluid" plain>Fluid</b-form-checkbox>
+          <b-form-checkbox class="form-switch" v-model="sticky" plain>Sticky</b-form-checkbox>
           <b-form-checkbox v-if="mode === 'HorizontalLayout'" class="form-switch" v-model="condensed" plain>Condensed</b-form-checkbox>
         <!-- </b-form-checkbox-group> -->
       </b-form-group>
@@ -177,6 +178,15 @@ export default {
         this.setFluid({ fluid: value })
       }
     },
+    sticky: {
+      get () {
+        return this.$store.state.layout.sticky
+      },
+      set (value) {
+        this.setSticky({ sticky: value })
+      }
+    },
+
     // menuAutoExpand: {
     //   get () {
     //     return this.$store.state.layout.menuAutoExpand
@@ -216,6 +226,7 @@ export default {
       setDark: 'layout/setDark',
       setMode: 'layout/setMode',
       setFluid: 'layout/setFluid',
+      setSticky: 'layout/setSticky',
       // setMenuAutoExpand: 'layout/setMenuAutoExpand',
       // setMenuMini: 'layout/setMenuMini',
       // setDashboardColorScheme: 'layout/setDashboardColorScheme'

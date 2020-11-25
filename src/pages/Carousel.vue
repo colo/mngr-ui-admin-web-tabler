@@ -5,7 +5,7 @@
       <div class="row align-items-center">
         <div class="col-auto">
           <h2 class="page-title">
-            Empty page
+            Carousel
           </h2>
         </div>
       </div>

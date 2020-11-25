@@ -1,8 +1,8 @@
 <template>
   <!-- <a class="card card-link" href="#">
-    <div class="card-cover text-center" style="background-image: url(./static/photos/2854fd67ddbd6217.jpg
+    <div class="card-cover card-cover-blurred text-center" style="background-image: url(./static/photos/2854fd67ddbd6217.jpg
 )">
-      <span class="avatar avatar-xl avatar-thumb" style="background-image: url(./static/avatars/012f.jpg)"></span>
+      <span class="avatar avatar-xl avatar-thumb avatar-rounded" style="background-image: url(./static/avatars/012f.jpg)"></span>
     </div>
     <div class="card-body text-center">
       <div class="card-title mb-1">Marsha Labat</div>
@@ -11,9 +11,9 @@
   </a> -->
   <b-link :to="to" class="card-link">
     <b-card tag="a" no-body>
-      <div v-if="processedCover" class="card-cover text-center" :style="processedCover">
-        <span v-if="processedAvatar" class="avatar avatar-xl avatar-thumb" :style="processedAvatar"></span>
-        <span v-else class="avatar avatar-xl avatar-thumb">{{processedName}}</span>
+      <div v-if="processedCover" class="card-cover card-cover-blurred text-center" :style="processedCover">
+        <span v-if="processedAvatar" class="avatar avatar-xl avatar-thumb avatar-rounded" :style="processedAvatar"></span>
+        <span v-else class="avatar avatar-xl avatar-thumb avatar-rounded">{{processedName}}</span>
       </div>
       <div class="card-body text-center">
         <div class="card-title mb-1">{{name}}</div>

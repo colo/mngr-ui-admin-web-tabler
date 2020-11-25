@@ -29,6 +29,11 @@ module.exports = function (/* ctx */) {
     css: [
       // 'app.scss'
       'tabler.min.css',
+      'tabler-flags.min.css',
+      'tabler-payments.min.css',
+      'tabler-vendors.min.css',
+      'demo.min.css',
+
       'bootstrap-vue.min.css'
     ],
 

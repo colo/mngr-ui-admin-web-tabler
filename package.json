@@ -10,6 +10,10 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
+    "flatpickr": "^4.6.6",
+    "selectize": "^0.12.6",
+    "masonry-layout": "^4.2.2",
+    "nouislider": "^14.6.3",
     "@amcharts/amcharts4": "^4.9.1",
     "@amcharts/amcharts4-geodata": "^4.1.12",
     "@fullcalendar/core": "^5.3.1",

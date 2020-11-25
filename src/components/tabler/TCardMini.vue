@@ -2,10 +2,16 @@
   <b-link :to="to" :class="(dark) ? 'text-white' : 'text-black'">
     <!-- class="card-link" -->
     <b-card tag="a" class="card-sm" body-class="d-flex align-items-center">
-      <slot><span v-if="icon !== ''" class="mr-3" :class="iconClass" v-html="icon"></span></slot>
+      <slot><span v-if="icon !== ''" class="mr-3 avatar" :class="iconClass" v-html="icon"></span></slot>
 
-      <div class="mr-3 lh-sm">
+      <!-- <div class="mr-3 lh-sm">
         <div class="strong">{{title}}</div>
+        <div class="text-muted">{{subtitle}}</div>
+      </div> -->
+      <div class="mr-3">
+        <div class="font-weight-medium">
+          {{title}}
+        </div>
         <div class="text-muted">{{subtitle}}</div>
       </div>
       <div class="ml-auto">

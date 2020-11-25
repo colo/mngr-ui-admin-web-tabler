@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="flex-fill d-flex flex-column justify-content-center">
+    <div class="flex-fill d-flex flex-column justify-content-center py-4">
       <div class="container-tight py-6">
         <div class="text-center mb-4">
           <img src="../static/logo.svg" height="36" alt="">
@@ -33,11 +33,11 @@
               </label>
             </div>
             <div class="form-footer">
-              <button type="submit" class="btn btn-primary btn-block">Create new account</button>
+              <button type="submit" class="btn btn-primary w-100">Create new account</button>
             </div>
           </div>
         </form>
-        <div class="text-center text-muted">
+        <div class="text-center text-muted mt">
           Already have account? <a href="./sign-in.html" tabindex="-1">Sign in</a>
         </div>
       </div>
