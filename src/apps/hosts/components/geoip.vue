@@ -274,7 +274,7 @@ export default {
   data () {
     return {
       geodata: [],
-      baseColor: window.getComputedStyle(document.documentElement).getPropertyValue('--bs-primary'),
+      baseColor: window.getComputedStyle(document.documentElement).getPropertyValue('--tblr-primary'),
       labels: {
         top_world_map_country_counter: 'TOP Countries Atlas',
         world_map_country_counter: 'Countries Atlas',

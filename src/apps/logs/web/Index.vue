@@ -30,7 +30,6 @@
           </a> -->
           <!-- {{selected_hosts}} -->
           <b-dropdown
-            split
             variant="primary"
             right
           >
