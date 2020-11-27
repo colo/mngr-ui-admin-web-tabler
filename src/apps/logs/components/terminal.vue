@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-12 col-lg-6">
+  <div :class="containerClass">
     <div class="card">
       <div class="card-body">
         <div class="d-flex align-items-center">
@@ -7,9 +7,9 @@
         </div>
         <div :id="id">
         </div>
-        <q-resize-observer @resize="onResize(id)" :debounce="0"/>
       </div>
     </div>
+    <!-- <q-resize-observer @resize="onResize(id)" :debounce="0"/> -->
   </div>
 </template>
 
@@ -33,6 +33,10 @@ export default {
   name: 'AppLogsTerminal',
 
   props: {
+    layout: {
+      type: String,
+      default: 'row' // grid || row
+    },
     groupBy: {
       type: Array,
       default: function () { return [] }
@@ -74,26 +78,19 @@ export default {
       )
     }
   },
-
+  computed: {
+    containerClass: function () {
+      return (this.layout === 'grid') ? 'col-md-12 col-lg-6' : 'col-lg-12'
+    },
+  },
   mounted: function () {
     debug('lifecycle mounted', this._uid)
-
-    this.terminal = new Terminal()
-    this.terminal.setOption('fontSize', 14)
-    this.terminal.setOption('scrollback', 1000000)
-    this.terminal.setOption('disableStdin', true)
-    this.terminal.setOption('convertEol', true)
-
-    this.terminal.loadAddon(new WebLinksAddon())
-    this.fitAddon = new FitAddon()
-    this.terminal.loadAddon(this.fitAddon)
-    this.searchAddon = new SearchAddon()
-    this.terminal.loadAddon(this.searchAddon)
-    this.terminal.open(document.getElementById(this.id))
-    this.fitAddon.fit()
-
-    // terminal.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ')
-    // terminal.write('http://localhost:8083')
+    window.addEventListener('resize', this.resize)
+    this.create_terminal()
+  },
+  destroyed: function () {
+    window.removeEventListener('resize', this.resize)
+    this.terminal.dispose()
   },
   watch: {
     logs: {
@@ -136,10 +133,31 @@ export default {
 
   },
   methods: {
-    onResize: function (id) {
-      debug('onResize', id)
+    create_terminal: function () {
+      this.terminal = new Terminal()
+      this.terminal.setOption('fontSize', 14)
+      this.terminal.setOption('scrollback', 1000000)
+      this.terminal.setOption('disableStdin', true)
+      this.terminal.setOption('convertEol', true)
+
+      this.terminal.loadAddon(new WebLinksAddon())
+      this.fitAddon = new FitAddon()
+      this.terminal.loadAddon(this.fitAddon)
+      this.searchAddon = new SearchAddon()
+      this.terminal.loadAddon(this.searchAddon)
+      this.terminal.open(document.getElementById(this.id))
+      this.fitAddon.fit()
+    },
+    resize: function (e) {
+      debug('resize', this.id, this.fitAddon, e)
+      // this.terminal.dispose()
+      // this.create_terminal()
       if (this.fitAddon !== undefined) { this.fitAddon.fit() }
     },
+    // onResize: function (id) {
+    //   debug('onResize', id)
+    //   if (this.fitAddon !== undefined) { this.fitAddon.fit() }
+    // },
     colour: function (row) {
       let path = row.path
       let fn = this.camelCase(path)
