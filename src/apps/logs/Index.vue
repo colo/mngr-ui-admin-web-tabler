@@ -16,6 +16,7 @@
         </div>
         <!-- Page title actions -->
         <div class="col-auto ml-auto d-print-none">
+          <!--  -->
           <!-- <span class="d-none d-sm-inline">
             <a href="#" class="btn btn-white">
               New view

@@ -9,7 +9,7 @@
         </div>
       </div>
     </div>
-    <!-- <q-resize-observer @resize="onResize(id)" :debounce="0"/> -->
+    <q-resize-observer @resize="resize(id)" :debounce="0"/>
   </div>
 </template>
 
@@ -33,6 +33,10 @@ export default {
   name: 'AppLogsTerminal',
 
   props: {
+    coloured: {
+      type: Boolean,
+      default: true,
+    },
     layout: {
       type: String,
       default: 'row' // grid || row
@@ -69,7 +73,8 @@ export default {
       searchAddons: undefined,
       fitAddon: undefined,
 
-      coloured: true,
+      // coloured: true,
+      // resizing: false,
 
       web_log_parser: new Parser(
         '$remote_addr - $remote_user [$time_local] ' +
@@ -80,7 +85,7 @@ export default {
   },
   computed: {
     containerClass: function () {
-      return (this.layout === 'grid') ? 'col-md-12 col-lg-6' : 'col-lg-12'
+      return (this.layout === 'grid') ? 'col-lg-12 col-xl-6' : 'col-xl-12'
     },
   },
   mounted: function () {
@@ -93,10 +98,14 @@ export default {
     this.terminal.dispose()
   },
   watch: {
+    layout: function () {
+      debug('watch layout', this._uid)
+      this.resize(this.id)
+    },
     logs: {
       handler: function (val) {
         debug('watch logs', val)
-
+        // if (this.resizing === false) {
         Array.each(val, function (row) {
           let date = moment(row.timestamp).format('HH:mm:ss')
           let log = ''
@@ -127,6 +136,7 @@ export default {
 
           this.terminal.writeln(line)
         }.bind(this))
+        // }
       },
       deep: true
     },
@@ -149,10 +159,19 @@ export default {
       this.fitAddon.fit()
     },
     resize: function (e) {
-      debug('resize', this.id, this.fitAddon, e)
       // this.terminal.dispose()
       // this.create_terminal()
-      if (this.fitAddon !== undefined) { this.fitAddon.fit() }
+      if (this.fitAddon !== undefined) {
+        this.$nextTick(function () {
+          debug('resize', this.id, this.fitAddon.proposeDimensions(), e)
+          // this.resizing = true
+          this.fitAddon.fit()
+
+          this.$nextTick(function () {
+            // this.resizing = false
+          })
+        })
+      }
     },
     // onResize: function (id) {
     //   debug('onResize', id)

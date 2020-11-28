@@ -14,7 +14,7 @@ let init = false
 // import web_callback from '@apps/logs/web/libs/historical'
 
 let grouped_logs = {}
-
+let group_by = []
 const generic_callback = function (data, metadata, key, vm) {
   debug('PERIODICAL LOGS GENERIC CALLBACK data %s %o', key, data, metadata)
   // if (key === 'hosts.periodical') { hosts_callback(data, metadata, key, vm) }
@@ -27,6 +27,14 @@ const generic_callback = function (data, metadata, key, vm) {
   if (data.logs) _data = data.logs // comes from 'Range'
   else _data = data // comes from 'register'
 
+  if (group_by !== vm.group_by) {
+    Object.each(grouped_logs, function (data, group) {
+      vm.$delete(vm.logs, group)
+      delete grouped_logs[group]
+    })
+  }
+
+  group_by = vm.group_by
   let all_logs = {all: []}
   Object.each(grouped_logs, function (data, group) {
     if (vm.selected_hosts.length > 0) {

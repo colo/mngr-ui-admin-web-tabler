@@ -561,6 +561,56 @@ value="Well, how'd you become king, then?" readonly>
                 </div>
               </div>
               <div class="mb-3">
+                <!-- <b-form-group label="Icon input">
+                  <b-form-checkbox-group
+                    class="form-selectgroup"
+                    plain
+                  >
+                    <label class="form-selectgroup-item">
+                      <input type="checkbox" name="name" value="sun" class="form-selectgroup-input" v-model="selected_icon_input">
+                      <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="4" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg>
+                      </span>
+
+                    </label>
+
+                    <label class="form-selectgroup-item">
+                      <input type="checkbox" name="name" value="moon" class="form-selectgroup-input" v-model="selected_icon_input">
+                      <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3c0.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg>
+                      </span>
+                    </label>
+
+                  </b-form-checkbox-group>
+                </b-form-group> -->
+
+                <label class="form-label">Icon input</label>
+                <div class="form-selectgroup">
+                  <label class="form-selectgroup-item">
+                    <input type="checkbox" name="name" value="sun" class="form-selectgroup-input" v-model="selected_icon_input">
+                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="4" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg>
+                    </span>
+                  </label>
+                  <label class="form-selectgroup-item">
+                    <input type="checkbox" name="name" value="moon" class="form-selectgroup-input" v-model="selected_icon_input">
+                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3c0.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg>
+                    </span>
+                  </label>
+                  <label class="form-selectgroup-item">
+                    <input type="checkbox" name="name" value="cloud-rain" class="form-selectgroup-input" v-model="selected_icon_input">
+                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 18a4.6 4.4 0 0 1 0 -9a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7" /><path d="M11 13v2m0 3v2m4 -5v2m0 3v2" /></svg>
+                    </span>
+                  </label>
+                  <label class="form-selectgroup-item">
+                    <input type="checkbox" name="name" value="cloud" class="form-selectgroup-input" v-model="selected_icon_input">
+                    <span class="form-selectgroup-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 18a4.6 4.4 0 0 1 0 -9a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7h-12" /></svg>
+                    </span>
+                  </label>
+                  <label class="form-selectgroup-item">
+                    <input type="checkbox" name="name" value="Other" class="form-selectgroup-input" v-model="selected_icon_input">
+                    <span class="form-selectgroup-label">Other</span>
+                  </label>
+                </div>
+              </div>
+              <!-- <div class="mb-3">
                 <label class="form-label">Icon input</label>
                 <div class="form-selectgroup">
                   <label class="form-selectgroup-item">
@@ -588,7 +638,7 @@ value="Well, how'd you become king, then?" readonly>
                     <span class="form-selectgroup-label">Other</span>
                   </label>
                 </div>
-              </div>
+              </div> -->
               <div class="mb-3">
                 <label class="form-label">Selectgroup with icons and text</label>
                 <div class="form-selectgroup">
@@ -1471,8 +1521,11 @@ value="Well, how'd you become king, then?" readonly>
 </template>
 
 <script>
+import * as Debug from 'debug'
+const debug = Debug('pages/Form')
+debug.log = console.log.bind(console) // don't forget to bind to console!
 
-import { BButton, BButtonGroup, BButtonToolbar } from 'bootstrap-vue'
+import { BButton, BButtonGroup, BButtonToolbar } from 'bootstrap-vue' // BFormGroup, BFormCheckboxGroup, BFormCheckbox
 
 import jQuery from 'jquery'
 window.jQuery = window.$ = jQuery
@@ -1490,8 +1543,20 @@ require('nouislider/distribute/nouislider.min.css')
 export default {
   name: 'PageEmpty',
 
-  components: { BButton, BButtonGroup, BButtonToolbar },
+  components: { BButton, BButtonGroup, BButtonToolbar }, // BFormGroup, BFormCheckboxGroup, BFormCheckbox
 
+  data () {
+    return {
+      selected_icon_input: ['sun'], // Must be an array reference!
+
+    }
+  },
+
+  watch: {
+    selected_icon_input: function (val) {
+      debug('selected_icon_input', val)
+    }
+  },
   mounted: function () {
     noUiSlider.create(document.getElementById('range-simple'), {
       start: 20,
