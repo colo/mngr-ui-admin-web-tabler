@@ -15,6 +15,8 @@ let init = false
 
 let grouped_logs = {}
 let group_by = []
+let selected_hosts = []
+
 const generic_callback = function (data, metadata, key, vm) {
   debug('PERIODICAL LOGS GENERIC CALLBACK data %s %o', key, data, metadata)
   // if (key === 'hosts.periodical') { hosts_callback(data, metadata, key, vm) }
@@ -27,7 +29,7 @@ const generic_callback = function (data, metadata, key, vm) {
   if (data.logs) _data = data.logs // comes from 'Range'
   else _data = data // comes from 'register'
 
-  if (group_by !== vm.group_by) {
+  if (group_by !== vm.group_by || selected_hosts !== vm.selected_hosts) {
     Object.each(grouped_logs, function (data, group) {
       vm.$delete(vm.logs, group)
       delete grouped_logs[group]
@@ -35,15 +37,18 @@ const generic_callback = function (data, metadata, key, vm) {
   }
 
   group_by = vm.group_by
+  selected_hosts = vm.selected_hosts
+
   let all_logs = {all: []}
   Object.each(grouped_logs, function (data, group) {
     if (vm.selected_hosts.length > 0) {
       Array.each(vm.selected_hosts, function (host) {
         if (group.indexOf(host) > -1) {
           grouped_logs[group] = []
-        } else {
-          // delete grouped_logs[group]
         }
+        // else {
+        //   // delete grouped_logs[group]
+        // }
       })
     } else {
       grouped_logs[group] = []

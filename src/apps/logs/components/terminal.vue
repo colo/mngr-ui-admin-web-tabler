@@ -65,12 +65,16 @@ export default {
       type: String,
       default: '',
     },
+    rows: {
+      type: Number,
+      default: 24,
+    },
   },
 
   data () {
     return {
-      terminals: undefined,
-      searchAddons: undefined,
+      terminal: undefined,
+      searchAddon: undefined,
       fitAddon: undefined,
 
       // coloured: true,
@@ -98,14 +102,25 @@ export default {
     this.terminal.dispose()
   },
   watch: {
+    rows: {
+      handler: function (val) {
+        debug('watch rows', val)
+
+        if (val) {
+          this.terminal.resize(this.terminal.cols, val)
+        }
+      },
+      inmediate: true
+    },
     layout: function () {
       debug('watch layout', this._uid)
       this.resize(this.id)
     },
     logs: {
       handler: function (val) {
-        debug('watch logs', val)
+        debug('watch logs', val, this.terminal.cols, this.terminal.rows)
         // if (this.resizing === false) {
+
         Array.each(val, function (row) {
           let date = moment(row.timestamp).format('HH:mm:ss')
           let log = ''
@@ -157,6 +172,7 @@ export default {
       this.terminal.loadAddon(this.searchAddon)
       this.terminal.open(document.getElementById(this.id))
       this.fitAddon.fit()
+      this.terminal.resize(this.terminal.cols, this.rows)
     },
     resize: function (e) {
       // this.terminal.dispose()

@@ -63,6 +63,7 @@
         :groupBy="group_by"
         :layout="layout"
         :coloured="coloured"
+        :rows="rows"
       />
 
     </div>
@@ -173,7 +174,9 @@ export default {
       period: 'second',
       group_by: ['host'], // 'host', 'path', 'domain'
       layout: 'grid',
+      layout_prev: undefined,
       coloured: true,
+      rows: 24,
 
       layoutBtns: [
         {
@@ -258,6 +261,7 @@ export default {
   created: function () {
     debug('lifecycle created', this._uid)
 
+    this.layout_prev = this.layout
     let group_by = this.$route.query.group_by
 
     if (group_by) {
@@ -325,8 +329,26 @@ export default {
   watch: {
     logs: function (val) {
       debug('watch logs', val)
-      if (val && Object.getLength(val)) {
+      if (val && Object.getLength(val) === 1 && this.rows !== 36) {
+        this.rows = 44
+      } else if (Object.getLength(val) > 1 && this.rows !== 24) {
+        this.rows = 24
+      }
+
+      debug('watch rows logs', this.rows)
+
+      if (val && Object.getLength(val) === 1 && this.layout === 'grid') {
+        this.layout_prev = this.layout
         this.layout = 'row'
+        Array.each(this.layoutBtns, function (btn) {
+          if (btn.type === this.layout) {
+            btn.state = true
+          } else {
+            btn.state = false
+          }
+        }.bind(this))
+      } else if (Object.getLength(val) > 1 && this.layout !== this.layout_prev) {
+        this.layout = this.layout_prev
         Array.each(this.layoutBtns, function (btn) {
           if (btn.type === this.layout) {
             btn.state = true
@@ -354,7 +376,7 @@ export default {
       if (val && Array.isArray(val) && val.length > 0) {
         // Array.each(this.val, function (host) {
         Object.each(this.logs, function (data, group) {
-          if (!val.some(function (host) { return group.indexOf(host) > -1 })) {
+          if (!this.group_by.contains('host') || !val.some(function (host) { return group.indexOf(host) > -1 })) {
             this.$delete(this.logs, group)
           }
         }.bind(this))
