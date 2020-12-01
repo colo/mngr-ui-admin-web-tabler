@@ -467,6 +467,7 @@ export default {
 
     setLayout: function (type) {
       this.layout = type
+      this.layout_prev = type
       Array.each(this.layoutBtns, function (btn) {
         if (btn.type === this.layout) {
           btn.state = true
