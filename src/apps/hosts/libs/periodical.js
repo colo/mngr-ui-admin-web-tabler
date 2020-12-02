@@ -11,16 +11,21 @@ let hosts = []
 export default function (data, metadata, key, vm) {
   debug('PERIODICAL HOSTS CALLBACK data %s %o', key, data, metadata, vm)
 
+  let hosts_data = []
   if (data.hosts) {
     Array.each(data.hosts, function (row) {
       // let path = row.metadata.path
       let host = row.metadata.host
 
       hosts.combine([host])
+      hosts_data.push(row.data)
     })
 
+    hosts_data.sort((a, b) => (a.hostname > b.hostname) ? 1 : ((b.hostname > a.hostname) ? -1 : 0))
     hosts.sort()
-    debug('PERIODICAL HOSTS CALLBACK UPDATE %s %o', hosts, vm.hosts)
+
+    debug('PERIODICAL HOSTS CALLBACK UPDATE %s %o', hosts, hosts_data, vm.hosts)
     vm.hosts = hosts
+    vm.hosts_data = hosts_data
   }
 }

@@ -111,6 +111,9 @@
 
       </div>
 
+      <div class="col-lg-12">
+        <hosts-table :stat="hosts_data" :dark="dark" :mode="mode" :fluid="fluid"/>
+      </div>
     </div>
 
   </q-page>
@@ -148,6 +151,8 @@ import blocks from '@apps/hosts/components/blocks'
 **/
 import geoip from '@apps/hosts/components/geoip'
 import traffic from '@apps/hosts/components/traffic'
+
+import hostsTable from '@apps/hosts/components/table'
 
 import { EventBus } from '@libs/eventbus'
 import chartTabular from 'components/chart.tabular'
@@ -218,7 +223,8 @@ export default {
     * web
     **/
     geoip,
-    traffic
+    traffic,
+    hostsTable
   },
 
   props: {
@@ -297,6 +303,8 @@ export default {
         top_host_counter: [],
         top_domain_counter: []
       },
+
+      hosts_data: [],
 
       top: 5,
 
