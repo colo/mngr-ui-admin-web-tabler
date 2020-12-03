@@ -16,7 +16,7 @@
               <h3>Paweł Kuna</h3>
             </div>
             <div class="mb-4">
-              <input type="password" class="form-control" placeholder="Password&hellip;">
+              <input type="password" class="form-control" placeholder="Password...">
             </div>
             <div>
               <a href="#" class="btn btn-primary w-100">

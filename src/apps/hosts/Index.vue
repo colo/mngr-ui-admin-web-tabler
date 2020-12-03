@@ -112,7 +112,7 @@
       </div>
 
       <div class="col-lg-12">
-        <hosts-table :stat="hosts_data" :dark="dark" :mode="mode" :fluid="fluid"/>
+        <hosts-table :stat="hosts_data" :selected_hosts="selected_hosts" :dark="dark" :mode="mode" :fluid="fluid"/>
       </div>
     </div>
 

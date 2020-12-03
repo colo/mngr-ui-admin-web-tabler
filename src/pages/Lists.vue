@@ -1,9 +1,9 @@
 <template>
   <q-page>
     <!-- Page title -->
-    <div class="page-header">
+    <div class="page-header d-print-none">
       <div class="row align-items-center">
-        <div class="col-auto">
+        <div class="col">
           <h2 class="page-title">
             Lists
           </h2>
@@ -18,9 +18,9 @@
           </div>
           <div class="card-body">
             <div class="row mb-n3">
-              <div class="col-6 row row-sm mb-3 align-items-center">
+              <div class="col-6 row g-2 mb-3 align-items-center">
                 <a href="#" class="col-auto">
-                  <span class="avatar" style="background-image: url(../static/avatars/000m.jpg)">
+                  <span class="avatar" style="background-image: url(./static/avatars/000m.jpg)">
                     <span class="badge bg-red"></span></span>
                 </a>
                 <div class="col text-truncate">
@@ -28,7 +28,7 @@
                   <small class="d-block text-muted text-truncate mt-n1">2 days ago</small>
                 </div>
               </div>
-              <div class="col-6 row row-sm mb-3 align-items-center">
+              <div class="col-6 row g-2 mb-3 align-items-center">
                 <a href="#" class="col-auto">
                   <span class="avatar">
                     <span class="badge bg-x"></span>JL</span>
@@ -38,18 +38,18 @@
                   <small class="d-block text-muted text-truncate mt-n1">3 days ago</small>
                 </div>
               </div>
-              <div class="col-6 row row-sm mb-3 align-items-center">
+              <div class="col-6 row g-2 mb-3 align-items-center">
                 <a href="#" class="col-auto">
-                  <span class="avatar" style="background-image: url(../static/avatars/002m.jpg)"></span>
+                  <span class="avatar" style="background-image: url(./static/avatars/002m.jpg)"></span>
                 </a>
                 <div class="col text-truncate">
                   <a href="#" class="text-body d-block text-truncate">Mallory Hulme</a>
                   <small class="d-block text-muted text-truncate mt-n1">today</small>
                 </div>
               </div>
-              <div class="col-6 row row-sm mb-3 align-items-center">
+              <div class="col-6 row g-2 mb-3 align-items-center">
                 <a href="#" class="col-auto">
-                  <span class="avatar" style="background-image: url(../static/avatars/003m.jpg)">
+                  <span class="avatar" style="background-image: url(./static/avatars/003m.jpg)">
                     <span class="badge bg-green"></span></span>
                 </a>
                 <div class="col text-truncate">
@@ -57,9 +57,9 @@
                   <small class="d-block text-muted text-truncate mt-n1">6 days ago</small>
                 </div>
               </div>
-              <div class="col-6 row row-sm mb-3 align-items-center">
+              <div class="col-6 row g-2 mb-3 align-items-center">
                 <a href="#" class="col-auto">
-                  <span class="avatar" style="background-image: url(../static/avatars/000f.jpg)">
+                  <span class="avatar" style="background-image: url(./static/avatars/000f.jpg)">
                     <span class="badge bg-red"></span></span>
                 </a>
                 <div class="col text-truncate">
@@ -67,9 +67,9 @@
                   <small class="d-block text-muted text-truncate mt-n1">3 days ago</small>
                 </div>
               </div>
-              <div class="col-6 row row-sm mb-3 align-items-center">
+              <div class="col-6 row g-2 mb-3 align-items-center">
                 <a href="#" class="col-auto">
-                  <span class="avatar" style="background-image: url(../static/avatars/001f.jpg)">
+                  <span class="avatar" style="background-image: url(./static/avatars/001f.jpg)">
                     <span class="badge bg-yellow"></span></span>
                 </a>
                 <div class="col text-truncate">
@@ -77,7 +77,7 @@
                   <small class="d-block text-muted text-truncate mt-n1">2 days ago</small>
                 </div>
               </div>
-              <div class="col-6 row row-sm mb-3 align-items-center">
+              <div class="col-6 row g-2 mb-3 align-items-center">
                 <a href="#" class="col-auto">
                   <span class="avatar">
                     <span class="badge bg-x"></span>EP</span>
@@ -87,9 +87,9 @@
                   <small class="d-block text-muted text-truncate mt-n1">4 days ago</small>
                 </div>
               </div>
-              <div class="col-6 row row-sm mb-3 align-items-center">
+              <div class="col-6 row g-2 mb-3 align-items-center">
                 <a href="#" class="col-auto">
-                  <span class="avatar" style="background-image: url(../static/avatars/002f.jpg)">
+                  <span class="avatar" style="background-image: url(./static/avatars/002f.jpg)">
                     <span class="badge bg-yellow"></span></span>
                 </a>
                 <div class="col text-truncate">
@@ -97,9 +97,9 @@
                   <small class="d-block text-muted text-truncate mt-n1">6 days ago</small>
                 </div>
               </div>
-              <div class="col-6 row row-sm mb-3 align-items-center">
+              <div class="col-6 row g-2 mb-3 align-items-center">
                 <a href="#" class="col-auto">
-                  <span class="avatar" style="background-image: url(../static/avatars/003f.jpg)">
+                  <span class="avatar" style="background-image: url(./static/avatars/003f.jpg)">
                     <span class="badge bg-x"></span></span>
                 </a>
                 <div class="col text-truncate">
@@ -107,7 +107,7 @@
                   <small class="d-block text-muted text-truncate mt-n1">today</small>
                 </div>
               </div>
-              <div class="col-6 row row-sm mb-3 align-items-center">
+              <div class="col-6 row g-2 mb-3 align-items-center">
                 <a href="#" class="col-auto">
                   <span class="avatar">
                     <span class="badge bg-x"></span>HS</span>
@@ -128,7 +128,7 @@
             <div class="list-item">
               <div><input type="checkbox" class="form-check-input"></div>
               <a href="#">
-                <span class="avatar" style="background-image: url(../static/avatars/003f.jpg)"></span>
+                <span class="avatar" style="background-image: url(./static/avatars/003f.jpg)"></span>
               </a>
               <div class="text-truncate">
                 <a href="#" class="text-body d-block">Christabel Charlwood</a>
@@ -148,7 +148,7 @@
             <div class="list-item">
               <div><input type="checkbox" class="form-check-input" checked></div>
               <a href="#">
-                <span class="avatar" style="background-image: url(../static/avatars/006m.jpg)"></span>
+                <span class="avatar" style="background-image: url(./static/avatars/006m.jpg)"></span>
               </a>
               <div class="text-truncate">
                 <a href="#" class="text-body d-block">Lorry Mion</a>
@@ -158,7 +158,7 @@
             <div class="list-item">
               <div><input type="checkbox" class="form-check-input"></div>
               <a href="#">
-                <span class="avatar" style="background-image: url(../static/avatars/004f.jpg)"></span>
+                <span class="avatar" style="background-image: url(./static/avatars/004f.jpg)"></span>
               </a>
               <div class="text-truncate">
                 <a href="#" class="text-body d-block">Leesa Beaty</a>
@@ -168,7 +168,7 @@
             <div class="list-item">
               <div><input type="checkbox" class="form-check-input" checked></div>
               <a href="#">
-                <span class="avatar" style="background-image: url(../static/avatars/007m.jpg)"></span>
+                <span class="avatar" style="background-image: url(./static/avatars/007m.jpg)"></span>
               </a>
               <div class="text-truncate">
                 <a href="#" class="text-body d-block">Perren Keemar</a>
@@ -188,7 +188,7 @@
             <div class="list-item">
               <div><input type="checkbox" class="form-check-input"></div>
               <a href="#">
-                <span class="avatar" style="background-image: url(../static/avatars/009m.jpg)"></span>
+                <span class="avatar" style="background-image: url(./static/avatars/009m.jpg)"></span>
               </a>
               <div class="text-truncate">
                 <a href="#" class="text-body d-block">Geoffry Flaunders</a>
@@ -198,7 +198,7 @@
             <div class="list-item">
               <div><input type="checkbox" class="form-check-input"></div>
               <a href="#">
-                <span class="avatar" style="background-image: url(../static/avatars/010m.jpg)"></span>
+                <span class="avatar" style="background-image: url(./static/avatars/010m.jpg)"></span>
               </a>
               <div class="text-truncate">
                 <a href="#" class="text-body d-block">Thatcher Keel</a>
@@ -209,7 +209,6 @@
         </div>
       </div>
       <div class="col-md-6">
-
         <!-- <b-card no-body header="Last commits" header-tag="h3">
           <b-list-group flush class="list-row">
 
@@ -320,7 +319,6 @@
           </b-list-group>
 
         </b-card> -->
-
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Last commits</h3>
@@ -335,7 +333,7 @@
                 <a href="#" class="text-body d-block">Paweł Kuna</a>
                 <small class="d-block text-muted text-truncate mt-n1">Change deprecated html tags to text decoration classes (#29604)</small>
               </div>
-              <a href="#" class="list-item-actions"><svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M12 17.75l-6.172 3.245 1.179-6.873-4.993-4.867 6.9-1.002L12 2l3.086 6.253 6.9 1.002-4.993 4.867 1.179 6.873z" /></svg>
+              <a href="#" class="list-item-actions"><svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
               </a>
             </div>
             <div class="list-item">
@@ -347,7 +345,7 @@
                 <a href="#" class="text-body d-block">Jeffie Lewzey</a>
                 <small class="d-block text-muted text-truncate mt-n1">justify-content:between ⇒ justify-content:space-between (#29734)</small>
               </div>
-              <a href="#" class="list-item-actions show"><svg xmlns="http://www.w3.org/2000/svg" class="icon text-yellow" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M12 17.75l-6.172 3.245 1.179-6.873-4.993-4.867 6.9-1.002L12 2l3.086 6.253 6.9 1.002-4.993 4.867 1.179 6.873z" /></svg>
+              <a href="#" class="list-item-actions show"><svg xmlns="http://www.w3.org/2000/svg" class="icon text-yellow" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
               </a>
             </div>
             <div class="list-item">
@@ -359,7 +357,7 @@
                 <a href="#" class="text-body d-block">Mallory Hulme</a>
                 <small class="d-block text-muted text-truncate mt-n1">Update change-version.js (#29736)</small>
               </div>
-              <a href="#" class="list-item-actions"><svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M12 17.75l-6.172 3.245 1.179-6.873-4.993-4.867 6.9-1.002L12 2l3.086 6.253 6.9 1.002-4.993 4.867 1.179 6.873z" /></svg>
+              <a href="#" class="list-item-actions"><svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
               </a>
             </div>
             <div class="list-item">
@@ -371,7 +369,7 @@
                 <a href="#" class="text-body d-block">Dunn Slane</a>
                 <small class="d-block text-muted text-truncate mt-n1">Regenerate package-lock.json (#29730)</small>
               </div>
-              <a href="#" class="list-item-actions"><svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M12 17.75l-6.172 3.245 1.179-6.873-4.993-4.867 6.9-1.002L12 2l3.086 6.253 6.9 1.002-4.993 4.867 1.179 6.873z" /></svg>
+              <a href="#" class="list-item-actions"><svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
               </a>
             </div>
             <div class="list-item">
@@ -383,7 +381,7 @@
                 <a href="#" class="text-body d-block">Emmy Levet</a>
                 <small class="d-block text-muted text-truncate mt-n1">Some minor text tweaks</small>
               </div>
-              <a href="#" class="list-item-actions show"><svg xmlns="http://www.w3.org/2000/svg" class="icon text-yellow" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M12 17.75l-6.172 3.245 1.179-6.873-4.993-4.867 6.9-1.002L12 2l3.086 6.253 6.9 1.002-4.993 4.867 1.179 6.873z" /></svg>
+              <a href="#" class="list-item-actions show"><svg xmlns="http://www.w3.org/2000/svg" class="icon text-yellow" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
               </a>
             </div>
             <div class="list-item">
@@ -395,7 +393,7 @@
                 <a href="#" class="text-body d-block">Maryjo Lebarree</a>
                 <small class="d-block text-muted text-truncate mt-n1">Link to versioned docs</small>
               </div>
-              <a href="#" class="list-item-actions"><svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M12 17.75l-6.172 3.245 1.179-6.873-4.993-4.867 6.9-1.002L12 2l3.086 6.253 6.9 1.002-4.993 4.867 1.179 6.873z" /></svg>
+              <a href="#" class="list-item-actions"><svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
               </a>
             </div>
             <div class="list-item">
@@ -407,7 +405,7 @@
                 <a href="#" class="text-body d-block">Egan Poetz</a>
                 <small class="d-block text-muted text-truncate mt-n1">Copywriting edits</small>
               </div>
-              <a href="#" class="list-item-actions"><svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M12 17.75l-6.172 3.245 1.179-6.873-4.993-4.867 6.9-1.002L12 2l3.086 6.253 6.9 1.002-4.993 4.867 1.179 6.873z" /></svg>
+              <a href="#" class="list-item-actions"><svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
               </a>
             </div>
             <div class="list-item">
@@ -419,7 +417,7 @@
                 <a href="#" class="text-body d-block">Kellie Skingley</a>
                 <small class="d-block text-muted text-truncate mt-n1">Enable RFS for font resizing</small>
               </div>
-              <a href="#" class="list-item-actions show"><svg xmlns="http://www.w3.org/2000/svg" class="icon text-yellow" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M12 17.75l-6.172 3.245 1.179-6.873-4.993-4.867 6.9-1.002L12 2l3.086 6.253 6.9 1.002-4.993 4.867 1.179 6.873z" /></svg>
+              <a href="#" class="list-item-actions show"><svg xmlns="http://www.w3.org/2000/svg" class="icon text-yellow" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
               </a>
             </div>
           </div>

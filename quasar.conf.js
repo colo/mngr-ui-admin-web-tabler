@@ -27,6 +27,10 @@ module.exports = function (/* ctx */) {
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: [
+      /**
+      * if using nouislider uncomment this
+      **/
+      'libs/nouislider.min.css',
       // 'app.scss'
       'tabler.min.css',
       'tabler-flags.min.css',

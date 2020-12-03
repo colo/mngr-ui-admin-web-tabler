@@ -1538,7 +1538,10 @@ require('flatpickr/dist/plugins/rangePlugin.js')
 require('flatpickr/dist/flatpickr.min.css')
 
 import noUiSlider from 'nouislider'
-require('nouislider/distribute/nouislider.min.css')
+/**
+* if using nouislider load 'nouislider.min.css' before 'tabler-vendors.min.css'
+**/
+// require('nouislider/distribute/nouislider.min.css')
 
 export default {
   name: 'PageEmpty',
