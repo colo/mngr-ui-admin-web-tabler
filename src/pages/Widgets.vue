@@ -115,25 +115,14 @@
       <div class="col-md-6 col-xl-3">
         <a class="card card-link" href="#">
           <div class="card-body">
-            <div class="float-left mr-3">
-              <span class="avatar rounded">EP</span>
-            </div>
-            <div class="lh-sm">
-              <div class="strong">Egan Poetz</div>
-              <div class="text-muted">Research Nurse</div>
-            </div>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-6 col-xl-3">
-        <a class="card card-link" href="#">
-          <div class="card-body">
-            <div class="float-right">
-              <span class="avatar rounded" style="background-image: url(./static/avatars/002f.jpg)"></span>
-            </div>
-            <div class="lh-sm">
-              <div class="strong">Kellie Skingley</div>
-              <div class="text-muted">Teacher</div>
+            <div class="row">
+              <div class="col-auto">
+                <span class="avatar rounded">EP</span>
+              </div>
+              <div class="col">
+                <div class="font-weight-medium">Egan Poetz</div>
+                <div class="text-muted">Research Nurse</div>
+              </div>
             </div>
           </div>
         </a>
@@ -141,12 +130,29 @@
       <div class="col-md-6 col-xl-3">
         <a class="card card-link" href="#">
           <div class="card-body">
-            <div class="float-right">
-              <span class="avatar rounded" style="background-image: url(./static/avatars/003f.jpg)"></span>
+            <div class="row">
+              <div class="col">
+                <div class="font-weight-medium">Kellie Skingley</div>
+                <div class="text-muted">Teacher</div>
+              </div>
+              <div class="col-auto">
+                <span class="avatar rounded" style="background-image: url(./static/avatars/002f.jpg)"></span>
+              </div>
             </div>
-            <div class="lh-sm">
-              <div class="strong">Christabel Charlwood</div>
-              <div class="text-muted">Tax Accountant</div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-xl-3">
+        <a class="card card-link" href="#">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <div class="font-weight-medium">Christabel Charlwood</div>
+                <div class="text-muted">Tax Accountant</div>
+              </div>
+              <div class="col-auto">
+                <span class="avatar rounded" style="background-image: url(./static/avatars/003f.jpg)"></span>
+              </div>
             </div>
           </div>
         </a>
@@ -445,6 +451,90 @@
                 132 Comments
               </div>
               <div class="text-muted">16 waitings</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-xl-3">
+        <div class="card card-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <span class="bg-green-lt text-white avatar"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="18" y1="11" x2="12" y2="5" /><line x1="6" y1="11" x2="12" y2="5" /></svg>
+                </span>
+              </div>
+              <div class="col">
+                <div class="font-weight-medium">
+                  $5,256.99
+                  <span class="float-right font-weight-medium text-green">+4%</span>
+                </div>
+                <div class="text-muted">
+                  Revenue last 30 days
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-xl-3">
+        <div class="card card-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <span class="bg-red-lt text-white avatar"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="18" y1="13" x2="12" y2="19" /><line x1="6" y1="13" x2="12" y2="19" /></svg>
+                </span>
+              </div>
+              <div class="col">
+                <div class="font-weight-medium">
+                  342
+                  <span class="float-right font-weight-medium text-red">-4.3%</span>
+                </div>
+                <div class="text-muted">
+                  Sales last 30 days
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-xl-3">
+        <div class="card card-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <span class="bg-green-lt text-white avatar"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="18" y1="11" x2="12" y2="5" /><line x1="6" y1="11" x2="12" y2="5" /></svg>
+                </span>
+              </div>
+              <div class="col">
+                <div class="font-weight-medium">
+                  132
+                  <span class="float-right font-weight-medium text-green">+6.8%</span>
+                </div>
+                <div class="text-muted">
+                  Customers last 30 days
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-xl-3">
+        <div class="card card-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <span class="bg-red-lt text-white avatar"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="18" y1="13" x2="12" y2="19" /><line x1="6" y1="13" x2="12" y2="19" /></svg>
+                </span>
+              </div>
+              <div class="col">
+                <div class="font-weight-medium">
+                  78
+                  <span class="float-right font-weight-medium text-red">-2%</span>
+                </div>
+                <div class="text-muted">
+                  Members registered today
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -919,51 +1009,3 @@ export default {
 
 }
 </script>
-
-// <style scoped lang="scss">
-// pre.highlight,
-// .highlight pre {
-//   max-height: 30rem;
-//   margin: 1.5rem 0;
-//   overflow: auto;
-//   font-size: 0.75rem;
-//   background: #354052;
-//   border-radius: 3px;
-//   color: #ffffff; }
-//   pre.highlight::-webkit-scrollbar,
-//   .highlight pre::-webkit-scrollbar {
-//     width: 6px;
-//     height: 6px;
-//     -webkit-transition: .3s background;
-//     transition: .3s background; }
-//   pre.highlight::-webkit-scrollbar-thumb,
-//   .highlight pre::-webkit-scrollbar-thumb {
-//     border-radius: 5px;
-//     background: transparent; }
-//   pre.highlight::-webkit-scrollbar-corner,
-//   .highlight pre::-webkit-scrollbar-corner {
-//     background: transparent; }
-//   pre.highlight:hover::-webkit-scrollbar-thumb,
-//   .highlight pre:hover::-webkit-scrollbar-thumb {
-//     background: #cbcfd6;
-//     background: #5d6675; }
-//
-// .highlight .c, .highlight .c1 {
-//   color: #a0aec0; }
-//
-// .highlight .na, .highlight .nx, .highlight .nl, .language-css .highlight .na, .language-scss .highlight .na {
-//   color: #ffe484; }
-//
-// .highlight .s, .highlight .dl, .highlight .s1, .highlight .s2, .highlight .mh {
-//   color: #b5f4a5; }
-//
-// .highlight .mi, .highlight .language-js .nb, .highlight .nc, .highlight .nd, .highlight .nt {
-//   color: #93ddfd; }
-//
-// .highlight .language-html .nt, .highlight .nb {
-//   color: #ff8383; }
-//
-// .highlight .k, .highlight .kd, .highlight .nv, .highlight .n {
-//   color: #d9a9ff; }
-//
-// </style>
