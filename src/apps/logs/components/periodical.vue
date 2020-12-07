@@ -5,6 +5,11 @@
       set data
     </b-button> -->
     <div class="row row-deck row-cards">
+      <div class="col-auto d-print-none">
+        <b-form-checkbox-group  v-model="selected_paths" plain >
+          <b-form-checkbox  v-for="(path, idx) in logs_paths" :key="idx" :value="path" >{{path}}</b-form-checkbox>
+        </b-form-checkbox-group>
+      </div>
       <div class="col-auto ml-auto d-print-none">
         <div class="form-selectgroup">
           <label class="form-selectgroup-item">
@@ -74,7 +79,7 @@
 
 <script>
 // import Vue from 'vue'
-import { BButton, BButtonGroup, BButtonToolbar } from 'bootstrap-vue'
+import { BButton, BButtonGroup, BButtonToolbar, BFormCheckbox, BFormCheckboxGroup } from 'bootstrap-vue'
 // // Vue.directive('b-modal', VBModal)
 
 // import { Terminal } from 'xterm'
@@ -118,6 +123,8 @@ export default {
     BButton,
     BButtonGroup,
     BButtonToolbar,
+    BFormCheckbox,
+    BFormCheckboxGroup,
     LogsTerminal,
     // BDropdown,
     // BDropdownItem,
@@ -172,6 +179,7 @@ export default {
       //
       // selected_domains: [],
       period: 'second',
+      selected_paths: [],
       group_by: ['host'], // 'host', 'path', 'domain'
       layout: 'grid',
       layout_prev: undefined,
@@ -191,13 +199,14 @@ export default {
         }
       ],
       logs: {},
+      logs_paths: [],
       // terminals: [],
       // searchXterms: [],
       /**
       * search
       **/
-      by: 'host', // domain
-      data: { }, // remote_addr: ['51.79.19.235']
+      // by: 'host', // domain
+      // data: { }, // remote_addr: ['51.79.19.235']
 
       id: 'input.logs.periodical',
       path: 'all',
@@ -261,7 +270,6 @@ export default {
   created: function () {
     debug('lifecycle created', this._uid)
 
-    this.layout_prev = this.layout
     let group_by = this.$route.query.group_by
 
     if (group_by) {
@@ -272,9 +280,17 @@ export default {
       debug('created group_by', group_by)
       this.group_by = []
     }
-    // else {
-    //   this.group_by = []
-    // }
+
+    let selected_paths = this.$route.query.selected_paths
+
+    if (selected_paths) {
+      if (!Array.isArray(selected_paths)) selected_paths = [selected_paths]
+
+      this.selected_paths = selected_paths
+    } else if (selected_paths === null) {
+      debug('created selected_paths', selected_paths)
+      this.selected_paths = []
+    }
 
     let coloured = this.$route.query.coloured
     debug('created coloured', coloured)
@@ -288,13 +304,15 @@ export default {
       this.layout = layout
     }
 
-    let by = this.$route.query.by
-    debug('created by', by)
-    if (by && (by === 'host' || by === 'domain')) {
-      this.by = by
-    } else {
-      this.by = 'host'
-    }
+    this.layout_prev = this.layout
+
+    // let by = this.$route.query.by
+    // debug('created by', by)
+    // if (by && (by === 'host' || by === 'domain')) {
+    //   this.by = by
+    // } else {
+    //   this.by = 'host'
+    // }
 
     Object.each(this.$route.query, function (value, prop) {
       if (/^data\..*$/.test(prop)) {
@@ -327,6 +345,22 @@ export default {
     // terminal.write('http://localhost:8083')
   },
   watch: {
+    logs_paths: function (val) {
+      if (this.selected_paths.length === 0) this.selected_paths = val
+    },
+    selected_paths: function (val) {
+      debug('watch selected_paths', val)
+      if (val && Array.isArray(val) && val.length > 0) {
+        // Array.each(this.val, function (path) {
+        Object.each(this.logs, function (data, group) {
+          if (!this.group_by.contains('path') || !val.some(function (path) { return group.indexOf(path) > -1 })) {
+            this.$delete(this.logs, group)
+          }
+        }.bind(this))
+        // }.bind(this))
+      }
+      this.$router.replace({ query: { ...this.$route.query, selected_paths: val}}).catch(err => { debug('selected_paths set', err) })
+    },
     logs: function (val) {
       debug('watch logs', val)
       if (val && Object.getLength(val) === 1 && this.rows !== 36) {
@@ -477,9 +511,9 @@ export default {
       }.bind(this))
       this.$router.replace({ query: { ...this.$route.query, layout: this.layout}}).catch(err => { debug('setLayout', err) })
     },
-    setBy: function (val) {
-      this.$router.replace({query: { ...this.$route.query, by: this.by}}).catch(err => { debug('setBy', err) })
-    },
+    // setBy: function (val) {
+    //   this.$router.replace({query: { ...this.$route.query, by: this.by}}).catch(err => { debug('setBy', err) })
+    // },
     setData: function (val) {
       let data = {}
       Object.each(this.data, function (value, prop) {
