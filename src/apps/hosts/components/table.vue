@@ -44,6 +44,8 @@
       show-empty
       :busy="isBusy"
       :dark="dark"
+      sort-by="hostname"
+      :sort-desc="false"
     >
       <template #table-busy>
         <div class="text-center text-info my-2">
@@ -95,12 +97,11 @@
       </template> -->
 
       <!-- cpus -->
-      <template #cell(cpus_detail)="row">
-        <!-- {{row.item.networkInterfaces}} -->
+      <!-- <template #cell(cpus_detail)="row">
         <b-button variant="info" size="sm" @click="toggleDetails('cpus', row)" class="mr-2">
           {{ row.detailsShowing && showDetails === 'cpus' ? 'Hide: ' : 'Show: '}} {{ row.item.cpus_detail[0].model }}
         </b-button>
-      </template>
+      </template> -->
 
       <!-- networkInterfaces -->
       <template #cell(networkInterfaces)="row">
@@ -152,10 +153,17 @@
         <div class="btn-list flex-nowrap">
           <b-dropdown variant="link" toggle-class="text-decoration-none" text="Actions" right>
             <b-dropdown-item :to="{ name: 'logs', query: {selected_hosts: [data.item.hostname], group_by: 'path'}}">
-              <span style="height: 24px; width: 24px"> <svg style="height: 24px; width: 24px" data-v-2a169e26="" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-md"><path data-v-2a169e26="" stroke="none" d="M0 0h24v24H0z"></path><path data-v-2a169e26="" d="M16 6h3a1 1 0 0 1 1 1v11a2 2 0 0 1 -4 0v-13a1 1 0 0 0 -1 -1h-10a1 1 0 0 0 -1 1v12a3 3 0 0 0 3 3h11"></path><line data-v-2a169e26="" x1="8" y1="8" x2="12" y2="8"></line><line data-v-2a169e26="" x1="8" y1="12" x2="12" y2="12"></line><line data-v-2a169e26="" x1="8" y1="16" x2="12" y2="16"></line></svg> </span>
-              Logs
+              <span>
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" ><path  stroke="none" d="M0 0h24v24H0z"></path><path  d="M16 6h3a1 1 0 0 1 1 1v11a2 2 0 0 1 -4 0v-13a1 1 0 0 0 -1 -1h-10a1 1 0 0 0 -1 1v12a3 3 0 0 0 3 3h11"></path><line  x1="8" y1="8" x2="12" y2="8"></line><line  x1="8" y1="12" x2="12" y2="12"></line><line  x1="8" y1="16" x2="12" y2="16"></line></svg>
+              </span>
+              Logs Summary
             </b-dropdown-item>
-            <!-- <b-dropdown-item href="#">Another action</b-dropdown-item> -->
+            <b-dropdown-item :to="{ name: 'logs_web', query: {selected_hosts: [data.item.hostname], group_by: 'domain', layout: 'row'}}">
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg>
+              </span>
+              Logs Web
+            </b-dropdown-item>
           </b-dropdown>
 
         </div>
@@ -239,7 +247,8 @@ export default {
             this.hosts.push({
               hostname: host.hostname,
               cpus: host.cpus.length,
-              cpus_detail: host.cpus,
+              // cpus_detail: host.cpus,
+              cpus_detail: host.cpus[0].model,
               totalmem: Math.round(host.totalmem / 1073741824), // GB
               type: host.type,
               release: host.release,
@@ -304,7 +313,7 @@ export default {
           key: 'cpus_detail',
           label: 'cpus detail',
           tdClass: 'text-muted',
-          class: 'w-1',
+          // class: 'w-1',
           sortable: false,
           // thStyle: {
           //   display: 'none'

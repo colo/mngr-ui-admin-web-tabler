@@ -7,7 +7,7 @@
         <div class="col-auto">
           <!-- Page pre-title -->
           <div class="page-pretitle">
-            <svg data-v-2a169e26="" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-md"><path data-v-2a169e26="" stroke="none" d="M0 0h24v24H0z"></path><rect data-v-2a169e26="" x="3" y="4" width="18" height="8" rx="3"></rect><rect data-v-2a169e26="" x="3" y="12" width="18" height="8" rx="3"></rect><line data-v-2a169e26="" x1="7" y1="8" x2="7" y2="8.01"></line><line data-v-2a169e26="" x1="7" y1="16" x2="7" y2="16.01"></line></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><rect x="3" y="4" width="18" height="8" rx="3"></rect><rect x="3" y="12" width="18" height="8" rx="3"></rect><line x1="7" y1="8" x2="7" y2="8.01"></line><line x1="7" y1="16" x2="7" y2="16.01"></line></svg>
             Summary
           </div>
           <h2 class="page-title">
@@ -34,7 +34,7 @@
             right
           >
             <template v-slot:button-content>
-              <svg data-v-2a169e26="" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-md"><path data-v-2a169e26="" stroke="none" d="M0 0h24v24H0z"></path><rect data-v-2a169e26="" x="3" y="4" width="18" height="8" rx="3"></rect><rect data-v-2a169e26="" x="3" y="12" width="18" height="8" rx="3"></rect><line data-v-2a169e26="" x1="7" y1="8" x2="7" y2="8.01"></line><line data-v-2a169e26="" x1="7" y1="16" x2="7" y2="16.01"></line></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-md"><path stroke="none" d="M0 0h24v24H0z"></path><rect x="3" y="4" width="18" height="8" rx="3"></rect><rect x="3" y="12" width="18" height="8" rx="3"></rect><line x1="7" y1="8" x2="7" y2="8.01"></line><line x1="7" y1="16" x2="7" y2="16.01"></line></svg>
               Hosts
             </template>
 

@@ -13,12 +13,13 @@ let init = false
 //
 // import web_callback from '@apps/logs/web/libs/historical'
 
-let grouped_logs = {}
-let group_by = []
-let selected_hosts = []
-let selected_paths = []
-let logs_paths = []
+// let grouped_logs = {}
+// let group_by = []
+// let selected_hosts = []
+// let selected_paths = []
+// let logs_paths = []
 
+let vms = {}
 const generic_callback = function (data, metadata, key, vm) {
   debug('PERIODICAL LOGS GENERIC CALLBACK data %s %o', key, data, metadata)
   // if (key === 'hosts.periodical') { hosts_callback(data, metadata, key, vm) }
@@ -26,35 +27,45 @@ const generic_callback = function (data, metadata, key, vm) {
   // if (key === 'os.periodical') { os_callback(data, metadata, key, vm) }
   //
   // if (/^logs\.web\.historical\..*$/.test(key)) { web_callback(data, metadata, key, vm) }
+  let id = vm.id
+  if (!vms[id]) {
+    vms[id] = {
+      grouped_logs: {},
+      group_by: [],
+      selected_hosts: [],
+      selected_paths: [],
+      logs_paths: [],
+    }
+  }
 
   let _data
   if (data.logs) _data = data.logs // comes from 'Range'
   else _data = data // comes from 'register'
 
-  if (group_by !== vm.group_by || selected_hosts !== vm.selected_hosts || selected_paths !== vm.selected_paths) {
-    Object.each(grouped_logs, function (data, group) {
+  if (vms[id].group_by !== vm.group_by || vms[id].selected_hosts !== vm.selected_hosts || vms[id].selected_paths !== vm.selected_paths) {
+    Object.each(vms[id].grouped_logs, function (data, group) {
       vm.$delete(vm.logs, group)
-      delete grouped_logs[group]
+      delete vms[id].grouped_logs[group]
     })
   }
 
-  group_by = vm.group_by
-  selected_hosts = vm.selected_hosts
-  selected_paths = vm.selected_paths
+  vms[id].group_by = vm.group_by
+  vms[id].selected_hosts = vm.selected_hosts
+  vms[id].selected_paths = vm.selected_paths
 
   let all_logs = {all: []}
-  Object.each(grouped_logs, function (data, group) {
+  Object.each(vms[id].grouped_logs, function (data, group) {
     if (vm.selected_hosts.length > 0) {
       Array.each(vm.selected_hosts, function (host) {
         if (group.indexOf(host) > -1) {
-          grouped_logs[group] = []
+          vms[id].grouped_logs[group] = []
         }
         // else {
-        //   // delete grouped_logs[group]
+        //   // delete vms[id].grouped_logs[group]
         // }
       })
     } else {
-      grouped_logs[group] = []
+      vms[id].grouped_logs[group] = []
     }
   })
 
@@ -64,7 +75,7 @@ const generic_callback = function (data, metadata, key, vm) {
     let domain = row.metadata.domain
     let timestamp = row.metadata.timestamp
 
-    if (!logs_paths.contains(path)) logs_paths.push(path)
+    if (!vms[id].logs_paths.contains(path)) vms[id].logs_paths.push(path)
 
     if (vm.selected_paths.length === 0 || vm.selected_paths.contains(path)) {
       if (vm.group_by.length === 0) {
@@ -81,8 +92,8 @@ const generic_callback = function (data, metadata, key, vm) {
 
         debug('PERIODICAL GROUP %s', group)
 
-        if (!grouped_logs[group]) grouped_logs[group] = []
-        grouped_logs[group].push({ timestamp: timestamp, domain: domain, host: host, path: path, log: row.data.log})
+        if (!vms[id].grouped_logs[group]) vms[id].grouped_logs[group] = []
+        vms[id].grouped_logs[group].push({ timestamp: timestamp, domain: domain, host: host, path: path, log: row.data.log})
         // } catch (e) {
         //   debug('PERIODICAL GROUP ERR %o', e)
         // }
@@ -90,15 +101,15 @@ const generic_callback = function (data, metadata, key, vm) {
       // if (row && row.data && row.data.log) { logs.push(row.data.log) }
     }
   })
-  debug('PERIODICAL LOGS GROUPED data %o %o', all_logs, grouped_logs)
+  debug('PERIODICAL LOGS GROUPED data %o %o', all_logs, vms[id].grouped_logs)
 
   if (vm.group_by.length === 0) {
     vm.logs = all_logs
   } else {
-    // Object.each(grouped_logs, function (data, group) {
+    // Object.each(vms[id].grouped_logs, function (data, group) {
     //   vm.$set(vm.logs, group, data)
     // })
-    Object.each(grouped_logs, function (data, group) {
+    Object.each(vms[id].grouped_logs, function (data, group) {
       if (vm.selected_hosts.length > 0 && vm.group_by.contains('host')) {
         if (vm.selected_hosts.some(function (host) { return group.indexOf(host) > -1 })) {
           vm.$set(vm.logs, group, data)
@@ -124,7 +135,7 @@ const generic_callback = function (data, metadata, key, vm) {
     })
   }
 
-  vm.logs_paths = logs_paths
+  vm.logs_paths = vms[id].logs_paths
 }
 
 const logs_summary_periodical = {
@@ -241,6 +252,12 @@ const logs_summary_periodical = {
           })
         }
         filter.push(domains_filter)
+      }
+
+      if (vm.filters && vm.filters.length > 0) {
+        Array.each(vm.filters, function (_filter) {
+          filter.push(_filter)
+        })
       }
 
       // let os_filter = Array.clone(filter)

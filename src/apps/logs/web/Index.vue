@@ -7,7 +7,7 @@
         <div class="col-auto">
           <!-- Page pre-title -->
           <div class="page-pretitle">
-            <svg data-v-2a169e26="" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-md"><path data-v-2a169e26="" stroke="none" d="M0 0h24v24H0z"></path><path data-v-2a169e26="" d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path data-v-2a169e26="" d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg>
             Web Logs
           </div>
           <h2 class="page-title">
@@ -16,6 +16,7 @@
         </div>
         <!-- Page title actions -->
         <div class="col-auto ml-auto d-print-none">
+          <!--  -->
           <!-- <span class="d-none d-sm-inline">
             <a href="#" class="btn btn-white">
               New view
@@ -34,7 +35,7 @@
             right
           >
             <template v-slot:button-content>
-              <svg data-v-2a169e26="" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-md"><path data-v-2a169e26="" stroke="none" d="M0 0h24v24H0z"></path><rect data-v-2a169e26="" x="3" y="4" width="18" height="8" rx="3"></rect><rect data-v-2a169e26="" x="3" y="12" width="18" height="8" rx="3"></rect><line data-v-2a169e26="" x1="7" y1="8" x2="7" y2="8.01"></line><line data-v-2a169e26="" x1="7" y1="16" x2="7" y2="16.01"></line></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-md"><path stroke="none" d="M0 0h24v24H0z"></path><rect x="3" y="4" width="18" height="8" rx="3"></rect><rect x="3" y="12" width="18" height="8" rx="3"></rect><line x1="7" y1="8" x2="7" y2="8.01"></line><line x1="7" y1="16" x2="7" y2="16.01"></line></svg>
               Hosts
             </template>
 
@@ -66,7 +67,7 @@
           </b-dropdown>
 
         </div>
-        <historical :selected_hosts="selected_hosts" :selected_domains="selected_domains" period="hour"/>
+        <periodical :selected_hosts="selected_hosts" :selected_domains="selected_domains" period="minute"/>
       </div>
     </div>
 
@@ -90,7 +91,7 @@ import DataSourcesMixin from '@mixins/dataSources'
 // import DashboardMixin from '@mixins/dashboard'
 import {SECOND, MINUTE, HOUR, DAY, WEEK, MONTH} from '@libs/time/const'
 
-import historical from '@apps/logs/web/components/historical'
+import periodical from '@apps/logs/web/components/periodical'
 /**
 * Web components
 **/
@@ -116,7 +117,7 @@ export default {
     BFormCheckbox,
     BFormCheckboxGroup,
     BFormGroup,
-    historical,
+    periodical,
     // BModal,
     // chartTabular,
     // chart,
@@ -163,9 +164,9 @@ export default {
       * DataSourcesMixin
       **/
       store: false,
-      pipeline_id: ['input.logs.web.hosts.periodical'],
+      pipeline_id: ['input.logs.hosts.periodical'],
 
-      id: 'input.logs.web.hosts.periodical',
+      id: 'input.logs.hosts.periodical',
       path: 'all',
 
       refresh: SECOND * 5,
@@ -185,39 +186,6 @@ export default {
         ]
       },
 
-      // EventBus: EventBus,
-      // stat_memory: [],
-      // stat_cpus: [],
-      // stat_loadavg: [],
-      // stat_uptime: [],
-      // stat_blocks: [],
-      // stat_net_in: [],
-      // stat_net_out: [],
-      //
-      // // stat_world_map_country_counter: [],
-      // // stat_world_map_city_counter: [],
-      // geodata: {
-      //   city_counter: [],
-      //   country_counter: [],
-      //   top_city_counter: [],
-      //   top_country_counter: [],
-      //   continent_counter: [],
-      //   world_map_city_counter: [],
-      //   top_world_map_city_counter: [],
-      //   world_map_country_counter: [],
-      //   top_world_map_country_counter: []
-      // },
-      //
-      // traffic: {
-      //   host_counter: [],
-      //   domain_counter: [],
-      //   top_host_counter: [],
-      //   top_domain_counter: []
-      // },
-      //
-      // top: 5,
-      //
-      //
     }
   },
   created: function () {
