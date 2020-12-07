@@ -102,12 +102,12 @@
       </div>
       <div class="col-lg-7">
 
-        <traffic :stat="traffic" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.traffic.hosts:'+selected_hosts.join(',')"/>
+        <web-traffic :stat="traffic" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.traffic.hosts:'+selected_hosts.join(',')"/>
 
       </div>
       <div class="col-lg-5">
 
-        <geoip :stat="geodata" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.geoip.hosts:'+selected_hosts.join(',')"/>
+        <web-geoip :stat="geodata" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.geoip.hosts:'+selected_hosts.join(',')"/>
 
       </div>
 
@@ -149,8 +149,8 @@ import blocks from '@apps/hosts/components/blocks'
 /**
 * Web components
 **/
-import geoip from '@apps/hosts/components/geoip'
-import traffic from '@apps/hosts/components/traffic'
+import webGeoip from '@apps/logs/web/components/geoip'
+import webTraffic from '@apps/logs/web/components/traffic'
 
 import hostsTable from '@apps/hosts/components/table'
 
@@ -222,8 +222,8 @@ export default {
     /**
     * web
     **/
-    geoip,
-    traffic,
+    webTraffic,
+    webGeoip,
     hostsTable
   },
 

@@ -5,6 +5,115 @@
       set data
     </b-button> -->
     <div class="row row-deck row-cards">
+      <div class="col-lg-6">
+
+        <traffic view="hosts_counter" :force-view="true" :stat="traffic" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.traffic.hosts:'+selected_hosts.join(',')"/>
+
+      </div>
+
+      <div class="col-lg-6">
+
+        <traffic view="domains_counter" :force-view="true" :stat="traffic" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.traffic.hosts:'+selected_hosts.join(',')"/>
+
+      </div>
+
+      <div class="col-lg-4">
+
+        <traffic view="requests_counter" :force-view="true" :stat="traffic" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.traffic.hosts:'+selected_hosts.join(',')"/>
+
+      </div>
+
+      <div class="col-lg-4">
+
+        <traffic view="status_counter" :force-view="true" :stat="traffic" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.traffic.hosts:'+selected_hosts.join(',')"/>
+
+      </div>
+
+      <div class="col-lg-4">
+
+        <traffic view="methods_counter" :force-view="true" :stat="traffic" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.traffic.hosts:'+selected_hosts.join(',')"/>
+
+      </div>
+
+      <div class="col-lg-4">
+
+        <traffic view="type_counter" :force-view="true" :stat="traffic" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.traffic.hosts:'+selected_hosts.join(',')"/>
+
+      </div>
+      <div class="col-lg-4">
+
+        <traffic view="bytes_counter" :force-view="true" :stat="traffic" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.traffic.hosts:'+selected_hosts.join(',')"/>
+
+      </div>
+
+      <div class="col-lg-4">
+
+        <traffic view="user_counter" :force-view="true" :stat="traffic" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.traffic.hosts:'+selected_hosts.join(',')"/>
+
+      </div>
+
+      <div class="col-lg-4">
+
+        <traffic view="referer_counter" :force-view="true" :stat="traffic" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.traffic.hosts:'+selected_hosts.join(',')"/>
+
+      </div>
+
+      <div class="col-lg-4">
+
+        <traffic view="user_agent_os_counter" :force-view="true" :stat="traffic" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.traffic.hosts:'+selected_hosts.join(',')"/>
+
+      </div>
+
+      <div class="col-lg-4">
+
+        <traffic view="user_agent_engine_counter" :force-view="true" :stat="traffic" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.traffic.hosts:'+selected_hosts.join(',')"/>
+
+      </div>
+
+      <div class="col-lg-4">
+
+        <traffic view="user_agent_device_counter" :force-view="true" :stat="traffic" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.traffic.hosts:'+selected_hosts.join(',')"/>
+
+      </div>
+
+      <div class="col-lg-4">
+
+        <traffic view="user_agent_browser_counter" :force-view="true" :stat="traffic" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.traffic.hosts:'+selected_hosts.join(',')"/>
+
+      </div>
+
+      <div class="col-lg-8">
+
+        <traffic view="top_pathnames_counter" :force-view="true" :stat="traffic" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.traffic.hosts:'+selected_hosts.join(',')"/>
+
+      </div>
+
+      <div class="col-lg-6">
+
+        <geoip view="world_map_country_counter" :force-view="true" :stat="geodata" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.geoip.hosts:'+selected_hosts.join(',')"/>
+
+      </div>
+
+      <div class="col-lg-6">
+
+        <geoip view="country_counter" :force-view="true" :stat="geodata" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.geoip.hosts:'+selected_hosts.join(',')"/>
+
+      </div>
+
+      <div class="col-lg-6">
+
+        <geoip view="world_map_city_counter" :force-view="true" :stat="geodata" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.geoip.hosts:'+selected_hosts.join(',')"/>
+
+      </div>
+
+      <div class="col-lg-6">
+
+        <geoip view="city_counter" :force-view="true" :stat="geodata" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.geoip.hosts:'+selected_hosts.join(',')"/>
+
+      </div>
+
+    </div>
+    <div class="row row-deck row-cards">
       <div class="col-auto d-print-none">
         <b-form-checkbox-group  v-model="selected_paths" plain >
           <b-form-checkbox  v-for="(path, idx) in logs_paths" :key="idx" :value="path" >{{path}}</b-form-checkbox>
@@ -95,7 +204,10 @@ debug.log = console.log.bind(console) // don't forget to bind to console!
 
 import JSPipeline from 'js-pipeline'
 import Pipeline from '@libs/pipelines'
-import { requests, store } from '@apps/logs/sources/periodical/index'
+import logs_requests from '@apps/logs/sources/periodical/requests'
+import {requests, store} from '@apps/logs/web/sources/periodical/index'
+
+requests.once = logs_requests.once.combine(requests.once)
 
 import DataSourcesMixin from '@mixins/dataSources'
 import DashboardMixin from '@mixins/dashboard'
@@ -106,8 +218,8 @@ import {SECOND, MINUTE, HOUR, DAY, WEEK, MONTH} from '@libs/time/const'
 /**
 * Web components
 **/
-// import geoip from '@apps/logs/web/components/geoip'
-// import traffic from '@apps/logs/web/components/traffic'
+import geoip from '@apps/logs/web/components/geoip'
+import traffic from '@apps/logs/web/components/traffic'
 //
 // import { requests, store } from './sources/index'
 //
@@ -126,6 +238,8 @@ export default {
     BFormCheckbox,
     BFormCheckboxGroup,
     LogsTerminal,
+    traffic,
+    geoip
     // BDropdown,
     // BDropdownItem,
     // BDropdownForm,
@@ -233,41 +347,28 @@ export default {
         ]
       },
 
-      refresh: SECOND,
+      refresh: SECOND * 5,
       // current_time: undefined,
       EventBus: EventBus,
-      // stat_memory: [],
-      // stat_cpus: [],
-      // stat_loadavg: [],
-      // stat_uptime: [],
-      // stat_blocks: [],
-      // stat_net_in: [],
-      // stat_net_out: [],
-      //
-      // // stat_world_map_country_counter: [],
-      // // stat_world_map_city_counter: [],
-      // geodata: {
-      //   city_counter: [],
-      //   country_counter: [],
-      //   top_city_counter: [],
-      //   top_country_counter: [],
-      //   continent_counter: [],
-      //   world_map_city_counter: [],
-      //   top_world_map_city_counter: [],
-      //   world_map_country_counter: [],
-      //   top_world_map_country_counter: []
-      // },
-      //
-      // traffic: {
-      //   host_counter: [],
-      //   domain_counter: [],
-      //   top_host_counter: [],
-      //   top_domain_counter: []
-      // },
-      //
-      // top: 5,
-      //
-      //
+
+      geodata: {
+        city_counter: [],
+        country_counter: [],
+        top_city_counter: [],
+        top_country_counter: [],
+        continent_counter: [],
+        world_map_city_counter: [],
+        top_world_map_city_counter: [],
+        world_map_country_counter: [],
+        top_world_map_country_counter: []
+      },
+
+      traffic: {
+        host_counter: [],
+        domain_counter: [],
+        top_host_counter: [],
+        top_domain_counter: []
+      },
     }
   },
   created: function () {

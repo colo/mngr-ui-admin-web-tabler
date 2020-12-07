@@ -3,9 +3,12 @@
     <div class="card-body">
       <!-- <h3 class="card-title">Countries web access</h3> -->
       <div class="d-flex">
-        <h3 class="card-title"><b-link :to="{name: 'logs_web', query: { ...$route.query }}">Traffic Summary</b-link></h3>
+        <h3 class="card-title">
+          <b-link v-if="forceView === false" :to="{name: 'logs_web', query: { ...$route.query }}">Traffic Summary</b-link>
+          <template v-else>{{labels[traffic_view]}}</template>
+        </h3>
         <!-- <div class="subheader">Countries web access</div> -->
-        <div class="ml-auto lh-1">
+        <div class="ml-auto lh-1" v-if="forceView === false">
           <b-dropdown  variant="link" toggle-class="text-decoration-none btn-options" no-caret right>
             <template v-slot:button-content>
               <a class="dropdown-toggle text-muted" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -13,7 +16,7 @@
               </a>
             </template>
 
-            <b-dropdown-item v-for="(label, view) in labels" :key="view" :to="{name: 'hosts', query: { ...$route.query, traffic_view: view}}" :active="traffic_view === view" @click="setView(view)" replace>
+            <b-dropdown-item v-for="(label, view) in labels" :key="view" :to="{query: { ...$route.query, traffic_view: view}}" :active="traffic_view === view" @click="setView(view)" replace>
               {{label}}
             </b-dropdown-item>
 
@@ -122,7 +125,7 @@
 </template>
 <script>
 import * as Debug from 'debug'
-const debug = Debug('apps:hosts:components:traffic')
+const debug = Debug('apps:logs:web:components:traffic')
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
 import { BDropdown, BDropdownItem, BFormCheckbox, BLink } from 'bootstrap-vue'
@@ -177,6 +180,18 @@ export default {
   //
   // },
   props: {
+    view: {
+      type: String,
+      default: 'requests_counter',
+    },
+    forceView: {
+      type: Boolean,
+      default: false
+    },
+    route: {
+      type: String,
+      default: 'logs_web'
+    },
     dark: {
       type: Boolean,
       default: false,
@@ -309,9 +324,13 @@ export default {
     // )
     //
     // debug('create', this.mode)
-    const traffic_view = this.$route.query.traffic_view
-    if (traffic_view) {
-      this.traffic_view = (this.labels[traffic_view]) ? traffic_view : 'requests_counter'
+    if (this.forceView === false) {
+      const traffic_view = this.$route.query.traffic_view
+      if (traffic_view) {
+        this.traffic_view = (this.labels[traffic_view]) ? traffic_view : this.view
+      }
+    } else {
+      this.traffic_view = this.view
     }
 
     const traffic_sum = this.$route.query.traffic_sum
@@ -321,6 +340,21 @@ export default {
     }
   },
   watch: {
+    view: function (val) {
+      if (this.forceView === true) {
+        this.traffic_view = val
+      }
+    },
+    forceView: function (val) {
+      if (val === true) {
+        this.traffic_view = this.view
+      } else {
+        const traffic_view = this.$route.query.traffic_view
+        if (traffic_view) {
+          this.traffic_view = (this.labels[traffic_view]) ? traffic_view : this.view
+        }
+      }
+    },
     traffic_view: function (val) {
       this.$router.replace({ path: this.$route.path, query: Object.merge(Object.clone(this.$route.query), { traffic_view: val }) }).catch(err => { debug('traffic_view', err) })
       // this.$router.push(`${this.$route.path}?tab=${val}`).catch(err => {})// catch 'NavigationDuplicated' error
