@@ -81,12 +81,12 @@
               :wrapper="{
                 type: barRaceWrapper,
                 /* props: (/domain/.test(traffic_view)) ? Object.merge(barRaceConfigDomains.props, {sum:traffic_sum}) : Object.merge(barRaceConfigHosts.props, {sum:traffic_sum}) */
-                props : Object.merge(barRaceConfig.props, {sum:traffic_sum})
+                props : Object.merge(barRaceConfig.props, {sum: (traffic_sum.contains(traffic_view)) ? true : false})
               }"
               :always_update="false"
-              :ref="'hosts.traffic.'+traffic_view + ((traffic_sum === true) ? '_sum' : '')"
-              :id="'hosts.traffic.'+traffic_view + ((traffic_sum === true) ? '_sum' : '')"
-              :key="'hosts.traffic.'+traffic_view + ((traffic_sum === true) ? '_sum' : '')"
+              :ref="'hosts.traffic.'+traffic_view + ((traffic_sum.contains(traffic_view)) ? '_sum' : '')"
+              :id="'hosts.traffic.'+traffic_view + ((traffic_sum.contains(traffic_view)) ? '_sum' : '')"
+              :key="'hosts.traffic.'+traffic_view + ((traffic_sum.contains(traffic_view)) ? '_sum' : '')"
               :config="barRaceConfig"
               :stat="{
                 data: [
@@ -112,6 +112,7 @@
             :class="barChartRegEx.test(traffic_view) ? 'invisible' : ''"
             class="form-switch"
             v-model="traffic_sum"
+            :value="traffic_view"
             plain
           >
           <!-- @input="setSum" -->
@@ -313,7 +314,7 @@ export default {
       EventBus: EventBus,
 
       traffic_view: 'requests_counter',
-      traffic_sum: false,
+      traffic_sum: [],
     }
   },
   mounted: function () {
@@ -333,10 +334,14 @@ export default {
       this.traffic_view = this.view
     }
 
-    const traffic_sum = this.$route.query.traffic_sum
+    let traffic_sum = this.$route.query.traffic_sum
     debug('created traffic_sum', traffic_sum)
     if (traffic_sum) {
-      this.traffic_sum = (traffic_sum === 'true' || traffic_sum === true)
+      if (!Array.isArray(traffic_sum)) traffic_sum = [traffic_sum]
+      this.traffic_sum = traffic_sum
+      // this.traffic_sum = (traffic_sum === 'true' || traffic_sum === true)
+    } else {
+      this.traffic_sum = []
     }
   },
   watch: {
@@ -434,12 +439,12 @@ export default {
       this.trafficdata = []
       this.traffic_view = val
     },
-    setSum: function (val) {
-      debug('setSum', val)
-
-      this.traffic_sum = val
-      // this.$router.replace({name: 'hosts', query: { ...this.$route.query, traffic_sum: val}}).catch(err => { debug('setSum', err) })
-    },
+    // setSum: function (val) {
+    //   debug('setSum', val)
+    //
+    //   this.traffic_sum = val
+    //   // this.$router.replace({name: 'hosts', query: { ...this.$route.query, traffic_sum: val}}).catch(err => { debug('setSum', err) })
+    // },
     /**
     * @start pipelines
     **/

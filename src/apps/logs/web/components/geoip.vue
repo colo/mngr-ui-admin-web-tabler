@@ -89,12 +89,12 @@
               v-else-if="geoip_view === 'country_counter' || geoip_view === 'city_counter'"
               :wrapper="{
                 type: barRaceWrapper,
-                props: (/country/.test(geoip_view)) ? Object.merge(barRaceConfigCountries.props, {sum:geoip_sum}) : Object.merge(barRaceConfigCities.props, {sum:geoip_sum})
+                props: (/country/.test(geoip_view)) ? Object.merge(barRaceConfigCountries.props, {sum: (geoip_sum.contains(geoip_view)) ? true : false }) : Object.merge(barRaceConfigCities.props, {sum: (geoip_sum.contains(geoip_view)) ? true : false })
               }"
               :always_update="false"
-              :ref="'hosts.geoip.'+geoip_view + ((geoip_sum === true) ? '_sum' : '')"
-              :id="'hosts.geoip.'+geoip_view + ((geoip_sum === true) ? '_sum' : '')"
-              :key="'hosts.geoip.'+geoip_view + ((geoip_sum === true) ? '_sum' : '')"
+              :ref="'hosts.geoip.'+geoip_view + ((geoip_sum.contains(geoip_view)) ? '_sum' : '')"
+              :id="'hosts.geoip.'+geoip_view + ((geoip_sum.contains(geoip_view)) ? '_sum' : '')"
+              :key="'hosts.geoip.'+geoip_view + ((geoip_sum.contains(geoip_view)) ? '_sum' : '')"
               :config="(/country/.test(geoip_view)) ? barRaceConfigCountries : barRaceConfigCities"
               :stat="{
                 data: [
@@ -118,6 +118,7 @@
             :class="(geoip_view !== 'country_counter' && geoip_view !== 'city_counter') ? 'invisible' : ''"
             class="form-switch"
             v-model="geoip_sum"
+            :value="geoip_view"
             plain
           >
           <!-- @input="setSum" -->
@@ -237,10 +238,14 @@ export default {
     //   this.geoip_view = geoip_view
     // }
 
-    const geoip_sum = this.$route.query.geoip_sum
+    let geoip_sum = this.$route.query.geoip_sum
     debug('created geoip_sum', geoip_sum)
     if (geoip_sum) {
-      this.geoip_sum = (geoip_sum === 'true' || geoip_sum === true)
+      if (!Array.isArray(geoip_sum)) geoip_sum = [geoip_sum]
+      this.geoip_sum = geoip_sum
+      // this.geoip_sum = (geoip_sum === 'true' || geoip_sum === true)
+    } else {
+      this.geoip_sum = []
     }
   },
   watch: {
@@ -353,7 +358,7 @@ export default {
       EventBus: EventBus,
 
       geoip_view: 'top_world_map_country_counter',
-      geoip_sum: false,
+      geoip_sum: [],
     }
   },
   methods: {
