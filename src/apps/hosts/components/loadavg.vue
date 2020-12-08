@@ -2,7 +2,7 @@
   <div class="col">
     <div class="card card-sm">
       <div class="card-body d-flex align-items-center">
-        <span class="bg-blue text-white stamp mr-3"><svg data-v-2a169e26="" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-md"><path data-v-2a169e26="" stroke="none" d="M0 0h24v24H0z"></path><polyline data-v-2a169e26="" points="21 12 17 12 14 20 10 4 7 12 3 12"></polyline></svg>
+        <span class="bg-blue text-white stamp mr-3"><svg class="icon icon-md" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path  stroke="none" d="M0 0h24v24H0z"></path><polyline  points="21 12 17 12 14 20 10 4 7 12 3 12"></polyline></svg>
         </span>
         <div class="mr-3 lh-sm">
           <div class="strong">

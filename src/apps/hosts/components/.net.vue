@@ -1,20 +1,5 @@
 <template>
-  <div class="col">
-    <div class="card card-sm">
-      <div class="card-body d-flex align-items-center">
-        <span :class="(type === 'In') ? 'bg-green text-white stamp mr-3' : 'bg-red text-white stamp mr-3'">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><rect x="3" y="13" width="18" height="8" rx="2" /><line x1="17" y1="17" x2="17" y2="17.01" /><line x1="13" y1="17" x2="13" y2="17.01" /><line x1="15" y1="13" x2="15" y2="11" /><path d="M11.75 8.75a4 4 0 0 1 6.5 0" /><path d="M8.5 6.5a8 8 0 0 1 13 0" /></svg>
-        </span>
-        <div class="mr-3 lh-sm">
-          <div class="strong">
-            {{net}} {{unit}}
-          </div>
-          <div class="text-muted">NET {{type}}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- <div class="card">
+  <div class="card">
     <div class="card-body">
       <div class="d-flex align-items-center">
         <div class="subheader">NET {{type}}</div>
@@ -25,8 +10,8 @@
           <span class="d-inline-flex align-items-center lh-1" :class="(diff_bytes > 0) ? 'text-red' : (diff_bytes < 0) ? 'text-green' : 'text-yellow'">
             {{diff_bytes}}
             <svg v-if="diff_bytes > 0" xmlns="http://www.w3.org/2000/svg" class="icon ml-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="3 17 9 11 13 15 21 7" /><polyline points="14 7 21 7 21 14" /></svg>
-            <svg v-else-if="diff_bytes < 0"  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-md"><path  stroke="none" d="M0 0h24v24H0z"></path><polyline  points="3 7 9 13 13 9 21 17"></polyline><polyline  points="21 10 21 17 14 17"></polyline></svg>
-            <svg v-else  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-md"><path  stroke="none" d="M0 0h24v24H0z"></path><line  x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <svg v-else-if="diff_bytes < 0" data-v-2a169e26="" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-md"><path data-v-2a169e26="" stroke="none" d="M0 0h24v24H0z"></path><polyline data-v-2a169e26="" points="3 7 9 13 13 9 21 17"></polyline><polyline data-v-2a169e26="" points="21 10 21 17 14 17"></polyline></svg>
+            <svg v-else data-v-2a169e26="" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-md"><path data-v-2a169e26="" stroke="none" d="M0 0h24v24H0z"></path><line data-v-2a169e26="" x1="5" y1="12" x2="19" y2="12"></line></svg>
           </span>
         </div>
       </div>
@@ -47,7 +32,7 @@
       :no_buffer="false"
     >
     </chart>
-  </div> -->
+  </div>
 
 </template>
 <script>

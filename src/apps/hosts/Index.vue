@@ -69,13 +69,22 @@
       </div>
     </div>
     <div class="row row-deck row-cards">
-      <div class="col-sm-6 col-md-4 col-lg-2">
+      <div class="col-sm-4 col-md-4 col-lg-2">
         <cpus :stat="stat_cpus" :key="'os.cpus.hosts:'+selected_hosts.join(',')"/>
       </div>
-      <div class="col-sm-6 col-md-4 col-lg-2">
+      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-2">
         <memory :stat="stat_memory" :key="'os.memory.hosts:'+selected_hosts.join(',')"/>
       </div>
-      <div class="col-sm-6 col-md-4 col-lg-2">
+      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-2">
+        <div class="row">
+          <net :stat="stat_net_in" type="In" :key="'os.In.hosts:'+selected_hosts.join(',')"/>
+
+          <div class="w-100 d-none d-md-block"></div>
+
+          <net :stat="stat_net_out" type="Out" :key="'os.netOut.hosts:'+selected_hosts.join(',')"/>
+        </div>
+      </div>
+      <!-- <div class="col-sm-6 col-md-4 col-lg-2">
 
         <net :stat="stat_net_in" type="In" :key="'os.In.hosts:'+selected_hosts.join(',')"/>
 
@@ -84,8 +93,8 @@
 
         <net :stat="stat_net_out" type="Out" :key="'os.netOut.hosts:'+selected_hosts.join(',')"/>
 
-      </div>
-      <div class="col-sm-6 col-md-4 col-lg-2">
+      </div> -->
+      <div class="col-md-4 col-lg-3">
         <div class="row">
           <loadavg :stat="stat_loadavg" :key="'os.loadavg.hosts:'+selected_hosts.join(',')"/>
 
@@ -95,7 +104,15 @@
         </div>
 
       </div>
-      <div class="col-sm-6 col-md-4 col-lg-2">
+
+      <!-- <div class="col-sm-6">
+        <loadavg :stat="stat_loadavg" :key="'os.loadavg.hosts:'+selected_hosts.join(',')"/>
+      </div>
+      <div class="col-sm-6">
+        <uptime :stat="stat_uptime" :key="'os.uptime.hosts:'+selected_hosts.join(',')"/>
+      </div> -->
+
+      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 
         <blocks :stat="stat_blocks" :key="'os.blocks.hosts:'+selected_hosts.join(',')"/>
 
