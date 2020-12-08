@@ -124,12 +124,21 @@ export default function (data, metadata, key, vm) {
           /**
           * full range (all bytes from all seconds)
           **/
-          if (!hosts_net[host] || !hosts_net[host][path]) {
-            if (!hosts_net[host]) hosts_net[host] = {}
+          // if (!hosts_net[host] || !hosts_net[host][path]) {
+          //   if (!hosts_net[host]) hosts_net[host] = {}
+          //
+          //   row.data.recived = (row.data.recived && !isNaN(row.data.recived)) ? row.data.recived : 0
+          //   row.data.transmited = (row.data.transmited && !isNaN(row.data.transmited)) ? row.data.transmited : 0
+          //   hosts_net[host][path] = row
+          // } else if (hosts_net[host][path].metadata.timestamp < row.metadata.timestamp) { // update only with the biggest timestamp
+          //   hosts_net[host][path].data.recived = (row.data.recived && !isNaN(row.data.recived)) ? row.data.recived : 0
+          //   hosts_net[host][path].data.transmited = (row.data.transmited && !isNaN(row.data.transmited)) ? row.data.transmited : 0
+          // }
+
+          if (!hosts_net[host]) hosts_net[host] = {}
+
+          if (!hosts_net[host][path] || hosts_net[host][path].metadata.timestamp < row.metadata.timestamp) {
             hosts_net[host][path] = row
-          } else {
-            hosts_net[host][path].data.recived += row.data.recived
-            hosts_net[host][path].data.transmited += row.data.transmited
           }
         }
       }
@@ -203,10 +212,12 @@ export default function (data, metadata, key, vm) {
     let net_in = {timestamp: Date.now(), value: 0}
     let net_out = {timestamp: Date.now(), value: 0}
 
+    debug('hosts_net', JSON.parse(JSON.stringify(hosts_net)))
+
     Object.each(hosts_net, function (row) {
       Object.each(row, function (iface) {
         net_in.value += (iface.data.recived && !isNaN(iface.data.recived)) ? iface.data.recived : 0
-        net_out.value += (iface.data.recived && !isNaN(iface.data.recived)) ? iface.data.transmited : 0
+        net_out.value += (iface.data.transmited && !isNaN(iface.data.transmited)) ? iface.data.transmited : 0
       })
       // debug('hosts_net row', row.data.recived, row.data.transmited)
 

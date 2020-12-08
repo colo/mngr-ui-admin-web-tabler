@@ -7,7 +7,7 @@
         </span>
         <div class="mr-3 lh-sm">
           <div class="strong">
-            {{net}} {{unit}}
+            {{net}} {{unit}} [{{net_per_sec}} {{unit_per_sec}}]
           </div>
           <div class="text-muted">NET {{type}}</div>
         </div>
@@ -88,24 +88,31 @@ export default {
   watch: {
     'stat': {
       handler: function (newVal, oldVal) {
-        debug('stat.data', oldVal, newVal)
+        // debug('stat.data', this.type, newVal, oldVal)
         // let totalmem = 0
-        let val = (newVal !== undefined && newVal[0] && newVal[0].value) ? newVal[0] : (oldVal !== undefined && oldVal[0] && oldVal[0].value) ? oldVal[0] : { value: 0}
+        // let val = (newVal !== undefined && newVal[0] && newVal[0].value) ? newVal[0] : (oldVal !== undefined && oldVal[0] && oldVal[0].value) ? oldVal[0] : { value: 0}
+        let val = (newVal !== undefined && newVal[0] && newVal[0].value) ? newVal[0] : undefined
 
-        if (this.prev_value === undefined && val.timestamp !== undefined) {
+        debug('stat.data', this.type, val, this.prev_value)
+
+        if (val !== undefined && this.prev_value === undefined && val.timestamp !== undefined) {
           this.prev_value = val
-        } else if (this.prev_value !== undefined) {
-          let bytes = val.value
+        } else if (val !== undefined && this.prev_value !== undefined) {
+          let bytes_per_sec = val.value
+          let bytes_total = val.value
+
+          bytes_total = bytes_total - this.prev_value.value
+
           let timediff = (val.timestamp - this.prev_value.timestamp) / 1000
-          bytes = ((bytes - this.prev_value.value) / timediff).toFixed(2) * 1 // derive
+          bytes_per_sec = ((bytes_per_sec - this.prev_value.value) / timediff).toFixed(2) * 1 // derive
 
-          debug('stat.data BYTES', val.value, this.prev_value.value, bytes)
+          // debug('stat.data BYTES', timediff, val.value, this.prev_value.value, bytes)
 
-          if (bytes >= 0 && bytes !== null) {
+          if (bytes_total >= 0 && bytes_total !== null) {
             // let percentage = (((val.value.totalmem - val.value.freemem) * 100) / val.value.totalmem).toFixed(2) * 1
             this.prev_bytes = this.bytes
-            this.bytes = (isNaN(bytes)) ? 0 : bytes
-            this.diff_bytes = this.bytes - this.prev_bytes
+            this.bytes = (isNaN(bytes_total)) ? 0 : bytes_total
+            // this.diff_bytes = this.bytes - this.prev_bytes
 
             // totalmem = val.value.totalmem
 
@@ -133,17 +140,55 @@ export default {
             debug('stat.data', this.bytes, divider, unit)
 
             this.net = (this.bytes / divider).toFixed(1)
-            this.chart_stat.data = [{ timestamp: Date.now(), value: (this.bytes / divider).toFixed(0) * 1}]// always in MB
-            this.diff_bytes = (this.diff_bytes === this.bytes) ? 0 : (this.diff_bytes / divider).toFixed(1)
+            // this.chart_stat.data = [{ timestamp: Date.now(), value: (this.bytes / divider).toFixed(0) * 1}]// always in MB
+            // this.diff_bytes = (this.diff_bytes === this.bytes) ? 0 : (this.diff_bytes / divider).toFixed(1)
 
             this.unit = unit
+          }
+
+          if (bytes_per_sec >= 0 && bytes_per_sec !== null) {
+            // let percentage = (((val.value.totalmem - val.value.freemem) * 100) / val.value.totalmem).toFixed(2) * 1
+            this.prev_bytes_per_sec = this.bytes_per_sec
+            this.bytes_per_sec = (isNaN(bytes_per_sec)) ? 0 : bytes_per_sec
+            // this.diff_bytes_per_sec = this.bytes_per_sec - this.prev_bytes_per_sec
+
+            // totalmem = val.value.totalmem
+
+            // let info = 'Bytes'
+            let unit = 'Bs/s'
+            let divider = 1
+            if (this.bytes_per_sec > 1099511627776) {
+              unit = 'Tb/s'
+              // info = 'MBytes'
+              divider = 1099511627776
+            } else if (this.bytes_per_sec > 1073741824) {
+              unit = 'Gb/s'
+              // info = 'MBytes'
+              divider = 1073741824
+            } else if (this.bytes_per_sec > 1048576) {
+              unit = 'Mb/s'
+              // info = 'MBytes'
+              divider = 1048576
+            } else if (this.bytes_per_sec > 1024) {
+              unit = 'Kb/s'
+              // info = 'KBytes'
+              divider = 1024
+            }
+
+            debug('stat.data', this.bytes_per_sec, divider, unit)
+
+            this.net_per_sec = (this.bytes_per_sec / divider).toFixed(1)
+            // this.chart_stat.data = [{ timestamp: Date.now(), value: (this.bytes_per_sec / divider).toFixed(0) * 1}]// always in MB
+            // this.diff_bytes_per_sec = (this.diff_bytes_per_sec === this.bytes_per_sec) ? 0 : (this.diff_bytes_per_sec / divider).toFixed(1)
+
+            this.unit_per_sec = unit
           }
 
           this.prev_value = val
         }
       },
       deep: true,
-      immediate: true
+      // immediate: true
     }
   },
   // computed: {
@@ -162,6 +207,11 @@ export default {
       bytes: 0,
       net: 0,
       unit: 'bytes',
+
+      bytes_per_sec: 0,
+      net_per_sec: 0,
+      unit_per_sec: 'bytes',
+
       prev_value: undefined,
 
       /**

@@ -154,7 +154,8 @@ const logs_summary_periodical = {
       source = [{
         params: { id: _key },
         path: 'all',
-        range: 'posix ' + START + '-' + END + '/*',
+        // range: 'posix ' + START + '-' + END + '/*',
+        range: 'posix ' + vm.round(vm.end() - vm.refresh) + '-' + vm.round(vm.end()) + '/*',
         query: {
           'from': 'logs',
           /**

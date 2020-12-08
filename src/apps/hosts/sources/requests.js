@@ -215,7 +215,7 @@ const hosts_summary_periodical = {
 
 const once = [
   hosts_periodical,
-  hosts_summary_periodical
+  // hosts_summary_periodical
 ]
 
 const periodical = [
