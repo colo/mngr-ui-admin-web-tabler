@@ -134,7 +134,7 @@ import * as Debug from 'debug'
 const debug = Debug('apps:logs:web:components:geoip')
 debug.log = console.log.bind(console) // don't forget to bind to console!
 
-import { BDropdown, BDropdownItem, BFormCheckbox } from 'bootstrap-vue'
+import { BDropdown, BDropdownItem, BFormCheckbox, BLink } from 'bootstrap-vue'
 
 import amcharts4ConfigBarRace from 'mngr-ui-admin-charts/defaults/amcharts4.barRace'
 
@@ -162,6 +162,7 @@ export default {
     BDropdown,
     BDropdownItem,
     BFormCheckbox,
+    BLink,
     // BModal,
     chartTabular,
     // chart
