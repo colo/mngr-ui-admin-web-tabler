@@ -10,6 +10,7 @@
 **/
 import Index from '@apps/start/Index.vue'
 import Hosts from '@apps/hosts/Index.vue'
+import System from '@apps/system/Index.vue'
 import Logs from '@apps/logs/Index.vue'
 import LogsWeb from '@apps/logs/web/Index.vue'
 
@@ -36,6 +37,15 @@ const routes = [
     name: 'hosts',
     // component: () => import('@apps/start/Index.vue'),
     component: Hosts
+    // meta: { layout: 'VerticalLayout' },
+
+  },
+  {
+    path: '/system',
+    // component: () => import('layouts/MainLayout.vue'),
+    name: 'system',
+    // component: () => import('@apps/start/Index.vue'),
+    component: System
     // meta: { layout: 'VerticalLayout' },
 
   },
