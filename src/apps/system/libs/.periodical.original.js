@@ -38,11 +38,6 @@ export default function (data, metadata, key, vm) {
     let hosts_blocks = {}
     let hosts_net = {}
 
-    let memory = {timestamp: Date.now(), value: {freemem: 0, totalmem: 0}}
-    let cpus = {timestamp: Date.now(), value: {}}
-    let loadavg = {timestamp: Date.now(), value: {}}
-    let uptime = {timestamp: Date.now(), value: {}}
-
     Array.each(data.os, function (row) {
       let path = row.metadata.path
       let host = row.metadata.host
@@ -55,52 +50,63 @@ export default function (data, metadata, key, vm) {
         if (/^(?!.*(caelum|lynx)).*$/.test(host) || vm.selected_hosts.contains(host)) {
           if (!hosts_memory[host] || hosts_memory[host].metadata.timestamp < row.metadata.timestamp) {
             hosts_memory[host] = row
-
-            memory.value.freemem += row.data.freemem
-            memory.value.totalmem += row.data.totalmem
           }
         }
-      } else if (path === 'os.cpus') {
+      }
+
+      /**
+      * CPUS
+      **/
+
+      if (path === 'os.cpus') {
         if (/^(?!.*(caelum|lynx)).*$/.test(host) || vm.selected_hosts.contains(host)) {
           if (!hosts_cpus[host] || hosts_cpus[host].metadata.timestamp < row.metadata.timestamp) {
             hosts_cpus[host] = row
-
-            Object.each(row.data, function (val, prop) {
-              if (!cpus.value[prop]) cpus.value[prop] = 0
-              cpus.value[prop] += val
-            })
           }
         }
-      } else if (path === 'os.loadavg') {
+      }
+
+      /**
+      * Loadavg
+      **/
+
+      if (path === 'os.loadavg') {
         if (/^(?!.*(caelum|lynx)).*$/.test(host) || vm.selected_hosts.contains(host)) {
           if (!hosts_loadavg[host] || hosts_loadavg[host].metadata.timestamp < row.metadata.timestamp) {
             hosts_loadavg[host] = row
-
-            Object.each(row.data, function (val, prop) {
-              if (!loadavg.value[prop]) loadavg.value[prop] = 0
-              loadavg.value[prop] += val
-            })
           }
         }
-      } else if (path === 'os.uptime') {
+      }
+
+      /**
+      * Uptime
+      **/
+
+      if (path === 'os.uptime') {
         if (/^(?!.*(caelum|lynx)).*$/.test(host) || vm.selected_hosts.contains(host)) {
           if (!hosts_uptime[host] || hosts_uptime[host].metadata.timestamp < row.metadata.timestamp) {
             hosts_uptime[host] = row
-
-            Object.each(row.data, function (val, prop) {
-              if (!uptime.value[prop]) uptime.value[prop] = 0
-              uptime.value[prop] += val
-            })
           }
         }
-      } else if (/^os\.mounts\..*\.blocks.*/.test(path)) {
+      }
+
+      /**
+      * Blocks
+      **/
+
+      if (/^os\.mounts\..*\.blocks.*/.test(path)) {
         if (/^(?!.*(caelum|lynx)).*$/.test(host) || vm.selected_hosts.contains(host)) {
           if (!hosts_blocks[host] || !hosts_blocks[host][path] || hosts_blocks[host][path].metadata.timestamp < row.metadata.timestamp) {
             if (!hosts_blocks[host]) hosts_blocks[host] = {}
             hosts_blocks[host][path] = row
           }
         }
-      } else if (
+      }
+
+      /**
+      * NET BYTES
+      **/
+      if (
         /^os\.networkInterfaces.*/.test(path) &&
         (/^os\.networkInterfaces\.eth.*\.bytes$/.test(path) ||
               /^os\.networkInterfaces\.eno.*\.bytes$/.test(path) ||
@@ -110,6 +116,25 @@ export default function (data, metadata, key, vm) {
         )
       ) { // derived
         if (/^(?!.*(caelum|lynx)).*$/.test(host) || vm.selected_hosts.contains(host)) {
+          // if (!hosts_net[host] || !hosts_net[host][path] || hosts_net[host][path].metadata.timestamp < row.metadata.timestamp) {
+          //   if (!hosts_net[host]) hosts_net[host] = {}
+          //   hosts_net[host][path] = row
+          // }
+
+          /**
+          * full range (all bytes from all seconds)
+          **/
+          // if (!hosts_net[host] || !hosts_net[host][path]) {
+          //   if (!hosts_net[host]) hosts_net[host] = {}
+          //
+          //   row.data.recived = (row.data.recived && !isNaN(row.data.recived)) ? row.data.recived : 0
+          //   row.data.transmited = (row.data.transmited && !isNaN(row.data.transmited)) ? row.data.transmited : 0
+          //   hosts_net[host][path] = row
+          // } else if (hosts_net[host][path].metadata.timestamp < row.metadata.timestamp) { // update only with the biggest timestamp
+          //   hosts_net[host][path].data.recived = (row.data.recived && !isNaN(row.data.recived)) ? row.data.recived : 0
+          //   hosts_net[host][path].data.transmited = (row.data.transmited && !isNaN(row.data.transmited)) ? row.data.transmited : 0
+          // }
+
           if (!hosts_net[host]) hosts_net[host] = {}
 
           if (!hosts_net[host][path] || hosts_net[host][path].metadata.timestamp < row.metadata.timestamp) {
@@ -122,44 +147,44 @@ export default function (data, metadata, key, vm) {
     /**
     * MEMORY
     **/
-    // let memory = {timestamp: Date.now(), value: {freemem: 0, totalmem: 0}}
-    // Object.each(hosts_memory, function (row) {
-    //   memory.value.freemem += row.data.freemem
-    //   memory.value.totalmem += row.data.totalmem
-    // })
+    let memory = {timestamp: Date.now(), value: {freemem: 0, totalmem: 0}}
+    Object.each(hosts_memory, function (row) {
+      memory.value.freemem += row.data.freemem
+      memory.value.totalmem += row.data.totalmem
+    })
 
     /**
     * CPUS
     **/
-    // let cpus = {timestamp: Date.now(), value: {}}
-    // Object.each(hosts_cpus, function (row) {
-    //   Object.each(row.data, function (val, prop) {
-    //     if (!cpus.value[prop]) cpus.value[prop] = 0
-    //     cpus.value[prop] += val
-    //   })
-    // })
+    let cpus = {timestamp: Date.now(), value: {}}
+    Object.each(hosts_cpus, function (row) {
+      Object.each(row.data, function (val, prop) {
+        if (!cpus.value[prop]) cpus.value[prop] = 0
+        cpus.value[prop] += val
+      })
+    })
 
     /**
     * Loadavg
     **/
-    // let loadavg = {timestamp: Date.now(), value: {}}
-    // Object.each(hosts_loadavg, function (row) {
-    //   Object.each(row.data, function (val, prop) {
-    //     if (!loadavg.value[prop]) loadavg.value[prop] = 0
-    //     loadavg.value[prop] += val
-    //   })
-    // })
+    let loadavg = {timestamp: Date.now(), value: {}}
+    Object.each(hosts_loadavg, function (row) {
+      Object.each(row.data, function (val, prop) {
+        if (!loadavg.value[prop]) loadavg.value[prop] = 0
+        loadavg.value[prop] += val
+      })
+    })
 
     /**
     * Uptime
     **/
-    // let uptime = {timestamp: Date.now(), value: {}}
-    // Object.each(hosts_uptime, function (row) {
-    //   Object.each(row.data, function (val, prop) {
-    //     if (!uptime.value[prop]) uptime.value[prop] = 0
-    //     uptime.value[prop] += val
-    //   })
-    // })
+    let uptime = {timestamp: Date.now(), value: {}}
+    Object.each(hosts_uptime, function (row) {
+      Object.each(row.data, function (val, prop) {
+        if (!uptime.value[prop]) uptime.value[prop] = 0
+        uptime.value[prop] += val
+      })
+    })
 
     /**
     * Blocks
@@ -173,6 +198,13 @@ export default function (data, metadata, key, vm) {
           blocks.value[prop] += val
         })
       })
+      // debug('hosts_blocks row', row.data.recived, row.data.transmited)
+
+      // Object.each(row.data, function (val, prop) {
+      //
+      // //   if (!blocks.value[prop]) blocks.value[prop] = 0
+      // //   blocks.value[prop] += val
+      // })
     })
     /**
     * NET BYTES
@@ -213,20 +245,12 @@ export default function (data, metadata, key, vm) {
     // })
     //
     // debug('PERIODICAL OS CALLBACK data %s %o', key, data, arr)
-
-    // vm.stat_memory = [memory]
-    // vm.stat_cpus = [cpus]
-    // vm.stat_loadavg = [loadavg]
-    // vm.stat_uptime = [uptime]
-    // vm.stat_blocks = [blocks]
-    // vm.stat_net_in = [net_in]
-    // vm.stat_net_out = [net_out]
-    vm.stats['all']['memory'] = [memory]
-    vm.stats['all']['cpus'] = [cpus]
-    vm.stats['all']['loadavg'] = [loadavg]
-    vm.stats['all']['uptime'] = [uptime]
-    vm.stats['all']['blocks'] = [blocks]
-    vm.stats['all']['net_in'] = [net_in]
-    vm.stats['all']['net_out'] = [net_out]
+    vm.stat_memory = [memory]
+    vm.stat_cpus = [cpus]
+    vm.stat_loadavg = [loadavg]
+    vm.stat_uptime = [uptime]
+    vm.stat_blocks = [blocks]
+    vm.stat_net_in = [net_in]
+    vm.stat_net_out = [net_out]
   }
 }

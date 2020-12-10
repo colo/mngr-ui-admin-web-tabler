@@ -5,8 +5,12 @@ debug.log = console.log.bind(console) // don't forget to bind to console!
 // import {roundMilliseconds, roundSeconds, roundMinutes, roundHours} from '@libs/time/round'
 import {SECOND, MINUTE, HOUR, DAY, WEEK, MONTH} from '@libs/time/const'
 
+import system_callback from '@apps/system/libs/periodical'
+
 const generic_callback = function (data, metadata, key, vm) {
   debug('PERIODICAL SYSTEM GENERIC CALLBACK data %s %o', key, data, metadata)
+
+  if (key === 'system.periodical') { system_callback(data, metadata, key, vm) }
 }
 
 const system_summary_periodical = {

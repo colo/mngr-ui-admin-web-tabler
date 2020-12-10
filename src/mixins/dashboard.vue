@@ -73,7 +73,7 @@ export default {
         // return Date.now()
         if (this.period === 'second' || this.period === 'periodical') {
           // return Date.now() - SECOND
-          return roundMilliseconds(Date.now()) - (5 * SECOND) // use "2 seconds ago" to really get all documents (DB may be writing/reading behind)
+          return roundMilliseconds(Date.now()) - (5 * SECOND) // use "5 seconds ago" to really get all documents (DB may be behind writing/reading )
         } else if (this.period === 'minute') {
           // return Date.now() - (2 * MINUTE)
           return roundSeconds(Date.now())

@@ -150,6 +150,8 @@ export default {
 
   data () {
     return {
+      hosts_stats: undefined,
+
       // // height: '0px',
       // //
       // hosts: [
@@ -313,6 +315,9 @@ export default {
     // }.bind(this))
   },
   watch: {
+    hosts_stats: function (val) {
+      debug('watch hosts_stats', val)
+    },
     // system_paths: function (val) {
     //   if (this.selected_paths.length === 0) this.selected_paths = val
     // },

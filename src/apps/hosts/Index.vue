@@ -70,18 +70,18 @@
     </div>
     <div class="row row-deck row-cards">
       <div class="col-sm-4 col-md-4 col-lg-2">
-        <cpus :stat="stat_cpus" :key="'os.cpus.hosts:'+selected_hosts.join(',')"/>
+        <cpus :stat="stats['all'].cpus" :key="'os.cpus.hosts:'+selected_hosts.join(',')"/>
       </div>
       <div class="col-xs-12 col-sm-4 col-md-4 col-lg-2">
-        <memory :stat="stat_memory" :key="'os.memory.hosts:'+selected_hosts.join(',')"/>
+        <memory :stat="stats['all'].memory" :key="'os.memory.hosts:'+selected_hosts.join(',')"/>
       </div>
       <div class="col-xs-12 col-sm-4 col-md-4 col-lg-2">
         <div class="row">
-          <net :stat="stat_net_in" type="In" :key="'os.In.hosts:'+selected_hosts.join(',')"/>
+          <net :stat="stats['all'].net_in" type="In" :key="'os.In.hosts:'+selected_hosts.join(',')"/>
 
           <div class="w-100 d-none d-md-block"></div>
 
-          <net :stat="stat_net_out" type="Out" :key="'os.netOut.hosts:'+selected_hosts.join(',')"/>
+          <net :stat="stats['all'].net_out" type="Out" :key="'os.netOut.hosts:'+selected_hosts.join(',')"/>
         </div>
       </div>
       <!-- <div class="col-sm-6 col-md-4 col-lg-2">
@@ -96,11 +96,11 @@
       </div> -->
       <div class="col-md-4 col-lg-3">
         <div class="row">
-          <loadavg :stat="stat_loadavg" :key="'os.loadavg.hosts:'+selected_hosts.join(',')"/>
+          <loadavg :stat="stats['all'].loadavg" :key="'os.loadavg.hosts:'+selected_hosts.join(',')"/>
 
           <div class="w-100 d-none d-md-block"></div>
 
-          <uptime :stat="stat_uptime" :key="'os.uptime.hosts:'+selected_hosts.join(',')"/>
+          <uptime :stat="stats['all'].uptime" :key="'os.uptime.hosts:'+selected_hosts.join(',')"/>
         </div>
 
       </div>
@@ -114,7 +114,7 @@
 
       <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 
-        <blocks :stat="stat_blocks" :key="'os.blocks.hosts:'+selected_hosts.join(',')"/>
+        <blocks :stat="stats['all'].blocks" :key="'os.blocks.hosts:'+selected_hosts.join(',')"/>
 
       </div>
       <div class="col-lg-7">
@@ -292,13 +292,18 @@ export default {
       },
 
       EventBus: EventBus,
-      stat_memory: [],
-      stat_cpus: [],
-      stat_loadavg: [],
-      stat_uptime: [],
-      stat_blocks: [],
-      stat_net_in: [],
-      stat_net_out: [],
+
+      stats: {
+        all: {},
+      },
+
+      // stat_memory: [],
+      // stat_cpus: [],
+      // stat_loadavg: [],
+      // stat_uptime: [],
+      // stat_blocks: [],
+      // stat_net_in: [],
+      // stat_net_out: [],
 
       // stat_world_map_country_counter: [],
       // stat_world_map_city_counter: [],
