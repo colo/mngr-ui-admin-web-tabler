@@ -150,7 +150,8 @@ export default {
 
   data () {
     return {
-      hosts_stats: undefined,
+      stats: {},
+      // hosts_stats: undefined,
 
       // // height: '0px',
       // //
@@ -315,8 +316,8 @@ export default {
     // }.bind(this))
   },
   watch: {
-    hosts_stats: function (val) {
-      debug('watch hosts_stats', val)
+    stats: function (val) {
+      debug('watch stats', val)
     },
     // system_paths: function (val) {
     //   if (this.selected_paths.length === 0) this.selected_paths = val

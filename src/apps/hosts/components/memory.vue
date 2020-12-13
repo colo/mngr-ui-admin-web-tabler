@@ -120,8 +120,8 @@ export default {
 
   props: {
     stat: {
-      type: Array,
-      default: function () { return [] }
+      type: Object,
+      default: function () { return {timestamp: 0, value: {totalmem: 0, freemem: 0} } }
     }
   },
 
@@ -130,7 +130,7 @@ export default {
       handler: function (newVal, oldVal) {
         debug('stat.data', oldVal, newVal, this.percentage)
         let totalmem = 0
-        let val = (newVal !== undefined && newVal[0] && newVal[0].value) ? newVal[0] : (oldVal !== undefined && oldVal[0] && oldVal[0].value) ? oldVal[0] : { value: {totalmem: 0, freemem: 0}}
+        let val = (newVal !== undefined && newVal && newVal.value) ? newVal : (oldVal !== undefined && oldVal && oldVal.value) ? oldVal : { value: {totalmem: 0, freemem: 0}}
 
         let percentage = (((val.value.totalmem - val.value.freemem) * 100) / val.value.totalmem).toFixed(2) * 1
         this.prev_percentage = this.percentage

@@ -38,12 +38,12 @@ export default {
 
   props: {
     stat: {
-      type: Array,
+      type: Object,
       default: function () {
-        return [{
+        return {
           timestamp: 0,
           value: 0
-        }]
+        }
       }
     }
   },
@@ -51,7 +51,7 @@ export default {
     'stat': {
       handler: function (newVal, oldVal) {
         // // let cores = 0
-        let val = (newVal !== undefined && newVal[0] && newVal[0].value) ? newVal[0] : (oldVal !== undefined && oldVal[0] && oldVal[0].value) ? oldVal[0] : { timestamp: 0, value: { seconds: 0 } }
+        let val = (newVal !== undefined && newVal && newVal.value) ? newVal : (oldVal !== undefined && oldVal && oldVal.value) ? oldVal : { timestamp: 0, value: { seconds: 0 } }
         debug('stat.data', val)
 
         let uptime = val.value.seconds

@@ -120,8 +120,8 @@ export default {
 
   props: {
     stat: {
-      type: Array,
-      default: function () { return [] }
+      type: Object,
+      default: function () { return {timestamp: 0, value: { cores: 0, idle: 0, irq: 0, nice: 0, sys: 0, user: 0} } }
     }
   },
   watch: {
@@ -129,7 +129,7 @@ export default {
       handler: function (newVal, oldVal) {
         debug('stat.data', oldVal, newVal, this.percentage)
         // let cores = 0
-        let val = (newVal !== undefined && newVal[0] && newVal[0].value) ? newVal[0] : (oldVal !== undefined && oldVal[0] && oldVal[0].value) ? oldVal[0] : { timestamp: undefined, value: {cores: 0}}
+        let val = (newVal !== undefined && newVal && newVal.value) ? newVal : (oldVal !== undefined && oldVal && oldVal.value) ? oldVal : { timestamp: 0, value: { cores: 0, idle: 0, irq: 0, nice: 0, sys: 0, user: 0}}
 
         if (this.prev_value === undefined && val.timestamp !== undefined) {
           this.prev_value = val

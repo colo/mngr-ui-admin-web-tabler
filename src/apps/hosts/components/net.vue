@@ -76,8 +76,8 @@ export default {
 
   props: {
     stat: {
-      type: Array,
-      default: function () { return [] }
+      type: Object,
+      default: function () { return {timestamp: 0, value: {} } }
     },
     type: {
       type: String,
@@ -91,7 +91,7 @@ export default {
         // debug('stat.data', this.type, newVal, oldVal)
         // let totalmem = 0
         // let val = (newVal !== undefined && newVal[0] && newVal[0].value) ? newVal[0] : (oldVal !== undefined && oldVal[0] && oldVal[0].value) ? oldVal[0] : { value: 0}
-        let val = (newVal !== undefined && newVal[0] && newVal[0].value) ? newVal[0] : undefined
+        let val = (newVal !== undefined && newVal && newVal.value) ? newVal : undefined
 
         debug('stat.data', this.type, val, this.prev_value)
 

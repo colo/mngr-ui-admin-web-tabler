@@ -73,15 +73,15 @@ export default {
 
   props: {
     stat: {
-      type: Array,
-      default: function () { return [] }
+      type: Object,
+      default: function () { return {timestamp: 0, value: { availabe: 0, total: 0, used: 0} } }
     }
   },
   watch: {
     'stat': {
       handler: function (newVal, oldVal) {
         // let blocks = 0
-        let val = (newVal !== undefined && newVal[0] && newVal[0].value) ? newVal[0] : (oldVal !== undefined && oldVal[0] && oldVal[0].value) ? oldVal[0] : { timestamp: undefined, value: {availabe: 0, total: 0, used: 0}}
+        let val = (newVal !== undefined && newVal && newVal.value) ? newVal : (oldVal !== undefined && oldVal && oldVal.value) ? oldVal : { timestamp: 0, value: {availabe: 0, total: 0, used: 0}}
 
         let percentage = (((val.value.total - val.value.used) * 100) / val.value.total).toFixed(2) * 1
         this.prev_percentage = this.percentage
