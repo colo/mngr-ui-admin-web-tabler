@@ -1,57 +1,7 @@
 <template>
-  <div>
-    <!-- <div class="row row-deck row-cards">
-      <div class="col-auto d-print-none">
-        <b-form-checkbox-group  v-model="selected_paths" plain >
-          <b-form-checkbox  v-for="(path, idx) in system_paths" :key="idx" :value="path" >{{path}}</b-form-checkbox>
-        </b-form-checkbox-group>
-      </div>
-      <div class="col-auto ml-auto d-print-none">
-        <div class="form-selectgroup">
-          <label class="form-selectgroup-item">
-            <input type="checkbox" name="host" value="host" class="form-selectgroup-input" v-model="group_by">
-            <span class="form-selectgroup-label">Host</span>
-          </label>
 
-          <label class="form-selectgroup-item">
-            <input type="checkbox" name="host" value="path" class="form-selectgroup-input" v-model="group_by">
-            <span class="form-selectgroup-label">Path</span>
-          </label>
-
-          <label class="form-selectgroup-item">
-            <input type="checkbox" name="host" value="domain" class="form-selectgroup-input" v-model="group_by">
-            <span class="form-selectgroup-label">Domain</span>
-          </label>
-
-          <label class="form-selectgroup-item">
-            <b-button :class="(coloured === true) ? 'form-selectgroup-label bg-blue-lt' : 'form-selectgroup-label'" variant=" btn-icon" @click="switchColoured()" :pressed.sync="coloured">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19 3h-4a2 2 0 0 0 -2 2v12a4 4 0 0 0 8 0v-12a2 2 0 0 0 -2 -2" /><path d="M13 7.35l-2 -2a2 2 0 0 0 -2.828 0l-2.828 2.828a2 2 0 0 0 0 2.828l9 9" /><path d="M7.3 13h-2.3a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h12" /><line x1="17" y1="17" x2="17" y2="17.01" /></svg>
-            </b-button>
-          </label>
-          <label class="form-selectgroup-item">
-            <b-button-group >
-              <b-button v-for="(btn, idx) in layoutBtns" :key="idx" :class="(btn.state === true) ? 'form-selectgroup-label bg-blue-lt' : 'form-selectgroup-label'" variant=" btn-icon"  :pressed.sync="btn.state" @click="setLayout(btn.type)" v-html="btn.icon">
-              </b-button>
-            </b-button-group>
-          </label>
-        </div>
-      </div>
-    </div> -->
-    <div class="row row-deck row-cards">
-
-      <!-- <logs-terminal v-for="(data, logs_id) in logs"
-        :id="id + '.'+ logs_id + '.terminal'"
-        :key="id + '.'+ logs_id + '.terminal'"
-        :ref="id + '.'+ logs_id + '.terminal'"
-        :logs="data"
-        :groupBy="group_by"
-        :layout="layout"
-        :coloured="coloured"
-        :rows="rows"
-      /> -->
-
-    </div>
-
+  <div class="col-lg-12">
+    <host-card v-for="(host) in computed_hosts" :host="host" :stats="stats[host]" :key="'system.hostCard:'+host"/>
   </div>
 
 </template>
@@ -66,6 +16,8 @@ import { BButton, BButtonGroup, BButtonToolbar, BFormCheckbox, BFormCheckboxGrou
 import * as Debug from 'debug'
 const debug = Debug('apps:system:components:periodical')
 debug.log = console.log.bind(console) // don't forget to bind to console!
+
+import hostCard from '@apps/system/components/hostCard'
 
 import JSPipeline from 'js-pipeline'
 import Pipeline from '@libs/pipelines'
@@ -94,27 +46,28 @@ export default {
   name: 'AppSystemPeriodical',
 
   components: {
-    BButton,
-    BButtonGroup,
-    BButtonToolbar,
-    BFormCheckbox,
-    BFormCheckboxGroup,
-    // SystemTerminal,
-    // BDropdown,
-    // BDropdownItem,
-    // BDropdownForm,
-    // BDropdownDivider,
+    hostCard,
+    // BButton,
+    // BButtonGroup,
+    // BButtonToolbar,
     // BFormCheckbox,
     // BFormCheckboxGroup,
-    // BFormGroup,
-    // // BModal,
-    // // chartTabular,
-    // // chart,
-    // // /**
-    // // * web
-    // // **/
-    // // geoip,
-    // // traffic
+    // // SystemTerminal,
+    // // BDropdown,
+    // // BDropdownItem,
+    // // BDropdownForm,
+    // // BDropdownDivider,
+    // // BFormCheckbox,
+    // // BFormCheckboxGroup,
+    // // BFormGroup,
+    // // // BModal,
+    // // // chartTabular,
+    // // // chart,
+    // // // /**
+    // // // * web
+    // // // **/
+    // // // geoip,
+    // // // traffic
   },
 
   props: {
@@ -151,6 +104,7 @@ export default {
   data () {
     return {
       stats: {},
+      stats_hosts: [],
       // hosts_stats: undefined,
 
       // // height: '0px',
@@ -249,6 +203,7 @@ export default {
       //
     }
   },
+
   created: function () {
     debug('lifecycle created', this._uid)
 
@@ -380,9 +335,9 @@ export default {
     //   // // }
     // },
 
-    hosts_data: function (val, other) {
-      debug('WATCH hosts_data', val, other)
-    },
+    // hosts_data: function (val, other) {
+    //   debug('WATCH hosts_data', val, other)
+    // },
     selected_hosts: function (val, other) {
       debug('WATCH selected_hosts', val, other)
       if (val && Array.isArray(val) && val.length > 0) {
@@ -422,7 +377,14 @@ export default {
     // },
   },
   computed: {
-
+    computed_hosts: function () {
+      debug('computed_hosts', this.stats_hosts, this.stats_hosts.length)
+      if (this.stats_hosts.length === 2) { // 0 idx is 'all'
+        return [this.stats_hosts[1]]
+      } else {
+        return this.stats_hosts
+      }
+    },
   },
   methods: {
 

@@ -69,7 +69,10 @@
       </div>
     </div>
     <div class="row row-deck row-cards">
-      <div class="col-sm-4 col-md-4 col-lg-2">
+      <div class="col-lg-12">
+        <host-card :stats="stats['all']" :key="'system.hostCard:'+selected_hosts.join(',')"/>
+      </div>
+      <!-- <div class="col-sm-4 col-md-4 col-lg-2">
         <cpus :stat="stats['all']['os.cpus']" :key="'os.cpus.hosts:'+selected_hosts.join(',')"/>
       </div>
       <div class="col-xs-12 col-sm-4 col-md-4 col-lg-2">
@@ -84,16 +87,7 @@
           <net :stat="stats['all']['os.networkInterfaces.bytes.transmited']" type="Out" :key="'os.netOut.hosts:'+selected_hosts.join(',')"/>
         </div>
       </div>
-      <!-- <div class="col-sm-6 col-md-4 col-lg-2">
 
-        <net :stat="stat_net_in" type="In" :key="'os.In.hosts:'+selected_hosts.join(',')"/>
-
-      </div>
-      <div class="col-sm-6 col-md-4 col-lg-2">
-
-        <net :stat="stat_net_out" type="Out" :key="'os.netOut.hosts:'+selected_hosts.join(',')"/>
-
-      </div> -->
       <div class="col-md-4 col-lg-3">
         <div class="row">
           <loadavg :stat="stats['all']['os.loadavg']" :key="'os.loadavg.hosts:'+selected_hosts.join(',')"/>
@@ -105,18 +99,12 @@
 
       </div>
 
-      <!-- <div class="col-sm-6">
-        <loadavg :stat="stat_loadavg" :key="'os.loadavg.hosts:'+selected_hosts.join(',')"/>
-      </div>
-      <div class="col-sm-6">
-        <uptime :stat="stat_uptime" :key="'os.uptime.hosts:'+selected_hosts.join(',')"/>
-      </div> -->
-
       <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 
         <blocks :stat="stats['all']['os.blocks']" :key="'os.blocks.hosts:'+selected_hosts.join(',')"/>
 
-      </div>
+      </div> -->
+
       <div class="col-lg-7">
 
         <web-traffic :stat="traffic" :dark="dark" :mode="mode" :fluid="fluid" :key="'web.traffic.hosts:'+selected_hosts.join(',')"/>
@@ -156,12 +144,13 @@ import DashboardMixin from '@mixins/dashboard'
 /**
 * System components
 **/
-import cpus from '@apps/hosts/components/cpus'
-import memory from '@apps/hosts/components/memory'
-import net from '@apps/hosts/components/net'
-import loadavg from '@apps/hosts/components/loadavg'
-import uptime from '@apps/hosts/components/uptime'
-import blocks from '@apps/hosts/components/blocks'
+import hostCard from '@apps/system/components/hostCard'
+// import cpus from '@apps/system/components/cpus'
+// import memory from '@apps/system/components/memory'
+// import net from '@apps/system/components/net'
+// import loadavg from '@apps/system/components/loadavg'
+// import uptime from '@apps/system/components/uptime'
+// import blocks from '@apps/system/components/blocks'
 
 /**
 * Web components
@@ -230,12 +219,13 @@ export default {
     /**
     * os
     **/
-    cpus,
-    memory,
-    net,
-    loadavg,
-    uptime,
-    blocks,
+    hostCard,
+    // cpus,
+    // memory,
+    // net,
+    // loadavg,
+    // uptime,
+    // blocks,
     /**
     * web
     **/
@@ -262,8 +252,7 @@ export default {
     return {
       height: '0px',
 
-      hosts: [
-      ],
+      hosts: [],
 
       selected_hosts: [],
       /**

@@ -376,7 +376,14 @@ export default function (data, metadata, key, vm) {
       })
 
       debug('PERIODICAL OS CALLBACK STATS %o', stats)
+
+      let hosts = Object.keys(stats)
+      hosts.sort()
+      hosts.erase('all')// remove 'all' to insert it at first position
+      hosts.unshift('all')
       vm.stats = stats
+      vm.stats_hosts = hosts
+
       // vm.stats['all']['memory'] = [memory]
       // vm.stats['all']['cpus'] = [cpus]
       // vm.stats['all']['loadavg'] = [loadavg]
